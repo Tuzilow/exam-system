@@ -1,0 +1,147 @@
+﻿
+@{
+  Layout = null;
+}
+@Scripts.Render("~/bundles/vue")
+@Scripts.Render("~/bundles/element")
+@Styles.Render("~/Content/elementcss")
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <title>Index</title>
+  <style>
+    .sm-btn {
+      padding: 10px 18px;
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #ccc;
+    }
+
+    .el-container {
+      padding: 0 !important;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .el-header {
+      width: 100%;
+      background-color: #081842;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+    }
+
+      .el-header h2 {
+        display: inline-block;
+        color: #fffffa;
+        font-size: 20px;
+        text-align: center;
+      }
+
+        .el-header h2 .logo-image {
+          display: inline-block;
+          height: 30px;
+          vertical-align: middle;
+          margin-right: 5px;
+          position: relative;
+          top: -1px;
+        }
+
+      .el-header .header-nav {
+        display: inline-block;
+        border-bottom: none;
+      }
+
+    .el-main {
+      /*padding: 0 220px;*/
+      display: flex;
+      justify-content: center;
+    }
+
+      .el-main .calendar {
+        border-radius: 5px;
+        box-shadow: 2px 2px 10px #666;
+        padding: 20px;
+        width: 80%;
+      }
+
+      .el-main .calendar-day {
+        display: inline-block;
+        padding-right: 6px;
+      }
+
+      .el-main .exam-wrap {
+        display: inline-block;
+      }
+
+      .el-main .have-exam {
+        font-size: 12px;
+        color: orange;
+      }
+
+    .el-calendar-table .el-calendar-day {
+      height: 70px;
+      overflow: hidden;
+      padding: 2px 5px;
+    }
+
+    .el-footer {
+      background-color: #081842;
+      color: #fffffa;
+      text-align: center;
+      line-height: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="el-container">
+    <el-header class="el-header">
+      <h2>
+        <img class="logo-image" src="~/Static/images/logo1.png" />
+        <span>安阳市人民警察训练学校在线考试系统</span>
+      </h2>
+      <el-menu background-color="#081842" text-color="#fffffa" active-text-color="#fff000" class="header-nav" text mode="horizontal">
+        <el-menu-item index="1"><el-link :underline="false" href="#">成绩查询</el-link></el-menu-item>
+        <el-menu-item index="2"><el-link :underline="false" href="#">进入考试</el-link></el-menu-item>
+        <el-menu-item index="3"><el-link :underline="false" href="#">后台管理</el-link></el-menu-item>
+        <el-menu-item index="4"><el-button type="success" class="sm-btn">登陆</el-button></el-menu-item>
+      </el-menu>
+    </el-header>
+    <el-main class="el-main">
+      <el-calendar class="calendar" v-model="thisDay">
+        <template slot="dateCell" slot-scope="{date, data}">
+          <div style="display:flex;justify-content:start;">
+            <div class="calendar-day">{{ data.day.split('-').slice(2).join('-') }}</div>
+            <div class="exam-wrap">
+              <div v-for="item in haveExam" v-if="item.date === data.day" class="have-exam">
+                {{item.title}}
+              </div>
+            </div>
+          </div>
+        </template>
+      </el-calendar>
+    </el-main>
+    <el-footer class="el-footer">欢迎使用安阳市人民警察训练学校在线考试系统</el-footer>
+  </div>
+</body>
+</html>
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      thisDay: new Date(),
+      haveExam: [
+        { date: '2020-05-12', title: '一二级考试' },
+        { date: '2020-05-12', title: '三四级考试' },
+        { date: '2020-05-12', title: '四五级考试' },
+        { date: '2020-05-12', title: '四六级考试' },
+        { date: '2020-05-13', title: '计算机等级考试' }
+      ]
+    }
+  })
+</script>
