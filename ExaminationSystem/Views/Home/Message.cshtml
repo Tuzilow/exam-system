@@ -1,0 +1,95 @@
+﻿
+@{
+  Layout = null;
+}
+
+@Scripts.Render("~/bundles/vue")
+@Scripts.Render("~/bundles/element")
+@Styles.Render("~/Content/elementcss")
+
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <title>安阳市人民警察训练学校在线考试系统</title>
+  <link href="~/Static/css/default.css" rel="stylesheet" />
+  <style>
+    body {
+      box-sizing: border-box;
+      height: 100vh;
+      background: #ccc;
+    }
+
+    .header {
+      padding: 12px 16px;
+      background-color: #081842;
+      color: #fffffa;
+    }
+
+      .header .el-page-header__content {
+        color: #fffffa;
+      }
+
+    .msg-card {
+      box-sizing: border-box;
+      margin: 5vh 14vh;
+    }
+
+    @@media screen and (max-width: 768px) {
+      .msg-card {
+        margin: 5vh 4vh;
+      }
+    }
+
+    .msg-card ul li {
+      line-height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div id="app">
+      <el-page-header @@back="goBack" content="成绩查询" class="header"></el-page-header>
+      <div>
+        <el-card class="msg-card">
+          <div slot="header" class="clearfix">
+            <span>{{message.account}} 的成绩单</span>
+          </div>
+          <ul>
+            <li>姓名：{{message.name}}</li>
+            <li>考试日期：{{message.date}}</li>
+            <li>考试场次：{{message.title}}</li>
+            <li>试卷：{{message.paperTitle}}</li>
+            <li>分数（得分/总分）：<span>{{message.trueScore}}</span>/<span>{{message.score}}</span></li>
+          </ul>
+        </el-card>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      message: {
+        id: 1,
+        account: '111111111',
+        name: '王小明',
+        date: '2020-05-12',
+        title: '8:00到10:00场',
+        paperTitle: '试卷标题',
+        score: '100',
+        trueScore: '80'
+      }
+    },
+    methods: {
+      goBack() {
+        window.history.back();
+      }
+    },
+    created() {
+    }
+  });
+</script>

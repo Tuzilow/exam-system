@@ -124,6 +124,16 @@ if not exists (select * from sysobjects where name='ES_Exercise')
 	);
 
 go
+-- 创建试卷题目表
+if not exists (select * from sysobjects where name='ES_ExamPaper_Exercise')
+	create table ES_ExamPaper_Exercise (
+		EEId int primary key identity(1,1),
+		EmPaperId int foreign key references ES_ExamPaper(EmPaperId),
+		EsId int foreign key references ES_Exercise(EsId),
+		IsDel bit not null default(0)
+	);
+
+go
 -- 创建标签题目中间表
 if not exists (select * from sysobjects where name='ES_Tag_Exercise')
 	create table ES_Tag_Exercise(
@@ -251,5 +261,43 @@ go
 -- insert into ES_Role_Permission(RoleId, PmId) values(3, 12); -- 管理员
 select * from ES_Role_Permission;
 go
--- 添加管理员
-insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('admin', '管理员', '123456', 3);
+-- 添加用户
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('admin', '管理员', '123456', 3);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('xmy', '徐my', '123456', 1);
+select * from ES_User;
+go
+-- 添加场次
+-- insert into ES_ExamPart(EmPtStart, EmPtEnd) values('2020-05-14 08:00:00', '2020-05-14 10:00:00')
+-- insert into ES_ExamPart(EmPtStart, EmPtEnd) values('2020-05-16 08:00:00', '2020-05-16 10:00:00')
+select * from ES_ExamPart;
+go
+-- 添加场次关联
+insert into ES_User_ExamPart(UserId ,EmPtId) values(2, 1);
+select * from ES_User_ExamPart;
+go
+-- 创建视图
+-- 考生信息视图
+--create view User_ExamPart_ExamPaper_v as
+--select 
+--	u.UserId 考生ID,
+--	u.UserAccount 账号,
+--	u.UserPassword 密码,
+--	u.UserName 姓名,
+--	epart.EmPtStart 开始时间,
+--	epart.EmPtEnd 结束时间,
+--	epaper.EmPaperId 试卷ID,
+--	epaper.EmPaperName 试卷标题,
+--	epaper.EmPaperSelectNum 选择题数量,
+--	epaper.EmPaperFillNum 填空题数量,
+--	epaper.EmPaperJudgeNum 判断题数量,
+--	epaper.EmPaperMultipleNum 多选题数量,
+--	epaper.EmPaperScore 总分值,
+--	epaper.EmPaperTrueScore 得分
+--from ES_User u
+--left join ES_User_ExamPart uepart on u.UserId = uepart.UserId and uepart.IsDel = 0
+--left join ES_ExamPart epart on uepart.EmPtId = epart.EmPtId and epart.IsDel = 0
+--left join ES_User_ExamPaper uepaper on uepaper.UserId = u.UserId and uepaper.IsDel = 0
+--left join ES_ExamPaper epaper on epaper.EmPaperId = uepaper.EmPaperId and epaper.IsDel = 0
+--where u.RoleId = 1 and u.IsDel = 0;
+select * from User_ExamPart_ExamPaper_v;
+go

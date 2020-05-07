@@ -2,15 +2,17 @@
 @{
   Layout = null;
 }
+
 @Scripts.Render("~/bundles/vue")
 @Scripts.Render("~/bundles/element")
 @Styles.Render("~/Content/elementcss")
+
 <!DOCTYPE html>
 
 <html>
 <head>
   <meta name="viewport" content="width=device-width" />
-  <title>Index</title>
+  <title>安阳市人民警察训练学校在线考试系统</title>
   <style>
     .sm-btn {
       padding: 10px 18px;
@@ -106,22 +108,28 @@
         <span>安阳市人民警察训练学校在线考试系统</span>
       </h2>
       <el-menu background-color="#081842" text-color="#fffffa" active-text-color="#fff000" class="header-nav" text mode="horizontal">
-        <el-menu-item index="1"><el-link :underline="false" href="#">成绩查询</el-link></el-menu-item>
+        <el-menu-item index="1"><el-link :underline="false" href="/Home/Message">成绩查询</el-link></el-menu-item>
         <el-menu-item index="2"><el-link :underline="false" href="#">进入考试</el-link></el-menu-item>
         <el-menu-item index="3"><el-link :underline="false" href="#">后台管理</el-link></el-menu-item>
         <el-menu-item index="4"><el-button type="success" class="sm-btn">登陆</el-button></el-menu-item>
       </el-menu>
     </el-header>
     <el-main class="el-main">
-      <el-calendar class="calendar" v-model="thisDay">
+      <el-calendar class="calendar" v-model="thisDay" first-day-of-week=7>
         <template slot="dateCell" slot-scope="{date, data}">
+
           <div style="display:flex;justify-content:start;">
             <div class="calendar-day">{{ data.day.split('-').slice(2).join('-') }}</div>
-            <div class="exam-wrap">
-              <div v-for="item in haveExam" v-if="item.date === data.day" class="have-exam">
-                {{item.title}}
+            <el-popover placement="top-start"
+                        title="全部考试"
+                        trigger="hover">
+              <div v-for="exam in getExamsByOneDay(data.day)">{{exam}}</div>
+              <div class="exam-wrap" slot="reference">
+                <div v-for="item in haveExam" v-if="item.date === data.day" class="have-exam">
+                  {{item.title}}
+                </div>
               </div>
-            </div>
+            </el-popover>
           </div>
         </template>
       </el-calendar>
@@ -135,13 +143,22 @@
     el: '#app',
     data: {
       thisDay: new Date(),
-      haveExam: [
-        { date: '2020-05-12', title: '一二级考试' },
-        { date: '2020-05-12', title: '三四级考试' },
-        { date: '2020-05-12', title: '四五级考试' },
-        { date: '2020-05-12', title: '四六级考试' },
-        { date: '2020-05-13', title: '计算机等级考试' }
-      ]
+      haveExam: []
+    },
+    methods: {
+      // 根据日期拿到考试科目
+      getExamsByOneDay(day) {
+        let allExams = [];
+        for (let i = 0; i < this.haveExam.length; i++) {
+          if (this.haveExam[i].date === day) {
+            allExams.push(this.haveExam[i].title);
+          }
+        }
+        return allExams;
+      }
+    },
+    created() {
+      this.haveExam = JSON.parse(@Html.Raw(Json.Encode(ViewBag.Exams)));
     }
-  })
+  });
 </script>

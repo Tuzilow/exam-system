@@ -1,0 +1,1294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ExaminationSystemDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ES_ExamPaper">
+          <Key>
+            <PropertyRef Name="EmPaperId" />
+          </Key>
+          <Property Name="EmPaperId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmPaperName" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="EmPaperSelectNum" Type="int" Nullable="false" />
+          <Property Name="EmPaperFillNum" Type="int" Nullable="false" />
+          <Property Name="EmPaperJudgeNum" Type="int" Nullable="false" />
+          <Property Name="EmPaperMultipleNum" Type="int" Nullable="false" />
+          <Property Name="EmPaperScore" Type="int" Nullable="false" />
+          <Property Name="EmPaperTrueScore" Type="int" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_ExamPaper_Exercise">
+          <Key>
+            <PropertyRef Name="EEId" />
+          </Key>
+          <Property Name="EEId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmPaperId" Type="int" />
+          <Property Name="EsId" Type="int" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_ExamPart">
+          <Key>
+            <PropertyRef Name="EmPtId" />
+          </Key>
+          <Property Name="EmPtId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmPtStart" Type="datetime" Nullable="false" />
+          <Property Name="EmPtEnd" Type="datetime" Nullable="false" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Exercise">
+          <Key>
+            <PropertyRef Name="EsId" />
+          </Key>
+          <Property Name="EsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EsType" Type="nchar" MaxLength="3" Nullable="false" />
+          <Property Name="EsSubExerciseId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_FillAnswer">
+          <Key>
+            <PropertyRef Name="FAId" />
+          </Key>
+          <Property Name="FAId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FQId" Type="int" Nullable="false" />
+          <Property Name="FAContent" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="FAScore" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_FillQuestion">
+          <Key>
+            <PropertyRef Name="FQId" />
+          </Key>
+          <Property Name="FQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FQTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="FQScore" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_JudgeQuestion">
+          <Key>
+            <PropertyRef Name="JQId" />
+          </Key>
+          <Property Name="JQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JQTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="JQTrueAns" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="JQFalseAns" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="JQScore" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_MultipleAnswer">
+          <Key>
+            <PropertyRef Name="MAId" />
+          </Key>
+          <Property Name="MAId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MQId" Type="int" Nullable="false" />
+          <Property Name="MAContent" Type="char" MaxLength="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_MultipleQuestion">
+          <Key>
+            <PropertyRef Name="MQId" />
+          </Key>
+          <Property Name="MQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MQTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="MQAns1" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="MQAns2" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="MQAns3" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="MQAns4" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="MQAns5" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="MQAns6" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="MQAns7" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="MQScore" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Paper_Tag">
+          <Key>
+            <PropertyRef Name="PrTgId" />
+          </Key>
+          <Property Name="PrTgId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaperId" Type="int" />
+          <Property Name="TagId" Type="int" />
+          <Property Name="ExerciseNum" Type="int" Nullable="false" />
+          <Property Name="IsNotSelect" Type="bit" Nullable="false" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Permission">
+          <Key>
+            <PropertyRef Name="PmId" />
+          </Key>
+          <Property Name="PmId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PmName" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="PmDescribe" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="RoleDescribe" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Role_Permission">
+          <Key>
+            <PropertyRef Name="RlPmId" />
+          </Key>
+          <Property Name="RlPmId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="PmId" Type="int" Nullable="false" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_SelectQuestion">
+          <Key>
+            <PropertyRef Name="SQId" />
+          </Key>
+          <Property Name="SQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SQTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SQTrueAns" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="SQAns1" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="SQAns2" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="SQAns3" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="SQAns4" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="SQScore" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Tag">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TagName" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="TagDescribe" Type="nvarchar" MaxLength="64" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Tag_Exercise">
+          <Key>
+            <PropertyRef Name="TgEsId" />
+          </Key>
+          <Property Name="TgEsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TagId" Type="int" />
+          <Property Name="EsId" Type="int" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserAccount" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="RoleId" Type="int" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_User_ExamPaper">
+          <Key>
+            <PropertyRef Name="UEmPaper" />
+          </Key>
+          <Property Name="UEmPaper" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="EmPaperId" Type="int" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_User_ExamPart">
+          <Key>
+            <PropertyRef Name="UEmPt" />
+          </Key>
+          <Property Name="UEmPt" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="EmPtId" Type="int" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“ExaminationSystemDb.dbo.User_ExamPart_ExamPaper_v”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="User_ExamPart_ExamPaper_v">
+          <Key>
+            <PropertyRef Name="考生ID" />
+            <PropertyRef Name="账号" />
+            <PropertyRef Name="密码" />
+            <PropertyRef Name="姓名" />
+          </Key>
+          <Property Name="考生ID" Type="int" Nullable="false" />
+          <Property Name="账号" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="密码" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="姓名" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="开始时间" Type="datetime" />
+          <Property Name="结束时间" Type="datetime" />
+          <Property Name="试卷ID" Type="int" />
+          <Property Name="试卷标题" Type="nvarchar" MaxLength="32" />
+          <Property Name="选择题数量" Type="int" />
+          <Property Name="填空题数量" Type="int" />
+          <Property Name="判断题数量" Type="int" />
+          <Property Name="多选题数量" Type="int" />
+          <Property Name="总分值" Type="int" />
+          <Property Name="得分" Type="int" />
+        </EntityType>
+        <Association Name="FK__ES_ExamPa__EmPap__17F790F9">
+          <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
+          <End Role="ES_ExamPaper_Exercise" Type="Self.ES_ExamPaper_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_ExamPaper_Exercise">
+              <PropertyRef Name="EmPaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_ExamPap__EsId__18EBB532">
+          <End Role="ES_Exercise" Type="Self.ES_Exercise" Multiplicity="0..1" />
+          <End Role="ES_ExamPaper_Exercise" Type="Self.ES_ExamPaper_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Exercise">
+              <PropertyRef Name="EsId" />
+            </Principal>
+            <Dependent Role="ES_ExamPaper_Exercise">
+              <PropertyRef Name="EsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_FillAns__FQId__6EF57B66">
+          <End Role="ES_FillQuestion" Type="Self.ES_FillQuestion" Multiplicity="1" />
+          <End Role="ES_FillAnswer" Type="Self.ES_FillAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_FillQuestion">
+              <PropertyRef Name="FQId" />
+            </Principal>
+            <Dependent Role="ES_FillAnswer">
+              <PropertyRef Name="FQId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Multipl__MQId__73BA3083">
+          <End Role="ES_MultipleQuestion" Type="Self.ES_MultipleQuestion" Multiplicity="1" />
+          <End Role="ES_MultipleAnswer" Type="Self.ES_MultipleAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_MultipleQuestion">
+              <PropertyRef Name="MQId" />
+            </Principal>
+            <Dependent Role="ES_MultipleAnswer">
+              <PropertyRef Name="MQId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Paper___Paper__619B8048">
+          <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
+          <End Role="ES_Paper_Tag" Type="Self.ES_Paper_Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_Paper_Tag">
+              <PropertyRef Name="PaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Paper___TagId__628FA481">
+          <End Role="ES_Tag" Type="Self.ES_Tag" Multiplicity="0..1" />
+          <End Role="ES_Paper_Tag" Type="Self.ES_Paper_Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="ES_Paper_Tag">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Role_P__RoleI__47DBAE45">
+          <End Role="ES_Role" Type="Self.ES_Role" Multiplicity="1" />
+          <End Role="ES_Role_Permission" Type="Self.ES_Role_Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ES_Role_Permission">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Role_Pe__PmId__48CFD27E">
+          <End Role="ES_Permission" Type="Self.ES_Permission" Multiplicity="1" />
+          <End Role="ES_Role_Permission" Type="Self.ES_Role_Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Permission">
+              <PropertyRef Name="PmId" />
+            </Principal>
+            <Dependent Role="ES_Role_Permission">
+              <PropertyRef Name="PmId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Tag_Ex__TagId__76969D2E">
+          <End Role="ES_Tag" Type="Self.ES_Tag" Multiplicity="0..1" />
+          <End Role="ES_Tag_Exercise" Type="Self.ES_Tag_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="ES_Tag_Exercise">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Tag_Exe__EsId__778AC167">
+          <End Role="ES_Exercise" Type="Self.ES_Exercise" Multiplicity="0..1" />
+          <End Role="ES_Tag_Exercise" Type="Self.ES_Tag_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Exercise">
+              <PropertyRef Name="EsId" />
+            </Principal>
+            <Dependent Role="ES_Tag_Exercise">
+              <PropertyRef Name="EsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User__RoleId__4D94879B">
+          <End Role="ES_Role" Type="Self.ES_Role" Multiplicity="0..1" />
+          <End Role="ES_User" Type="Self.ES_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ES_User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__EmPap__7C4F7684">
+          <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
+          <End Role="ES_User_ExamPaper" Type="Self.ES_User_ExamPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_User_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__EmPtI__5535A963">
+          <End Role="ES_ExamPart" Type="Self.ES_ExamPart" Multiplicity="0..1" />
+          <End Role="ES_User_ExamPart" Type="Self.ES_User_ExamPart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPart">
+              <PropertyRef Name="EmPtId" />
+            </Principal>
+            <Dependent Role="ES_User_ExamPart">
+              <PropertyRef Name="EmPtId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__UserI__5441852A">
+          <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
+          <End Role="ES_User_ExamPart" Type="Self.ES_User_ExamPart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ES_User_ExamPart">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__UserI__7B5B524B">
+          <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
+          <End Role="ES_User_ExamPaper" Type="Self.ES_User_ExamPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ES_User_ExamPaper">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExaminationSystemDbModelStoreContainer">
+          <EntitySet Name="ES_ExamPaper" EntityType="Self.ES_ExamPaper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_ExamPaper_Exercise" EntityType="Self.ES_ExamPaper_Exercise" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_ExamPart" EntityType="Self.ES_ExamPart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_Exercise" EntityType="Self.ES_Exercise" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_FillAnswer" EntityType="Self.ES_FillAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_FillQuestion" EntityType="Self.ES_FillQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_JudgeQuestion" EntityType="Self.ES_JudgeQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_MultipleAnswer" EntityType="Self.ES_MultipleAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_MultipleQuestion" EntityType="Self.ES_MultipleQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_Paper_Tag" EntityType="Self.ES_Paper_Tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_Permission" EntityType="Self.ES_Permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_Role" EntityType="Self.ES_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_Role_Permission" EntityType="Self.ES_Role_Permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_SelectQuestion" EntityType="Self.ES_SelectQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_Tag" EntityType="Self.ES_Tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_Tag_Exercise" EntityType="Self.ES_Tag_Exercise" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_User" EntityType="Self.ES_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_User_ExamPaper" EntityType="Self.ES_User_ExamPaper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_User_ExamPart" EntityType="Self.ES_User_ExamPart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_ExamPart_ExamPaper_v" EntityType="Self.User_ExamPart_ExamPaper_v" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [User_ExamPart_ExamPaper_v].[考生ID] AS [考生ID], 
+    [User_ExamPart_ExamPaper_v].[账号] AS [账号], 
+    [User_ExamPart_ExamPaper_v].[密码] AS [密码], 
+    [User_ExamPart_ExamPaper_v].[姓名] AS [姓名], 
+    [User_ExamPart_ExamPaper_v].[开始时间] AS [开始时间], 
+    [User_ExamPart_ExamPaper_v].[结束时间] AS [结束时间], 
+    [User_ExamPart_ExamPaper_v].[试卷ID] AS [试卷ID], 
+    [User_ExamPart_ExamPaper_v].[试卷标题] AS [试卷标题], 
+    [User_ExamPart_ExamPaper_v].[选择题数量] AS [选择题数量], 
+    [User_ExamPart_ExamPaper_v].[填空题数量] AS [填空题数量], 
+    [User_ExamPart_ExamPaper_v].[判断题数量] AS [判断题数量], 
+    [User_ExamPart_ExamPaper_v].[多选题数量] AS [多选题数量], 
+    [User_ExamPart_ExamPaper_v].[总分值] AS [总分值], 
+    [User_ExamPart_ExamPaper_v].[得分] AS [得分]
+    FROM [dbo].[User_ExamPart_ExamPaper_v] AS [User_ExamPart_ExamPaper_v]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__ES_ExamPa__EmPap__17F790F9" Association="Self.FK__ES_ExamPa__EmPap__17F790F9">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_ExamPap__EsId__18EBB532" Association="Self.FK__ES_ExamPap__EsId__18EBB532">
+            <End Role="ES_Exercise" EntitySet="ES_Exercise" />
+            <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_FillAns__FQId__6EF57B66" Association="Self.FK__ES_FillAns__FQId__6EF57B66">
+            <End Role="ES_FillQuestion" EntitySet="ES_FillQuestion" />
+            <End Role="ES_FillAnswer" EntitySet="ES_FillAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Multipl__MQId__73BA3083" Association="Self.FK__ES_Multipl__MQId__73BA3083">
+            <End Role="ES_MultipleQuestion" EntitySet="ES_MultipleQuestion" />
+            <End Role="ES_MultipleAnswer" EntitySet="ES_MultipleAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Paper___Paper__619B8048" Association="Self.FK__ES_Paper___Paper__619B8048">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_Paper_Tag" EntitySet="ES_Paper_Tag" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Paper___TagId__628FA481" Association="Self.FK__ES_Paper___TagId__628FA481">
+            <End Role="ES_Tag" EntitySet="ES_Tag" />
+            <End Role="ES_Paper_Tag" EntitySet="ES_Paper_Tag" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Role_P__RoleI__47DBAE45" Association="Self.FK__ES_Role_P__RoleI__47DBAE45">
+            <End Role="ES_Role" EntitySet="ES_Role" />
+            <End Role="ES_Role_Permission" EntitySet="ES_Role_Permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Role_Pe__PmId__48CFD27E" Association="Self.FK__ES_Role_Pe__PmId__48CFD27E">
+            <End Role="ES_Permission" EntitySet="ES_Permission" />
+            <End Role="ES_Role_Permission" EntitySet="ES_Role_Permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Tag_Ex__TagId__76969D2E" Association="Self.FK__ES_Tag_Ex__TagId__76969D2E">
+            <End Role="ES_Tag" EntitySet="ES_Tag" />
+            <End Role="ES_Tag_Exercise" EntitySet="ES_Tag_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Tag_Exe__EsId__778AC167" Association="Self.FK__ES_Tag_Exe__EsId__778AC167">
+            <End Role="ES_Exercise" EntitySet="ES_Exercise" />
+            <End Role="ES_Tag_Exercise" EntitySet="ES_Tag_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User__RoleId__4D94879B" Association="Self.FK__ES_User__RoleId__4D94879B">
+            <End Role="ES_Role" EntitySet="ES_Role" />
+            <End Role="ES_User" EntitySet="ES_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__EmPap__7C4F7684" Association="Self.FK__ES_User_E__EmPap__7C4F7684">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__EmPtI__5535A963" Association="Self.FK__ES_User_E__EmPtI__5535A963">
+            <End Role="ES_ExamPart" EntitySet="ES_ExamPart" />
+            <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__UserI__5441852A" Association="Self.FK__ES_User_E__UserI__5441852A">
+            <End Role="ES_User" EntitySet="ES_User" />
+            <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__UserI__7B5B524B" Association="Self.FK__ES_User_E__UserI__7B5B524B">
+            <End Role="ES_User" EntitySet="ES_User" />
+            <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExaminationSystemDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ES_ExamPaper">
+          <Key>
+            <PropertyRef Name="EmPaperId" />
+          </Key>
+          <Property Name="EmPaperId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmPaperName" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmPaperSelectNum" Type="Int32" Nullable="false" />
+          <Property Name="EmPaperFillNum" Type="Int32" Nullable="false" />
+          <Property Name="EmPaperJudgeNum" Type="Int32" Nullable="false" />
+          <Property Name="EmPaperMultipleNum" Type="Int32" Nullable="false" />
+          <Property Name="EmPaperScore" Type="Int32" Nullable="false" />
+          <Property Name="EmPaperTrueScore" Type="Int32" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___Paper__619B8048" FromRole="ES_ExamPaper" ToRole="ES_Paper_Tag" />
+          <NavigationProperty Name="ES_User_ExamPaper" Relationship="Self.FK__ES_User_E__EmPap__7C4F7684" FromRole="ES_ExamPaper" ToRole="ES_User_ExamPaper" />
+          <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="ExaminationSystemDbModel.FK__ES_ExamPa__EmPap__17F790F9" FromRole="ES_ExamPaper" ToRole="ES_ExamPaper_Exercise" />
+        </EntityType>
+        <EntityType Name="ES_ExamPart">
+          <Key>
+            <PropertyRef Name="EmPtId" />
+          </Key>
+          <Property Name="EmPtId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmPtStart" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EmPtEnd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_User_ExamPart" Relationship="Self.FK__ES_User_E__EmPtI__5535A963" FromRole="ES_ExamPart" ToRole="ES_User_ExamPart" />
+        </EntityType>
+        <EntityType Name="ES_Exercise">
+          <Key>
+            <PropertyRef Name="EsId" />
+          </Key>
+          <Property Name="EsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EsType" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="EsSubExerciseId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Exe__EsId__778AC167" FromRole="ES_Exercise" ToRole="ES_Tag_Exercise" />
+          <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="ExaminationSystemDbModel.FK__ES_ExamPap__EsId__18EBB532" FromRole="ES_Exercise" ToRole="ES_ExamPaper_Exercise" />
+        </EntityType>
+        <EntityType Name="ES_FillAnswer">
+          <Key>
+            <PropertyRef Name="FAId" />
+          </Key>
+          <Property Name="FAId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FQId" Type="Int32" Nullable="false" />
+          <Property Name="FAContent" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FAScore" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ES_FillQuestion" Relationship="Self.FK__ES_FillAns__FQId__6EF57B66" FromRole="ES_FillAnswer" ToRole="ES_FillQuestion" />
+        </EntityType>
+        <EntityType Name="ES_FillQuestion">
+          <Key>
+            <PropertyRef Name="FQId" />
+          </Key>
+          <Property Name="FQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FQScore" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ES_FillAnswer" Relationship="Self.FK__ES_FillAns__FQId__6EF57B66" FromRole="ES_FillQuestion" ToRole="ES_FillAnswer" />
+        </EntityType>
+        <EntityType Name="ES_JudgeQuestion">
+          <Key>
+            <PropertyRef Name="JQId" />
+          </Key>
+          <Property Name="JQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JQTrueAns" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JQFalseAns" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JQScore" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_MultipleAnswer">
+          <Key>
+            <PropertyRef Name="MAId" />
+          </Key>
+          <Property Name="MAId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MQId" Type="Int32" Nullable="false" />
+          <Property Name="MAContent" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ES_MultipleQuestion" Relationship="Self.FK__ES_Multipl__MQId__73BA3083" FromRole="ES_MultipleAnswer" ToRole="ES_MultipleQuestion" />
+        </EntityType>
+        <EntityType Name="ES_MultipleQuestion">
+          <Key>
+            <PropertyRef Name="MQId" />
+          </Key>
+          <Property Name="MQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQAns1" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQAns2" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQAns3" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQAns4" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQAns5" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQAns6" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQAns7" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQScore" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ES_MultipleAnswer" Relationship="Self.FK__ES_Multipl__MQId__73BA3083" FromRole="ES_MultipleQuestion" ToRole="ES_MultipleAnswer" />
+        </EntityType>
+        <EntityType Name="ES_Paper_Tag">
+          <Key>
+            <PropertyRef Name="PrTgId" />
+          </Key>
+          <Property Name="PrTgId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaperId" Type="Int32" />
+          <Property Name="TagId" Type="Int32" />
+          <Property Name="ExerciseNum" Type="Int32" Nullable="false" />
+          <Property Name="IsNotSelect" Type="Boolean" Nullable="false" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_ExamPaper" Relationship="Self.FK__ES_Paper___Paper__619B8048" FromRole="ES_Paper_Tag" ToRole="ES_ExamPaper" />
+          <NavigationProperty Name="ES_Tag" Relationship="Self.FK__ES_Paper___TagId__628FA481" FromRole="ES_Paper_Tag" ToRole="ES_Tag" />
+        </EntityType>
+        <EntityType Name="ES_Permission">
+          <Key>
+            <PropertyRef Name="PmId" />
+          </Key>
+          <Property Name="PmId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PmName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PmDescribe" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_Role_Permission" Relationship="Self.FK__ES_Role_Pe__PmId__48CFD27E" FromRole="ES_Permission" ToRole="ES_Role_Permission" />
+        </EntityType>
+        <EntityType Name="ES_Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleDescribe" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_Role_Permission" Relationship="Self.FK__ES_Role_P__RoleI__47DBAE45" FromRole="ES_Role" ToRole="ES_Role_Permission" />
+          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User__RoleId__4D94879B" FromRole="ES_Role" ToRole="ES_User" />
+        </EntityType>
+        <EntityType Name="ES_Role_Permission">
+          <Key>
+            <PropertyRef Name="RlPmId" />
+          </Key>
+          <Property Name="RlPmId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="PmId" Type="Int32" Nullable="false" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_Permission" Relationship="Self.FK__ES_Role_Pe__PmId__48CFD27E" FromRole="ES_Role_Permission" ToRole="ES_Permission" />
+          <NavigationProperty Name="ES_Role" Relationship="Self.FK__ES_Role_P__RoleI__47DBAE45" FromRole="ES_Role_Permission" ToRole="ES_Role" />
+        </EntityType>
+        <EntityType Name="ES_SelectQuestion">
+          <Key>
+            <PropertyRef Name="SQId" />
+          </Key>
+          <Property Name="SQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SQTrueAns" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SQAns1" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SQAns2" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SQAns3" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SQAns4" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SQScore" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Tag">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TagName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TagDescribe" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___TagId__628FA481" FromRole="ES_Tag" ToRole="ES_Paper_Tag" />
+          <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Ex__TagId__76969D2E" FromRole="ES_Tag" ToRole="ES_Tag_Exercise" />
+        </EntityType>
+        <EntityType Name="ES_Tag_Exercise">
+          <Key>
+            <PropertyRef Name="TgEsId" />
+          </Key>
+          <Property Name="TgEsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TagId" Type="Int32" />
+          <Property Name="EsId" Type="Int32" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_Exercise" Relationship="Self.FK__ES_Tag_Exe__EsId__778AC167" FromRole="ES_Tag_Exercise" ToRole="ES_Exercise" />
+          <NavigationProperty Name="ES_Tag" Relationship="Self.FK__ES_Tag_Ex__TagId__76969D2E" FromRole="ES_Tag_Exercise" ToRole="ES_Tag" />
+        </EntityType>
+        <EntityType Name="ES_User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserAccount" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_Role" Relationship="Self.FK__ES_User__RoleId__4D94879B" FromRole="ES_User" ToRole="ES_Role" />
+          <NavigationProperty Name="ES_User_ExamPart" Relationship="Self.FK__ES_User_E__UserI__5441852A" FromRole="ES_User" ToRole="ES_User_ExamPart" />
+          <NavigationProperty Name="ES_User_ExamPaper" Relationship="Self.FK__ES_User_E__UserI__7B5B524B" FromRole="ES_User" ToRole="ES_User_ExamPaper" />
+        </EntityType>
+        <EntityType Name="ES_User_ExamPaper">
+          <Key>
+            <PropertyRef Name="UEmPaper" />
+          </Key>
+          <Property Name="UEmPaper" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="EmPaperId" Type="Int32" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_ExamPaper" Relationship="Self.FK__ES_User_E__EmPap__7C4F7684" FromRole="ES_User_ExamPaper" ToRole="ES_ExamPaper" />
+          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User_E__UserI__7B5B524B" FromRole="ES_User_ExamPaper" ToRole="ES_User" />
+        </EntityType>
+        <EntityType Name="ES_User_ExamPart">
+          <Key>
+            <PropertyRef Name="UEmPt" />
+          </Key>
+          <Property Name="UEmPt" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="EmPtId" Type="Int32" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_ExamPart" Relationship="Self.FK__ES_User_E__EmPtI__5535A963" FromRole="ES_User_ExamPart" ToRole="ES_ExamPart" />
+          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User_E__UserI__5441852A" FromRole="ES_User_ExamPart" ToRole="ES_User" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User_ExamPart_ExamPaper_v">
+          <Key>
+            <PropertyRef Name="考生ID" />
+            <PropertyRef Name="账号" />
+            <PropertyRef Name="密码" />
+            <PropertyRef Name="姓名" />
+          </Key>
+          <Property Name="考生ID" Type="Int32" Nullable="false" />
+          <Property Name="账号" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="密码" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="姓名" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="开始时间" Type="DateTime" Precision="3" />
+          <Property Name="结束时间" Type="DateTime" Precision="3" />
+          <Property Name="试卷ID" Type="Int32" />
+          <Property Name="试卷标题" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="选择题数量" Type="Int32" />
+          <Property Name="填空题数量" Type="Int32" />
+          <Property Name="判断题数量" Type="Int32" />
+          <Property Name="多选题数量" Type="Int32" />
+          <Property Name="总分值" Type="Int32" />
+          <Property Name="得分" Type="Int32" />
+        </EntityType>
+        <Association Name="FK__ES_Paper___Paper__619B8048">
+          <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
+          <End Role="ES_Paper_Tag" Type="Self.ES_Paper_Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_Paper_Tag">
+              <PropertyRef Name="PaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__EmPap__7C4F7684">
+          <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
+          <End Role="ES_User_ExamPaper" Type="Self.ES_User_ExamPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_User_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__EmPtI__5535A963">
+          <End Role="ES_ExamPart" Type="Self.ES_ExamPart" Multiplicity="0..1" />
+          <End Role="ES_User_ExamPart" Type="Self.ES_User_ExamPart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPart">
+              <PropertyRef Name="EmPtId" />
+            </Principal>
+            <Dependent Role="ES_User_ExamPart">
+              <PropertyRef Name="EmPtId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Tag_Exe__EsId__778AC167">
+          <End Role="ES_Exercise" Type="Self.ES_Exercise" Multiplicity="0..1" />
+          <End Role="ES_Tag_Exercise" Type="Self.ES_Tag_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Exercise">
+              <PropertyRef Name="EsId" />
+            </Principal>
+            <Dependent Role="ES_Tag_Exercise">
+              <PropertyRef Name="EsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_FillAns__FQId__6EF57B66">
+          <End Role="ES_FillQuestion" Type="Self.ES_FillQuestion" Multiplicity="1" />
+          <End Role="ES_FillAnswer" Type="Self.ES_FillAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_FillQuestion">
+              <PropertyRef Name="FQId" />
+            </Principal>
+            <Dependent Role="ES_FillAnswer">
+              <PropertyRef Name="FQId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Multipl__MQId__73BA3083">
+          <End Role="ES_MultipleQuestion" Type="Self.ES_MultipleQuestion" Multiplicity="1" />
+          <End Role="ES_MultipleAnswer" Type="Self.ES_MultipleAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_MultipleQuestion">
+              <PropertyRef Name="MQId" />
+            </Principal>
+            <Dependent Role="ES_MultipleAnswer">
+              <PropertyRef Name="MQId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Paper___TagId__628FA481">
+          <End Role="ES_Tag" Type="Self.ES_Tag" Multiplicity="0..1" />
+          <End Role="ES_Paper_Tag" Type="Self.ES_Paper_Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="ES_Paper_Tag">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Role_Pe__PmId__48CFD27E">
+          <End Role="ES_Permission" Type="Self.ES_Permission" Multiplicity="1" />
+          <End Role="ES_Role_Permission" Type="Self.ES_Role_Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Permission">
+              <PropertyRef Name="PmId" />
+            </Principal>
+            <Dependent Role="ES_Role_Permission">
+              <PropertyRef Name="PmId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Role_P__RoleI__47DBAE45">
+          <End Role="ES_Role" Type="Self.ES_Role" Multiplicity="1" />
+          <End Role="ES_Role_Permission" Type="Self.ES_Role_Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ES_Role_Permission">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User__RoleId__4D94879B">
+          <End Role="ES_Role" Type="Self.ES_Role" Multiplicity="0..1" />
+          <End Role="ES_User" Type="Self.ES_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ES_User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Tag_Ex__TagId__76969D2E">
+          <End Role="ES_Tag" Type="Self.ES_Tag" Multiplicity="0..1" />
+          <End Role="ES_Tag_Exercise" Type="Self.ES_Tag_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="ES_Tag_Exercise">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__UserI__5441852A">
+          <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
+          <End Role="ES_User_ExamPart" Type="Self.ES_User_ExamPart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ES_User_ExamPart">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__UserI__7B5B524B">
+          <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
+          <End Role="ES_User_ExamPaper" Type="Self.ES_User_ExamPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ES_User_ExamPaper">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExaminationSystemDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ES_ExamPaper" EntityType="Self.ES_ExamPaper" />
+          <EntitySet Name="ES_ExamPart" EntityType="Self.ES_ExamPart" />
+          <EntitySet Name="ES_Exercise" EntityType="Self.ES_Exercise" />
+          <EntitySet Name="ES_FillAnswer" EntityType="Self.ES_FillAnswer" />
+          <EntitySet Name="ES_FillQuestion" EntityType="Self.ES_FillQuestion" />
+          <EntitySet Name="ES_JudgeQuestion" EntityType="Self.ES_JudgeQuestion" />
+          <EntitySet Name="ES_MultipleAnswer" EntityType="Self.ES_MultipleAnswer" />
+          <EntitySet Name="ES_MultipleQuestion" EntityType="Self.ES_MultipleQuestion" />
+          <EntitySet Name="ES_Paper_Tag" EntityType="Self.ES_Paper_Tag" />
+          <EntitySet Name="ES_Permission" EntityType="Self.ES_Permission" />
+          <EntitySet Name="ES_Role" EntityType="Self.ES_Role" />
+          <EntitySet Name="ES_Role_Permission" EntityType="Self.ES_Role_Permission" />
+          <EntitySet Name="ES_SelectQuestion" EntityType="Self.ES_SelectQuestion" />
+          <EntitySet Name="ES_Tag" EntityType="Self.ES_Tag" />
+          <EntitySet Name="ES_Tag_Exercise" EntityType="Self.ES_Tag_Exercise" />
+          <EntitySet Name="ES_User" EntityType="Self.ES_User" />
+          <EntitySet Name="ES_User_ExamPaper" EntityType="Self.ES_User_ExamPaper" />
+          <EntitySet Name="ES_User_ExamPart" EntityType="Self.ES_User_ExamPart" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="User_ExamPart_ExamPaper_v" EntityType="Self.User_ExamPart_ExamPaper_v" />
+          <AssociationSet Name="FK__ES_Paper___Paper__619B8048" Association="Self.FK__ES_Paper___Paper__619B8048">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_Paper_Tag" EntitySet="ES_Paper_Tag" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__EmPap__7C4F7684" Association="Self.FK__ES_User_E__EmPap__7C4F7684">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__EmPtI__5535A963" Association="Self.FK__ES_User_E__EmPtI__5535A963">
+            <End Role="ES_ExamPart" EntitySet="ES_ExamPart" />
+            <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Tag_Exe__EsId__778AC167" Association="Self.FK__ES_Tag_Exe__EsId__778AC167">
+            <End Role="ES_Exercise" EntitySet="ES_Exercise" />
+            <End Role="ES_Tag_Exercise" EntitySet="ES_Tag_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_FillAns__FQId__6EF57B66" Association="Self.FK__ES_FillAns__FQId__6EF57B66">
+            <End Role="ES_FillQuestion" EntitySet="ES_FillQuestion" />
+            <End Role="ES_FillAnswer" EntitySet="ES_FillAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Multipl__MQId__73BA3083" Association="Self.FK__ES_Multipl__MQId__73BA3083">
+            <End Role="ES_MultipleQuestion" EntitySet="ES_MultipleQuestion" />
+            <End Role="ES_MultipleAnswer" EntitySet="ES_MultipleAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Paper___TagId__628FA481" Association="Self.FK__ES_Paper___TagId__628FA481">
+            <End Role="ES_Tag" EntitySet="ES_Tag" />
+            <End Role="ES_Paper_Tag" EntitySet="ES_Paper_Tag" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Role_Pe__PmId__48CFD27E" Association="Self.FK__ES_Role_Pe__PmId__48CFD27E">
+            <End Role="ES_Permission" EntitySet="ES_Permission" />
+            <End Role="ES_Role_Permission" EntitySet="ES_Role_Permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Role_P__RoleI__47DBAE45" Association="Self.FK__ES_Role_P__RoleI__47DBAE45">
+            <End Role="ES_Role" EntitySet="ES_Role" />
+            <End Role="ES_Role_Permission" EntitySet="ES_Role_Permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User__RoleId__4D94879B" Association="Self.FK__ES_User__RoleId__4D94879B">
+            <End Role="ES_Role" EntitySet="ES_Role" />
+            <End Role="ES_User" EntitySet="ES_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Tag_Ex__TagId__76969D2E" Association="Self.FK__ES_Tag_Ex__TagId__76969D2E">
+            <End Role="ES_Tag" EntitySet="ES_Tag" />
+            <End Role="ES_Tag_Exercise" EntitySet="ES_Tag_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__UserI__5441852A" Association="Self.FK__ES_User_E__UserI__5441852A">
+            <End Role="ES_User" EntitySet="ES_User" />
+            <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__UserI__7B5B524B" Association="Self.FK__ES_User_E__UserI__7B5B524B">
+            <End Role="ES_User" EntitySet="ES_User" />
+            <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
+          </AssociationSet>
+          <EntitySet Name="ES_ExamPaper_Exercise" EntityType="ExaminationSystemDbModel.ES_ExamPaper_Exercise" />
+          <AssociationSet Name="FK__ES_ExamPa__EmPap__17F790F9" Association="ExaminationSystemDbModel.FK__ES_ExamPa__EmPap__17F790F9">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_ExamPap__EsId__18EBB532" Association="ExaminationSystemDbModel.FK__ES_ExamPap__EsId__18EBB532">
+            <End Role="ES_Exercise" EntitySet="ES_Exercise" />
+            <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ES_ExamPaper_Exercise">
+          <Key>
+            <PropertyRef Name="EEId" />
+          </Key>
+          <Property Name="EEId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmPaperId" Type="Int32" />
+          <Property Name="EsId" Type="Int32" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_ExamPaper" Relationship="ExaminationSystemDbModel.FK__ES_ExamPa__EmPap__17F790F9" FromRole="ES_ExamPaper_Exercise" ToRole="ES_ExamPaper" />
+          <NavigationProperty Name="ES_Exercise" Relationship="ExaminationSystemDbModel.FK__ES_ExamPap__EsId__18EBB532" FromRole="ES_ExamPaper_Exercise" ToRole="ES_Exercise" />
+        </EntityType>
+        <Association Name="FK__ES_ExamPa__EmPap__17F790F9">
+          <End Type="ExaminationSystemDbModel.ES_ExamPaper" Role="ES_ExamPaper" Multiplicity="0..1" />
+          <End Type="ExaminationSystemDbModel.ES_ExamPaper_Exercise" Role="ES_ExamPaper_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_ExamPaper_Exercise">
+              <PropertyRef Name="EmPaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_ExamPap__EsId__18EBB532">
+          <End Type="ExaminationSystemDbModel.ES_Exercise" Role="ES_Exercise" Multiplicity="0..1" />
+          <End Type="ExaminationSystemDbModel.ES_ExamPaper_Exercise" Role="ES_ExamPaper_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Exercise">
+              <PropertyRef Name="EsId" />
+            </Principal>
+            <Dependent Role="ES_ExamPaper_Exercise">
+              <PropertyRef Name="EsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExaminationSystemDbModelStoreContainer" CdmEntityContainer="ExaminationSystemDbEntities">
+          <EntitySetMapping Name="ES_ExamPaper">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamPaper">
+              <MappingFragment StoreEntitySet="ES_ExamPaper">
+                <ScalarProperty Name="EmPaperId" ColumnName="EmPaperId" />
+                <ScalarProperty Name="EmPaperName" ColumnName="EmPaperName" />
+                <ScalarProperty Name="EmPaperSelectNum" ColumnName="EmPaperSelectNum" />
+                <ScalarProperty Name="EmPaperFillNum" ColumnName="EmPaperFillNum" />
+                <ScalarProperty Name="EmPaperJudgeNum" ColumnName="EmPaperJudgeNum" />
+                <ScalarProperty Name="EmPaperMultipleNum" ColumnName="EmPaperMultipleNum" />
+                <ScalarProperty Name="EmPaperScore" ColumnName="EmPaperScore" />
+                <ScalarProperty Name="EmPaperTrueScore" ColumnName="EmPaperTrueScore" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_ExamPart">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamPart">
+              <MappingFragment StoreEntitySet="ES_ExamPart">
+                <ScalarProperty Name="EmPtId" ColumnName="EmPtId" />
+                <ScalarProperty Name="EmPtStart" ColumnName="EmPtStart" />
+                <ScalarProperty Name="EmPtEnd" ColumnName="EmPtEnd" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_Exercise">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Exercise">
+              <MappingFragment StoreEntitySet="ES_Exercise">
+                <ScalarProperty Name="EsId" ColumnName="EsId" />
+                <ScalarProperty Name="EsType" ColumnName="EsType" />
+                <ScalarProperty Name="EsSubExerciseId" ColumnName="EsSubExerciseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_FillAnswer">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_FillAnswer">
+              <MappingFragment StoreEntitySet="ES_FillAnswer">
+                <ScalarProperty Name="FAId" ColumnName="FAId" />
+                <ScalarProperty Name="FQId" ColumnName="FQId" />
+                <ScalarProperty Name="FAContent" ColumnName="FAContent" />
+                <ScalarProperty Name="FAScore" ColumnName="FAScore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_FillQuestion">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_FillQuestion">
+              <MappingFragment StoreEntitySet="ES_FillQuestion">
+                <ScalarProperty Name="FQId" ColumnName="FQId" />
+                <ScalarProperty Name="FQTitle" ColumnName="FQTitle" />
+                <ScalarProperty Name="FQScore" ColumnName="FQScore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_JudgeQuestion">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_JudgeQuestion">
+              <MappingFragment StoreEntitySet="ES_JudgeQuestion">
+                <ScalarProperty Name="JQId" ColumnName="JQId" />
+                <ScalarProperty Name="JQTitle" ColumnName="JQTitle" />
+                <ScalarProperty Name="JQTrueAns" ColumnName="JQTrueAns" />
+                <ScalarProperty Name="JQFalseAns" ColumnName="JQFalseAns" />
+                <ScalarProperty Name="JQScore" ColumnName="JQScore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_MultipleAnswer">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_MultipleAnswer">
+              <MappingFragment StoreEntitySet="ES_MultipleAnswer">
+                <ScalarProperty Name="MAId" ColumnName="MAId" />
+                <ScalarProperty Name="MQId" ColumnName="MQId" />
+                <ScalarProperty Name="MAContent" ColumnName="MAContent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_MultipleQuestion">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_MultipleQuestion">
+              <MappingFragment StoreEntitySet="ES_MultipleQuestion">
+                <ScalarProperty Name="MQId" ColumnName="MQId" />
+                <ScalarProperty Name="MQTitle" ColumnName="MQTitle" />
+                <ScalarProperty Name="MQAns1" ColumnName="MQAns1" />
+                <ScalarProperty Name="MQAns2" ColumnName="MQAns2" />
+                <ScalarProperty Name="MQAns3" ColumnName="MQAns3" />
+                <ScalarProperty Name="MQAns4" ColumnName="MQAns4" />
+                <ScalarProperty Name="MQAns5" ColumnName="MQAns5" />
+                <ScalarProperty Name="MQAns6" ColumnName="MQAns6" />
+                <ScalarProperty Name="MQAns7" ColumnName="MQAns7" />
+                <ScalarProperty Name="MQScore" ColumnName="MQScore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_Paper_Tag">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Paper_Tag">
+              <MappingFragment StoreEntitySet="ES_Paper_Tag">
+                <ScalarProperty Name="PrTgId" ColumnName="PrTgId" />
+                <ScalarProperty Name="PaperId" ColumnName="PaperId" />
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+                <ScalarProperty Name="ExerciseNum" ColumnName="ExerciseNum" />
+                <ScalarProperty Name="IsNotSelect" ColumnName="IsNotSelect" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_Permission">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Permission">
+              <MappingFragment StoreEntitySet="ES_Permission">
+                <ScalarProperty Name="PmId" ColumnName="PmId" />
+                <ScalarProperty Name="PmName" ColumnName="PmName" />
+                <ScalarProperty Name="PmDescribe" ColumnName="PmDescribe" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_Role">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Role">
+              <MappingFragment StoreEntitySet="ES_Role">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleDescribe" ColumnName="RoleDescribe" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_Role_Permission">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Role_Permission">
+              <MappingFragment StoreEntitySet="ES_Role_Permission">
+                <ScalarProperty Name="RlPmId" ColumnName="RlPmId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="PmId" ColumnName="PmId" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_SelectQuestion">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_SelectQuestion">
+              <MappingFragment StoreEntitySet="ES_SelectQuestion">
+                <ScalarProperty Name="SQId" ColumnName="SQId" />
+                <ScalarProperty Name="SQTitle" ColumnName="SQTitle" />
+                <ScalarProperty Name="SQTrueAns" ColumnName="SQTrueAns" />
+                <ScalarProperty Name="SQAns1" ColumnName="SQAns1" />
+                <ScalarProperty Name="SQAns2" ColumnName="SQAns2" />
+                <ScalarProperty Name="SQAns3" ColumnName="SQAns3" />
+                <ScalarProperty Name="SQAns4" ColumnName="SQAns4" />
+                <ScalarProperty Name="SQScore" ColumnName="SQScore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_Tag">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Tag">
+              <MappingFragment StoreEntitySet="ES_Tag">
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="TagDescribe" ColumnName="TagDescribe" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_Tag_Exercise">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Tag_Exercise">
+              <MappingFragment StoreEntitySet="ES_Tag_Exercise">
+                <ScalarProperty Name="TgEsId" ColumnName="TgEsId" />
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+                <ScalarProperty Name="EsId" ColumnName="EsId" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_User">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_User">
+              <MappingFragment StoreEntitySet="ES_User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserAccount" ColumnName="UserAccount" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_User_ExamPaper">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_User_ExamPaper">
+              <MappingFragment StoreEntitySet="ES_User_ExamPaper">
+                <ScalarProperty Name="UEmPaper" ColumnName="UEmPaper" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmPaperId" ColumnName="EmPaperId" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_User_ExamPart">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_User_ExamPart">
+              <MappingFragment StoreEntitySet="ES_User_ExamPart">
+                <ScalarProperty Name="UEmPt" ColumnName="UEmPt" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmPtId" ColumnName="EmPtId" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_ExamPart_ExamPaper_v">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.User_ExamPart_ExamPaper_v">
+              <MappingFragment StoreEntitySet="User_ExamPart_ExamPaper_v">
+                <ScalarProperty Name="考生ID" ColumnName="考生ID" />
+                <ScalarProperty Name="账号" ColumnName="账号" />
+                <ScalarProperty Name="密码" ColumnName="密码" />
+                <ScalarProperty Name="姓名" ColumnName="姓名" />
+                <ScalarProperty Name="开始时间" ColumnName="开始时间" />
+                <ScalarProperty Name="结束时间" ColumnName="结束时间" />
+                <ScalarProperty Name="试卷ID" ColumnName="试卷ID" />
+                <ScalarProperty Name="试卷标题" ColumnName="试卷标题" />
+                <ScalarProperty Name="选择题数量" ColumnName="选择题数量" />
+                <ScalarProperty Name="填空题数量" ColumnName="填空题数量" />
+                <ScalarProperty Name="判断题数量" ColumnName="判断题数量" />
+                <ScalarProperty Name="多选题数量" ColumnName="多选题数量" />
+                <ScalarProperty Name="总分值" ColumnName="总分值" />
+                <ScalarProperty Name="得分" ColumnName="得分" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_ExamPaper_Exercise">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamPaper_Exercise">
+              <MappingFragment StoreEntitySet="ES_ExamPaper_Exercise">
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="EsId" ColumnName="EsId" />
+                <ScalarProperty Name="EmPaperId" ColumnName="EmPaperId" />
+                <ScalarProperty Name="EEId" ColumnName="EEId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
