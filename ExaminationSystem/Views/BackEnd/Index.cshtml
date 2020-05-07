@@ -1,17 +1,263 @@
 ﻿
 @{
-    Layout = null;
+  Layout = null;
 }
+
+@Scripts.Render("~/bundles/vue")
+@Scripts.Render("~/bundles/element")
+@Styles.Render("~/Content/elementcss")
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+  <meta name="viewport" content="width=device-width" />
+  <title>安阳市人民警察训练学校在线考试系统-后台</title>
+  <link href="~/Static/css/default.css" rel="stylesheet" />
+  <style>
+    .el-container {
+      padding: 0 !important;
+      /*flex-direction: column;*/
+      height: 100vh;
+    }
+
+    .el-header {
+      width: 100%;
+      background-color: #081842;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+    }
+
+      .el-header h2 {
+        display: inline-block;
+        color: #fffffa;
+        font-size: 20px;
+        text-align: center;
+        line-height: 60px;
+      }
+
+        .el-header h2 .logo-image {
+          display: inline-block;
+          height: 30px;
+          vertical-align: middle;
+          margin-right: 5px;
+          position: relative;
+          top: -1px;
+        }
+
+      .el-header .header-nav {
+        display: inline-block;
+        border-bottom: none;
+      }
+
+    .main-wrap {
+      height: 80%;
+      overflow: hidden;
+    }
+
+      .main-wrap .el-button--text {
+        color: #303133;
+      }
+
+
+      .main-wrap .sub-btn {
+        margin-left: 3rem;
+      }
+
+      .main-wrap .el-aside {
+        height: 100%;
+        width: 16% !important;
+        background-color: #eef1f6;
+        float: left;
+        overflow: hidden;
+      }
+
+        .main-wrap .el-aside i {
+          margin-right: 5px;
+          line-height: 49px;
+        }
+
+      .main-wrap ul li {
+        cursor: pointer;
+      }
+
+        .main-wrap ul li.active {
+          background-color: #d1dbe5;
+        }
+
+        .main-wrap ul li:hover {
+          background-color: #d1dbe5;
+        }
+
+      .main-wrap .el-aside .el-collapse {
+        background-color: #eef1f6;
+      }
+
+        .main-wrap .el-aside .el-collapse .el-collapse-item,
+        .main-wrap .el-aside .el-collapse .el-collapse-item .el-collapse-item__header {
+          background-color: #eef1f6;
+        }
+
+          .main-wrap .el-aside .el-collapse .el-collapse-item .el-collapse-item__header {
+            padding-left: 20px;
+            padding-right: 8px;
+            font-size: 16px;
+          }
+
+          .main-wrap .el-aside .el-collapse .el-collapse-item .el-collapse-item__content {
+            background-color: #E4E8F1;
+            padding-bottom: 0;
+          }
+
+      .main-wrap .el-main {
+        width: 84%;
+        float: left;
+        padding: 14px 20px;
+      }
+
+        .main-wrap .el-main .main-header {
+          padding: 0 0 0.8rem 0.5rem;
+          font-weight: 700;
+        }
+
+        .main-wrap .el-main .el-table {
+          border: 1px solid #dfe6ec;
+        }
+
+          .main-wrap .el-main .el-table thead {
+            color: #00000f;
+          }
+
+            .main-wrap .el-main .el-table thead th {
+              height: 40px;
+              box-sizing: border-box;
+              padding: 0;
+              background-color: #dfe6ec;
+            }
+
+          .main-wrap .el-main .el-table td {
+            padding: 10px 0;
+          }
+
+        .main-wrap .el-main .search-wrap {
+          display: flex;
+          justify-content: start;
+          background-color: #f2f2f2;
+          padding: 10px 12px;
+          align-items: center;
+          border-radius: 8px;
+          margin-bottom: 10px;
+        }
+
+          .main-wrap .el-main .search-wrap .el-input {
+            width: 10rem;
+            margin-right: 1rem;
+          }
+
+          .main-wrap .el-main .search-wrap .el-button {
+            padding: 0 0.5rem;
+            height: 2.2rem;
+          }
+
+        .main-wrap .el-main .pagination {
+          padding: 14px 20px;
+          background-color: #f2f2f2;
+          border-radius: 8px;
+          margin-top: 10px;
+        }
+
+          .main-wrap .el-main .pagination .el-pagination {
+            float: right;
+          }
+
+          .main-wrap .el-main .pagination li.number {
+            background-color: #fff;
+          }
+  </style>
 </head>
 <body>
-    <div> 
-    </div>
+  <el-container id="app">
+    <el-header>
+      <h2>
+        <img class="logo-image" src="~/Static/images/logo1.png" />
+        <span>考试系统后台管理</span>
+      </h2>
+      <el-menu background-color="#081842" text-color="#fffffa" active-text-color="#fff000" class="header-nav" text mode="horizontal">
+        <el-menu-item index="1"><el-link :underline="false" href="/Home/Index">返回首页</el-link></el-menu-item>
+        <el-menu-item index="2"><el-link :underline="false" href="#">用户：admin</el-link></el-menu-item>
+      </el-menu>
+    </el-header>
+    <el-container class="main-wrap">
+      <el-aside>
+        <el-collapse v-model="activeName" accordion>
+          <el-collapse-item name="1">
+            <template slot="title">
+              <i class="el-icon-user-solid"></i>
+              用户管理
+            </template>
+            <ul>
+              <li :class="[currentTag === 'user-table' ? 'active': '' ]" @@click="changeTag('user-table')">
+                <el-button type="text" class="sub-btn">用户列表</el-button>
+              </li>
+              <li :class="[currentTag === 'new-user' ? 'active': '' ]" @@click="changeTag('new-user')">
+                <el-button type="text" class="sub-btn">添加新用户</el-button>
+              </li>
+            </ul>
+          </el-collapse-item>
+          <el-collapse-item title="" name="2">
+            <template slot="title">
+              <i class="el-icon-s-order"></i>
+              考试管理
+            </template>
+          </el-collapse-item>
+          <el-collapse-item title="" name="3">
+            <template slot="title">
+              <i class="el-icon-s-management"></i>
+              试卷管理
+            </template>
+          </el-collapse-item>
+          <el-collapse-item title="" name="4">
+            <template slot="title">
+              <i class="el-icon-s-cooperation"></i>
+              题库管理
+            </template>
+          </el-collapse-item>
+        </el-collapse>
+      </el-aside>
+      <el-main>
+        <user-table :users="users" :searchkey="searchKey" :totalnum="totalNum" v-if="currentTag === 'user-table'"></user-table>
+      </el-main>
+    </el-container>
+  </el-container>
 </body>
 </html>
+<script src="~/Components/user-table.js"></script>
+<script>
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      currentTag: 'user-table',
+      activeName: '1',
+      users: [
+        { id: 1, account: 'admin', name: '管理员', role: '管理员' },
+        { id: 2, account: 'test01', name: 'yonghu', role: '出卷人' },
+        { id: 3, account: 'test02', name: '用户', role: '出卷人' },
+        { id: 4, account: 'test03', name: 'yong胡', role: '考生' },
+        { id: 5, account: 'test04', name: '用hu', role: '考生' },
+        { id: 6, account: 'test05', name: '拥护', role: '考生' },
+        { id: 7, account: 'test06', name: '用糊', role: '考生' },
+        { id: 8, account: 'test07', name: '用用', role: '考生' },
+        { id: 9, account: 'test08', name: '呼呼', role: '考生' },
+        { id: 10, account: 'test09', name: '用户要', role: '考生' },
+      ],
+      searchKey: '',
+      totalNum: 100
+    },
+    methods: {
+      changeTag: function (targetComponent) {
+        this.currentTag = targetComponent;
+      }
+    }
+  });
+</script>

@@ -236,6 +236,7 @@
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Static\css\default.css" />
     <Content Include="Static\images\logo1.png" />
+    <Content Include="Components\user-table.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
