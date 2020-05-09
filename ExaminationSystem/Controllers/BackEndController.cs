@@ -75,5 +75,63 @@ namespace ExaminationSystem.Controllers
             // 序列化为JSON 传递到View
             return new { users = JsonConvert.SerializeObject(userList), totalCount };
         }
+
+        /// <summary>
+        /// 添加新用户
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
+        /// <param name="name"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        public string AddUser(string account, string password, string name, string roleId)
+        {
+            int code;
+            string message;
+            ES_User user = new ES_User
+            {
+                UserAccount = account,
+                UserPassword = password,
+                UserName = name,
+                RoleId = Convert.ToInt32(roleId)
+            };
+
+            db.ES_User.Add(user);
+            try
+            {
+                if (db.SaveChanges() > 0)
+                {
+                    code = 0;
+                    message = "添加成功！";
+
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+            }
+            catch
+            {
+                code = 1;
+                message = "添加用户失败，请检查数据是否合规或账号是否已存在！";
+
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+
+
+            code = 1;
+            message = "添加用户失败，请检查数据是否合规！";
+
+            return JsonConvert.SerializeObject(new { code, message });
+        }
+
+        public string EditUser()
+        {
+            // TODO 编辑用户信息
+            return "";
+        }
+
+        public string RemoveUser()
+        {
+            // TODO 删除用户信息
+            return "";
+        }
     }
 }

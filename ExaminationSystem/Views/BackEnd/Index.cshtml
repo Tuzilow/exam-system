@@ -186,6 +186,30 @@
           .main-wrap .el-main .pagination li.number {
             background-color: #fff;
           }
+
+    .new-user .main-content {
+      padding-top: 1rem;
+      padding-left: 2rem;
+      width: 24rem;
+    }
+
+      .new-user .main-content .el-form-item__content {
+        display: inline-block;
+      }
+
+      .new-user .main-content input {
+        width: 18rem;
+      }
+
+      .new-user .main-content .role-wrap {
+        padding-left: 0.7rem;
+      }
+
+      .new-user .main-content .new-btn {
+        margin-left: 3.3rem;
+        background-color: #081842;
+        border-color: #081842;
+      }
   </style>
 </head>
 <body>
@@ -291,9 +315,11 @@
   </el-container>
 </body>
 </html>
-<script src="~/Components/new-user.js"></script>
-<script src="~/Components/score-table.js"></script>
-<script src="~/Components/user-table.js"></script>
+
+@Scripts.Render("~/component/new-user")
+@Scripts.Render("~/component/user-table")
+@Scripts.Render("~/component/score-table")
+
 <script>
   const vm = new Vue({
     el: '#app',

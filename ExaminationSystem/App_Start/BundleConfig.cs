@@ -33,6 +33,13 @@ namespace ExaminationSystem
                       "~/Content/ElementUI/element-ui.css"));
             bundles.Add(new ScriptBundle("~/bundles/axios").Include(
                       "~/Scripts/axios.js"));
+
+            bundles.Add(new ScriptBundle("~/component/new-user").Include(
+                      "~/Components/new-user.js"));
+            bundles.Add(new ScriptBundle("~/component/user-table").Include(
+                      "~/Components/user-table.js"));
+            bundles.Add(new ScriptBundle("~/component/score-table").Include(
+                      "~/Components/score-table.js"));
         }
     }
 }
