@@ -31,6 +31,8 @@ namespace ExaminationSystem
                       "~/Scripts/ElementUI/element-ui.js"));
             bundles.Add(new StyleBundle("~/Content/elementcss").Include(
                       "~/Content/ElementUI/element-ui.css"));
+            bundles.Add(new ScriptBundle("~/bundles/axios").Include(
+                      "~/Scripts/axios.js"));
         }
     }
 }

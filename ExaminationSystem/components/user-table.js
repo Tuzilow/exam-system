@@ -17,13 +17,15 @@
        <div>
         <div class="main-header">用户列表</div>
         <div class="search-wrap">
-          <el-input v-model="searchkey" placeholder="请输入内容"></el-input>
-          <el-button type="primary">搜索</el-button>
+          <el-input :value="searchkey" placeholder="请输入姓名" @input="inputChange"></el-input>
+          <el-button type="primary" @click="search">搜索</el-button>
         </div>
         <el-table :data="users" :default-sort="{prop: 'id', order: 'ascending'}">
           <el-table-column prop="id" label="ID" sortable width="180">
           </el-table-column>
           <el-table-column prop="account" label="账号">
+          </el-table-column>
+          <el-table-column prop="password" label="密码">
           </el-table-column>
           <el-table-column prop="name" label="姓名">
           </el-table-column>
@@ -35,10 +37,20 @@
           </el-table-column>
         </el-table>
         <div class="pagination clearfix">
-          <el-pagination background layout="prev, pager, next" :page-size="10" :total="totalnum">
+          <el-pagination background layout="prev, pager, next" :page-size="10" :total="totalnum" @current-change="onChangePage">
           </el-pagination>
         </div>
       </div>
     `,
-  methods: {},
+  methods: {
+    onChangePage: function (val) {
+      this.$emit('current-page', val);
+    },
+    inputChange: function (val) {
+      this.$emit('input-change', val);
+    },
+    search: function () {
+      this.$emit('search');
+    }
+  },
 });

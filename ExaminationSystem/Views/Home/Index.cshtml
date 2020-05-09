@@ -5,6 +5,7 @@
 
 @Scripts.Render("~/bundles/vue")
 @Scripts.Render("~/bundles/element")
+@Scripts.Render("~/bundles/axios")
 @Styles.Render("~/Content/elementcss")
 
 <!DOCTYPE html>
@@ -59,6 +60,11 @@
         border-bottom: none;
       }
 
+      .el-header .login-user {
+        color: #fffffa;
+        font-weight: 600;
+      }
+
     .el-main {
       /*padding: 0 220px;*/
       display: flex;
@@ -110,8 +116,18 @@
       <el-menu background-color="#081842" text-color="#fffffa" active-text-color="#fff000" class="header-nav" text mode="horizontal">
         <el-menu-item index="1"><el-link :underline="false" href="/Home/Message">成绩查询</el-link></el-menu-item>
         <el-menu-item index="2"><el-link :underline="false" href="#">进入考试</el-link></el-menu-item>
-        <el-menu-item index="3"><el-link :underline="false" href="/BackEnd/Index">后台管理</el-link></el-menu-item>
-        <el-menu-item index="4"><el-button type="success" class="sm-btn">登陆</el-button></el-menu-item>
+        <el-menu-item index="3" v-if="roleId !== '1'"><el-link :underline="false" href="/BackEnd/Index">后台管理</el-link></el-menu-item>
+        <el-menu-item index="4">
+          <el-button type="success" class="sm-btn" @@click="toLogin" v-if="loginUser === null || loginUser === ''">登陆</el-button>
+          <el-dropdown @@command="toLogout" trigger="click" v-else>
+            <span class="login-user">
+              当前用户：{{loginUser}}
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="toLogout">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-menu-item>
       </el-menu>
     </el-header>
     <el-main class="el-main">
@@ -143,7 +159,9 @@
     el: '#app',
     data: {
       thisDay: new Date(),
-      haveExam: []
+      haveExam: [],
+      loginUser: '',
+      roleId: '1'
     },
     methods: {
       // 根据日期拿到考试科目
@@ -155,10 +173,29 @@
           }
         }
         return allExams;
+      },
+      toLogin() {
+        window.location.href = '/Login/Index';
+      },
+      toLogout() {
+        console.log('logout')
+        localStorage.clear();
+        window.location.href = '/Login/Logout';
       }
     },
     created() {
       this.haveExam = JSON.parse(@Html.Raw(Json.Encode(ViewBag.Exams)));
+
+      this.loginUser = localStorage.getItem("name")|| '';
+
+      this.roleId = localStorage.getItem("roleId") || '1';
+
+      const time = new Date(localStorage.getItem('endTime')) - Date.now();
+
+      setTimeout(() => {
+        localStorage.clear();
+        window.location.href = '/Home/Index';
+      }, time);
     }
   });
 </script>

@@ -64,6 +64,7 @@ if not exists (select * from sysobjects where name='ES_User_ExamPart')
 		UEmPt int primary key identity(1,1),
 		UserId int foreign key references ES_User(UserId),
 		EmPtId int foreign key references ES_ExamPart(EmPtId),
+		IsJoin bit not null default(0),
 		IsDel bit not null default(0)
 	);
 
@@ -264,6 +265,21 @@ go
 -- 添加用户
 -- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('admin', '管理员', '123456', 3);
 -- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('xmy', '徐my', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test01', 'test01', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test02', 'test02', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test03', 'test03', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test04', 'test04', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test05', 'test05', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test06', 'test06', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test07', 'test07', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test08', 'test08', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test09', 'test09', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test10', 'test10', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test11', 'test11', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test12', 'test12', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test13', 'test13', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test14', 'test14', '123456', 1);
+-- insert into ES_User(UserAccount, UserName, UserPassword, RoleId) values('test15', 'test15', '123456', 1);
 select * from ES_User;
 go
 -- 添加场次

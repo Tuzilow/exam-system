@@ -41,8 +41,17 @@ namespace ExaminationSystem.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 成绩查询
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Message()
         {
+            if (Session["account"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             return View();
         }
     }

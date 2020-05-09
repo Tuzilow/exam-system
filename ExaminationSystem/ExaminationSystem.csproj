@@ -129,7 +129,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BackEndController.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -214,6 +216,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Components\new-user.js" />
+    <Content Include="Components\score-table.js" />
     <Content Include="Content\ElementUI\element-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -235,6 +239,7 @@
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Static\css\default.css" />
+    <Content Include="Static\images\logo.png" />
     <Content Include="Static\images\logo1.png" />
     <Content Include="Components\user-table.js" />
     <Content Include="Web.config" />
@@ -252,6 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\ElementUI\fonts\element-icons.woff" />
@@ -268,6 +274,7 @@
     <Content Include="Scripts\axios.map" />
     <Content Include="Views\Home\Message.cshtml" />
     <Content Include="Views\BackEnd\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

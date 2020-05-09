@@ -192,6 +192,7 @@
           <Property Name="UserId" Type="int" />
           <Property Name="EmPtId" Type="int" />
           <Property Name="IsDel" Type="bit" Nullable="false" />
+          <Property Name="IsJoin" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -717,6 +718,7 @@
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ES_ExamPart" Relationship="Self.FK__ES_User_E__EmPtI__5535A963" FromRole="ES_User_ExamPart" ToRole="ES_ExamPart" />
           <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User_E__UserI__5441852A" FromRole="ES_User_ExamPart" ToRole="ES_User" />
+          <Property Name="IsJoin" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -1220,6 +1222,7 @@
           <EntitySetMapping Name="ES_User_ExamPart">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_User_ExamPart">
               <MappingFragment StoreEntitySet="ES_User_ExamPart">
+                <ScalarProperty Name="IsJoin" ColumnName="IsJoin" />
                 <ScalarProperty Name="UEmPt" ColumnName="UEmPt" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="EmPtId" ColumnName="EmPtId" />
