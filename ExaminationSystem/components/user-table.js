@@ -20,8 +20,8 @@
           <el-input :value="searchkey" placeholder="请输入姓名" @input="inputChange"></el-input>
           <el-button type="primary" @click="search">搜索</el-button>
         </div>
-        <el-table :data="users" :default-sort="{prop: 'id', order: 'ascending'}">
-          <el-table-column prop="id" label="ID" sortable width="180">
+        <el-table :data="users">
+          <el-table-column prop="id" label="ID" width="180">
           </el-table-column>
           <el-table-column prop="account" label="账号">
           </el-table-column>
@@ -29,7 +29,7 @@
           </el-table-column>
           <el-table-column prop="name" label="姓名">
           </el-table-column>
-          <el-table-column prop="role" label="身份" sortable>
+          <el-table-column prop="role" label="身份">
           </el-table-column>
           <el-table-column label="操作" width="120">
             <el-link type="warning">编辑</el-link>

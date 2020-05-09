@@ -48,19 +48,20 @@
 
         .container .main .login-card {
           width: 20rem;
-          border: 1.2px solid #EBEEF5
+          border: 1.2px solid #EBEEF5;
         }
 
-          .container .main .login-card .login-content {
-            padding-bottom: 20px;
+          .container .main .login-card .el-card__body {
+            padding-top: 0.4rem;
           }
 
-            .container .main .login-card .login-content input {
-              margin-top: 0.5rem;
-            }
+          .container .main .login-card .el-form-item {
+            margin-bottom: 0.4rem;
+          }
 
           .container .main .login-card .login-btn {
             width: 100%;
+            margin-top: 0.8rem;
           }
   </style>
 </head>
@@ -72,15 +73,17 @@
     </div>
     <div class="main">
       <el-card class="login-card" shadow="never">
-        <div class="login-content">
-          账号
-          <el-input placeholder="请输入账号" v-model="account" clearable></el-input>
-        </div>
-        <div class="login-content">
-          密码
-          <el-input placeholder="请输入密码" v-model="password" type="password"></el-input>
-        </div>
-        <el-button type="success" class="login-btn" @@click="login">登陆</el-button>
+        <el-form :model="form" :rules="rules">
+          <el-form-item prop="account">
+            <span>账号</span>
+            <el-input placeholder="请输入账号" v-model="form.account" clearable></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <span>密码</span>
+            <el-input placeholder="请输入密码" v-model="form.password" type="password"></el-input>
+          </el-form-item>
+          <el-button type="success" class="login-btn" @@click="login">登陆</el-button>
+        </el-form>
       </el-card>
     </div>
   </div>
@@ -90,14 +93,25 @@
   new Vue({
     el: '#app',
     data: {
-      account: '',
-      password: ''
+      form: {
+        account: '',
+        password: ''
+      },
+      rules: {
+        account: [
+          { required: true, message: '请输入账号', trigger: 'blur' },
+          { min: 1, max: 16, message: '长度在 1 到 16 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      }
     },
     methods: {
       login: function () {
         axios.post('/Login/Index', {
-          account: this.account,
-          password: this.password
+          account: this.form.account,
+          password: this.form.password
         }).then(res => {
           const { data } = res;
           if (!data.code) {

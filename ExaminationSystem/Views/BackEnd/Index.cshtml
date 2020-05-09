@@ -291,9 +291,9 @@
   </el-container>
 </body>
 </html>
-<script src="~/Components/user-table.js"></script>
 <script src="~/Components/new-user.js"></script>
 <script src="~/Components/score-table.js"></script>
+<script src="~/Components/user-table.js"></script>
 <script>
   const vm = new Vue({
     el: '#app',
@@ -354,6 +354,9 @@
     created() {
       this.users = JSON.parse(@Html.Raw(Json.Encode(ViewBag.Users)));
       this.totalNum = @ViewBag.TotalNum;
+      if (new Date(localStorage.getItem('endTime')) < Date.now()) {
+        localStorage.clear();
+      }
       this.loginUser = localStorage.getItem('name') || '';
     }
   });
