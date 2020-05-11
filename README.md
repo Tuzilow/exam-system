@@ -34,7 +34,7 @@
 
      出题界面：
 
-     <img src="/Static/images/xzt.png" style="zoom: 33%;" />
+     <img src="ExaminationSystem/Static/images/xzt.png" style="zoom: 33%;" />
 
 - 成绩：
 
