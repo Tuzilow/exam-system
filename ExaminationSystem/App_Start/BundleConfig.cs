@@ -40,6 +40,22 @@ namespace ExaminationSystem
                       "~/Components/user-table.js"));
             bundles.Add(new ScriptBundle("~/component/score-table").Include(
                       "~/Components/score-table.js"));
+            bundles.Add(new ScriptBundle("~/component/exam-table").Include(
+                      "~/Components/exam-table.js"));
+            bundles.Add(new ScriptBundle("~/component/change-user-exam").Include(
+                      "~/Components/change-user-exam.js"));
+            bundles.Add(new ScriptBundle("~/component/new-exam").Include(
+                      "~/Components/new-exam.js"));
+            bundles.Add(new ScriptBundle("~/component/new-paper").Include(
+                      "~/Components/new-paper.js"));
+            bundles.Add(new ScriptBundle("~/component/new-question").Include(
+                      "~/Components/new-question.js"));
+            bundles.Add(new ScriptBundle("~/component/paper-table").Include(
+                      "~/Components/paper-table.js"));
+            bundles.Add(new ScriptBundle("~/component/question-table").Include(
+                      "~/Components/question-table.js"));
+            bundles.Add(new ScriptBundle("~/component/tag-control").Include(
+                      "~/Components/tag-control.js"));
         }
     }
 }

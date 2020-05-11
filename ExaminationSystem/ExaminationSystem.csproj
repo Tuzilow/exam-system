@@ -216,8 +216,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Components\change-user-exam.js" />
+    <Content Include="Components\exam-table.js" />
+    <Content Include="Components\new-exam.js" />
+    <Content Include="Components\new-paper.js" />
+    <Content Include="Components\new-question.js" />
     <Content Include="Components\new-user.js" />
+    <Content Include="Components\paper-table.js" />
+    <Content Include="Components\question-table.js" />
     <Content Include="Components\score-table.js" />
+    <Content Include="Components\tag-control.js" />
     <Content Include="Content\ElementUI\element-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

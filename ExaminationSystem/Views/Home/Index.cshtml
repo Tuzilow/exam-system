@@ -190,12 +190,15 @@
 
       this.roleId = localStorage.getItem("roleId") || '1';
 
-      const time = new Date(localStorage.getItem('endTime')) - Date.now();
+      const endTime = localStorage.getItem('endTime');
+      if (endTime != null) {
+        const time = new Date(endTime) - Date.now();
 
-      setTimeout(() => {
-        localStorage.clear();
-        window.location.href = '/Home/Index';
-      }, time);
+        setTimeout(() => {
+          localStorage.clear();
+          window.location.href = '/Home/Index';
+        }, time);
+      }
     }
   });
 </script>

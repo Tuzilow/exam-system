@@ -67,6 +67,8 @@
         this.newUser.password = '';
         this.newUser.roleId = '1';
 
+        this.$emit('is-insert');
+
         return this.$message({
           message: data.message,
           type: 'success'

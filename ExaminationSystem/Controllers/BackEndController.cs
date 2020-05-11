@@ -122,16 +122,92 @@ namespace ExaminationSystem.Controllers
             return JsonConvert.SerializeObject(new { code, message });
         }
 
-        public string EditUser()
+        /// <summary>
+        /// 修改用户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
+        /// <param name="name"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        public string EditUser(int id, string account, string password, string name, string roleId)
         {
-            // TODO 编辑用户信息
-            return "";
+            int code;
+            string message;
+
+            var user = db.ES_User.Where(u => u.UserId == id && u.IsDel == false).FirstOrDefault();
+            if (user != null)
+            {
+                user.UserAccount = account;
+                user.UserPassword = password;
+                user.UserName = name;
+                user.RoleId = Convert.ToInt32(roleId);
+
+                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+
+                try
+                {
+                    if (db.SaveChanges() > 0)
+                    {
+                        code = 0;
+                        message = "修改成功！";
+
+                        return JsonConvert.SerializeObject(new { code, message });
+                    }
+                }
+                catch
+                {
+                    code = 1;
+                    message = "修改失败，服务端错误！";
+
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+            }
+            code = 1;
+            message = "修改失败！用户可能不存在";
+
+            return JsonConvert.SerializeObject(new { code, message });
         }
 
-        public string RemoveUser()
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string RemoveUser(int id)
         {
-            // TODO 删除用户信息
-            return "";
+            int code;
+            string message;
+
+            var user = db.ES_User.Where(u => u.UserId == id && u.IsDel == false).FirstOrDefault();
+            if (user != null)
+            {
+                user.IsDel = true;
+                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+
+                try
+                {
+                    if (db.SaveChanges() > 0)
+                    {
+                        code = 0;
+                        message = "删除成功！";
+
+                        return JsonConvert.SerializeObject(new { code, message });
+                    }
+                }
+                catch
+                {
+                    code = 1;
+                    message = "删除失败，服务端错误！";
+
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+            }
+            code = 1;
+            message = "删除失败！用户可能不存在";
+
+            return JsonConvert.SerializeObject(new { code, message });
         }
     }
 }

@@ -210,6 +210,32 @@
         background-color: #081842;
         border-color: #081842;
       }
+
+    .main-wrap .el-dialog {
+      width: 25rem;
+    }
+
+    .edit-user .el-form-item__label,
+    .edit-user .el-form-item__content {
+      display: inline-block;
+    }
+
+    .edit-user .el-dialog__body {
+      padding: 15px 20px;
+      padding-right: 30px;
+    }
+
+    .edit-user .el-form-item {
+      display: flex;
+    }
+
+    .edit-user .el-form-item__label {
+      flex: 1.5;
+    }
+
+    .edit-user .el-form-item__content {
+      flex: 8.5;
+    }
   </style>
 </head>
 <body>
@@ -242,16 +268,16 @@
               用户管理
             </template>
             <ul>
-              <li :class="[currentTag === 'user-table' ? 'active': '' ]" @@click="changeTag('user-table')">
+              <li :class="[currentTab === 'user-table' ? 'active': '' ]" @@click="changeTab('user-table')">
                 <el-button type="text" class="sub-btn">用户列表</el-button>
               </li>
-              <li :class="[currentTag === 'new-user' ? 'active': '' ]" @@click="changeTag('new-user')">
+              <li :class="[currentTab === 'new-user' ? 'active': '' ]" @@click="changeTab('new-user')">
                 <el-button type="text" class="sub-btn">添加新用户</el-button>
               </li>
-              <li :class="[currentTag === 'score-table' ? 'active': '' ]" @@click="changeTag('score-table')">
+              <li :class="[currentTab === 'score-table' ? 'active': '' ]" @@click="changeTab('score-table')">
                 <el-button type="text" class="sub-btn">考生成绩表</el-button>
               </li>
-              <li :class="[currentTag === 'change-user-exam' ? 'active': '' ]" @@click="changeTag('change-user-exam')">
+              <li :class="[currentTab === 'change-user-exam' ? 'active': '' ]" @@click="changeTab('change-user-exam')">
                 <el-button type="text" class="sub-btn">调整考生场次</el-button>
               </li>
             </ul>
@@ -262,10 +288,10 @@
               考试管理
             </template>
             <ul>
-              <li :class="[currentTag === 'exam-table' ? 'active': '' ]" @@click="changeTag('exam-table')">
+              <li :class="[currentTab === 'exam-table' ? 'active': '' ]" @@click="changeTab('exam-table')">
                 <el-button type="text" class="sub-btn">场次列表</el-button>
               </li>
-              <li :class="[currentTag === 'new-exam' ? 'active': '' ]" @@click="changeTag('new-exam')">
+              <li :class="[currentTab === 'new-exam' ? 'active': '' ]" @@click="changeTab('new-exam')">
                 <el-button type="text" class="sub-btn">添加考试</el-button>
               </li>
             </ul>
@@ -276,10 +302,10 @@
               试卷管理
             </template>
             <ul>
-              <li :class="[currentTag === 'paper-table' ? 'active': '' ]" @@click="changeTag('paper-table')">
+              <li :class="[currentTab === 'paper-table' ? 'active': '' ]" @@click="changeTab('paper-table')">
                 <el-button type="text" class="sub-btn">试卷列表</el-button>
               </li>
-              <li :class="[currentTag === 'new-paper' ? 'active': '' ]" @@click="changeTag('new-paper')">
+              <li :class="[currentTab === 'new-paper' ? 'active': '' ]" @@click="changeTab('new-paper')">
                 <el-button type="text" class="sub-btn">添加试卷</el-button>
               </li>
             </ul>
@@ -290,11 +316,14 @@
               题库管理
             </template>
             <ul>
-              <li :class="[currentTag === 'question-table' ? 'active': '' ]" @@click="changeTag('question-table')">
+              <li :class="[currentTab === 'question-table' ? 'active': '' ]" @@click="changeTab('question-table')">
                 <el-button type="text" class="sub-btn">题目列表</el-button>
               </li>
-              <li :class="[currentTag === 'new-question' ? 'active': '' ]" @@click="changeTag('new-question')">
+              <li :class="[currentTab === 'new-question' ? 'active': '' ]" @@click="changeTab('new-question')">
                 <el-button type="text" class="sub-btn">添加题目</el-button>
+              </li>
+              <li :class="[currentTab === 'tag-control' ? 'active': '' ]" @@click="changeTab('tag-control')">
+                <el-button type="text" class="sub-btn">标签管理</el-button>
               </li>
             </ul>
           </el-collapse-item>
@@ -304,12 +333,22 @@
         <user-table :users="users"
                     :searchkey="searchKey"
                     :totalnum="totalNum"
-                    v-if="currentTag === 'user-table'"
+                    v-if="currentTab === 'user-table'"
                     @@current-page="currentPageChange"
                     @@input-change="inputTextChange"
-                    @@search="searchByKeyword"></user-table>
-        <new-user v-if="currentTag === 'new-user'"></new-user>
-        <score-table v-if="currentTag === 'score-table'"></score-table>
+                    @@search="searchByKeyword"
+                    @@remove="removeOne"
+                    @@is-insert="refresh(currentPage)"></user-table>
+        <new-user v-if="currentTab === 'new-user'" @@is-insert="refresh"></new-user>
+        <score-table v-if="currentTab === 'score-table'"></score-table>
+        <new-question v-if="currentTab === 'new-question'"></new-question>
+        <new-paper v-if="currentTab === 'new-paper'"></new-paper>
+        <new-exam v-if="currentTab === 'new-exam'"></new-exam>
+        <exam-table v-if="currentTab === 'exam-table'"></exam-table>
+        <change-user-exam v-if="currentTab === 'change-user-exam'"></change-user-exam>
+        <tag-control v-if="currentTab === 'tag-control'"></tag-control>
+        <question-table v-if="currentTab === 'question-table'"></question-table>
+        <paper-table v-if="currentTab === 'paper-table'"></paper-table>
       </el-main>
     </el-container>
   </el-container>
@@ -319,12 +358,20 @@
 @Scripts.Render("~/component/new-user")
 @Scripts.Render("~/component/user-table")
 @Scripts.Render("~/component/score-table")
+@Scripts.Render("~/component/exam-table")
+@Scripts.Render("~/component/change-user-exam")
+@Scripts.Render("~/component/new-exam")
+@Scripts.Render("~/component/new-paper")
+@Scripts.Render("~/component/new-question")
+@Scripts.Render("~/component/paper-table")
+@Scripts.Render("~/component/question-table")
+@Scripts.Render("~/component/tag-control")
 
 <script>
   const vm = new Vue({
     el: '#app',
     data: {
-      currentTag: 'user-table',
+      currentTab: 'user-table',
       activeName: '1',
       users: [],
       searchKey: '',
@@ -334,8 +381,8 @@
     },
     methods: {
       // 切换组件
-      changeTag: function (targetComponent) {
-        this.currentTag = targetComponent;
+      changeTab: function (targetComponent) {
+        this.currentTab = targetComponent;
       },
       // 改变当前页码
       currentPageChange: function (val) {
@@ -366,10 +413,36 @@
       searchByKeyword: function () {
         this.updateUserList(1, this.searchKey);
       },
+      // 删除用户
+      removeOne: function (id) {
+        this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios.post('/BackEnd/RemoveUser', { id }).then(res => {
+            const { data } = res;
+            if (data.code == 0) {
+              this.$message({
+                type: 'success',
+                message: data.message
+              });
+              this.updateUserList(this.currentPage, '');
+            } else {
+              this.$message.error(data.message);
+            }
+          });
+        })
+      },
       toLogout: function () {
         console.log('logout')
         localStorage.clear();
         window.location.href = '/Login/Logout';
+      },
+      // 刷新用户列表
+      refresh: function(page = 1) {
+        this.updateUserList(page, '');
+        this.currentPage = page;
       }
     },
     watch: {
