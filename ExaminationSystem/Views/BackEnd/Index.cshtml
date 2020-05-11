@@ -236,6 +236,29 @@
     .edit-user .el-form-item__content {
       flex: 8.5;
     }
+
+    .score-component .search-wrap {
+      justify-content: space-between !important;
+    }
+
+    .score-select,
+    .score-select .el-input {
+      width: 12rem !important;
+    }
+
+    .score-select {
+      margin-right: 1rem;
+      margin-left: 1rem;
+    }
+
+      .score-select .el-input__inner {
+        padding-right: 10px;
+        padding-left: 10px;
+      }
+
+    .el-table__empty-block {
+      height: 60vh;
+    }
   </style>
 </head>
 <body>
@@ -340,7 +363,10 @@
                     @@remove="removeOne"
                     @@is-insert="refresh(currentPage)"></user-table>
         <new-user v-if="currentTab === 'new-user'" @@is-insert="refresh"></new-user>
-        <score-table v-if="currentTab === 'score-table'"></score-table>
+        <score-table class="score-component"
+                     :searchkey="searchKey"
+                     @@select-change="scoreSelectValueChange"
+                     v-if="currentTab === 'score-table'"></score-table>
         <new-question v-if="currentTab === 'new-question'"></new-question>
         <new-paper v-if="currentTab === 'new-paper'"></new-paper>
         <new-exam v-if="currentTab === 'new-exam'"></new-exam>
@@ -375,9 +401,11 @@
       activeName: '1',
       users: [],
       searchKey: '',
+      scoreSelectValue:'',
       totalNum: 100,
       currentPage: 1,
-      loginUser:''
+      loginUser: '',
+
     },
     methods: {
       // 切换组件
@@ -443,6 +471,10 @@
       refresh: function(page = 1) {
         this.updateUserList(page, '');
         this.currentPage = page;
+      },
+      // 学生成绩表 日期选择
+      scoreSelectValueChange: function (val) {
+        this.scoreSelectValue = val;
       }
     },
     watch: {
@@ -453,6 +485,7 @@
     created() {
       this.users = JSON.parse(@Html.Raw(Json.Encode(ViewBag.Users)));
       this.totalNum = @ViewBag.TotalNum;
+      this.totalNumToScore = 1;
       if (new Date(localStorage.getItem('endTime')) < Date.now()) {
         localStorage.clear();
       }
