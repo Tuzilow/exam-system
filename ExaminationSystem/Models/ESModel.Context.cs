@@ -26,6 +26,7 @@ namespace ExaminationSystem.Models
         }
     
         public virtual DbSet<ES_ExamPaper> ES_ExamPaper { get; set; }
+        public virtual DbSet<ES_ExamPaper_Exercise> ES_ExamPaper_Exercise { get; set; }
         public virtual DbSet<ES_ExamPart> ES_ExamPart { get; set; }
         public virtual DbSet<ES_Exercise> ES_Exercise { get; set; }
         public virtual DbSet<ES_FillAnswer> ES_FillAnswer { get; set; }
@@ -43,8 +44,6 @@ namespace ExaminationSystem.Models
         public virtual DbSet<ES_User> ES_User { get; set; }
         public virtual DbSet<ES_User_ExamPaper> ES_User_ExamPaper { get; set; }
         public virtual DbSet<ES_User_ExamPart> ES_User_ExamPart { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<User_ExamPart_ExamPaper_v> User_ExamPart_ExamPaper_v { get; set; }
-        public virtual DbSet<ES_ExamPaper_Exercise> ES_ExamPaper_Exercise { get; set; }
     }
 }

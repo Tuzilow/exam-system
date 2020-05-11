@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ExaminationSystemDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ExaminationSystemDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ES_ExamPaper">
           <Key>
             <PropertyRef Name="EmPaperId" />
@@ -191,18 +191,8 @@
           <Property Name="UEmPt" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="EmPtId" Type="int" />
-          <Property Name="IsDel" Type="bit" Nullable="false" />
           <Property Name="IsJoin" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“ExaminationSystemDb.dbo.User_ExamPart_ExamPaper_v”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -228,7 +218,7 @@
           <Property Name="总分值" Type="int" />
           <Property Name="得分" Type="int" />
         </EntityType>
-        <Association Name="FK__ES_ExamPa__EmPap__17F790F9">
+        <Association Name="FK__ES_ExamPa__EmPap__6477ECF3">
           <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
           <End Role="ES_ExamPaper_Exercise" Type="Self.ES_ExamPaper_Exercise" Multiplicity="*" />
           <ReferentialConstraint>
@@ -240,7 +230,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_ExamPap__EsId__18EBB532">
+        <Association Name="FK__ES_ExamPap__EsId__656C112C">
           <End Role="ES_Exercise" Type="Self.ES_Exercise" Multiplicity="0..1" />
           <End Role="ES_ExamPaper_Exercise" Type="Self.ES_ExamPaper_Exercise" Multiplicity="*" />
           <ReferentialConstraint>
@@ -252,7 +242,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_FillAns__FQId__6EF57B66">
+        <Association Name="FK__ES_FillAns__FQId__73BA3083">
           <End Role="ES_FillQuestion" Type="Self.ES_FillQuestion" Multiplicity="1" />
           <End Role="ES_FillAnswer" Type="Self.ES_FillAnswer" Multiplicity="*" />
           <ReferentialConstraint>
@@ -264,7 +254,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Multipl__MQId__73BA3083">
+        <Association Name="FK__ES_Multipl__MQId__787EE5A0">
           <End Role="ES_MultipleQuestion" Type="Self.ES_MultipleQuestion" Multiplicity="1" />
           <End Role="ES_MultipleAnswer" Type="Self.ES_MultipleAnswer" Multiplicity="*" />
           <ReferentialConstraint>
@@ -276,7 +266,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Paper___Paper__619B8048">
+        <Association Name="FK__ES_Paper___Paper__5CD6CB2B">
           <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
           <End Role="ES_Paper_Tag" Type="Self.ES_Paper_Tag" Multiplicity="*" />
           <ReferentialConstraint>
@@ -288,7 +278,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Paper___TagId__628FA481">
+        <Association Name="FK__ES_Paper___TagId__5DCAEF64">
           <End Role="ES_Tag" Type="Self.ES_Tag" Multiplicity="0..1" />
           <End Role="ES_Paper_Tag" Type="Self.ES_Paper_Tag" Multiplicity="*" />
           <ReferentialConstraint>
@@ -300,7 +290,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Role_P__RoleI__47DBAE45">
+        <Association Name="FK__ES_Role_P__RoleI__3D5E1FD2">
           <End Role="ES_Role" Type="Self.ES_Role" Multiplicity="1" />
           <End Role="ES_Role_Permission" Type="Self.ES_Role_Permission" Multiplicity="*" />
           <ReferentialConstraint>
@@ -312,7 +302,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Role_Pe__PmId__48CFD27E">
+        <Association Name="FK__ES_Role_Pe__PmId__3E52440B">
           <End Role="ES_Permission" Type="Self.ES_Permission" Multiplicity="1" />
           <End Role="ES_Role_Permission" Type="Self.ES_Role_Permission" Multiplicity="*" />
           <ReferentialConstraint>
@@ -324,7 +314,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Tag_Ex__TagId__76969D2E">
+        <Association Name="FK__ES_Tag_Ex__TagId__693CA210">
           <End Role="ES_Tag" Type="Self.ES_Tag" Multiplicity="0..1" />
           <End Role="ES_Tag_Exercise" Type="Self.ES_Tag_Exercise" Multiplicity="*" />
           <ReferentialConstraint>
@@ -336,7 +326,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Tag_Exe__EsId__778AC167">
+        <Association Name="FK__ES_Tag_Exe__EsId__6A30C649">
           <End Role="ES_Exercise" Type="Self.ES_Exercise" Multiplicity="0..1" />
           <End Role="ES_Tag_Exercise" Type="Self.ES_Tag_Exercise" Multiplicity="*" />
           <ReferentialConstraint>
@@ -348,7 +338,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User__RoleId__4D94879B">
+        <Association Name="FK__ES_User__RoleId__4316F928">
           <End Role="ES_Role" Type="Self.ES_Role" Multiplicity="0..1" />
           <End Role="ES_User" Type="Self.ES_User" Multiplicity="*" />
           <ReferentialConstraint>
@@ -360,7 +350,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User_E__EmPap__7C4F7684">
+        <Association Name="FK__ES_User_E__EmPap__5535A963">
           <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
           <End Role="ES_User_ExamPaper" Type="Self.ES_User_ExamPaper" Multiplicity="*" />
           <ReferentialConstraint>
@@ -372,7 +362,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User_E__EmPtI__5535A963">
+        <Association Name="FK__ES_User_E__EmPtI__4AB81AF0">
           <End Role="ES_ExamPart" Type="Self.ES_ExamPart" Multiplicity="0..1" />
           <End Role="ES_User_ExamPart" Type="Self.ES_User_ExamPart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -384,7 +374,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User_E__UserI__5441852A">
+        <Association Name="FK__ES_User_E__UserI__49C3F6B7">
           <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
           <End Role="ES_User_ExamPart" Type="Self.ES_User_ExamPart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -396,7 +386,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User_E__UserI__7B5B524B">
+        <Association Name="FK__ES_User_E__UserI__5441852A">
           <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
           <End Role="ES_User_ExamPaper" Type="Self.ES_User_ExamPaper" Multiplicity="*" />
           <ReferentialConstraint>
@@ -428,7 +418,6 @@
           <EntitySet Name="ES_User" EntityType="Self.ES_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_User_ExamPaper" EntityType="Self.ES_User_ExamPaper" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_User_ExamPart" EntityType="Self.ES_User_ExamPart" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_ExamPart_ExamPaper_v" EntityType="Self.User_ExamPart_ExamPaper_v" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [User_ExamPart_ExamPaper_v].[考生ID] AS [考生ID], 
@@ -447,68 +436,69 @@
     [User_ExamPart_ExamPaper_v].[得分] AS [得分]
     FROM [dbo].[User_ExamPart_ExamPaper_v] AS [User_ExamPart_ExamPaper_v]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__ES_ExamPa__EmPap__17F790F9" Association="Self.FK__ES_ExamPa__EmPap__17F790F9">
+          <AssociationSet Name="FK__ES_ExamPa__EmPap__6477ECF3" Association="Self.FK__ES_ExamPa__EmPap__6477ECF3">
             <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
             <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_ExamPap__EsId__18EBB532" Association="Self.FK__ES_ExamPap__EsId__18EBB532">
+          <AssociationSet Name="FK__ES_ExamPap__EsId__656C112C" Association="Self.FK__ES_ExamPap__EsId__656C112C">
             <End Role="ES_Exercise" EntitySet="ES_Exercise" />
             <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_FillAns__FQId__6EF57B66" Association="Self.FK__ES_FillAns__FQId__6EF57B66">
+          <AssociationSet Name="FK__ES_FillAns__FQId__73BA3083" Association="Self.FK__ES_FillAns__FQId__73BA3083">
             <End Role="ES_FillQuestion" EntitySet="ES_FillQuestion" />
             <End Role="ES_FillAnswer" EntitySet="ES_FillAnswer" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Multipl__MQId__73BA3083" Association="Self.FK__ES_Multipl__MQId__73BA3083">
+          <AssociationSet Name="FK__ES_Multipl__MQId__787EE5A0" Association="Self.FK__ES_Multipl__MQId__787EE5A0">
             <End Role="ES_MultipleQuestion" EntitySet="ES_MultipleQuestion" />
             <End Role="ES_MultipleAnswer" EntitySet="ES_MultipleAnswer" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Paper___Paper__619B8048" Association="Self.FK__ES_Paper___Paper__619B8048">
+          <AssociationSet Name="FK__ES_Paper___Paper__5CD6CB2B" Association="Self.FK__ES_Paper___Paper__5CD6CB2B">
             <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
             <End Role="ES_Paper_Tag" EntitySet="ES_Paper_Tag" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Paper___TagId__628FA481" Association="Self.FK__ES_Paper___TagId__628FA481">
+          <AssociationSet Name="FK__ES_Paper___TagId__5DCAEF64" Association="Self.FK__ES_Paper___TagId__5DCAEF64">
             <End Role="ES_Tag" EntitySet="ES_Tag" />
             <End Role="ES_Paper_Tag" EntitySet="ES_Paper_Tag" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Role_P__RoleI__47DBAE45" Association="Self.FK__ES_Role_P__RoleI__47DBAE45">
+          <AssociationSet Name="FK__ES_Role_P__RoleI__3D5E1FD2" Association="Self.FK__ES_Role_P__RoleI__3D5E1FD2">
             <End Role="ES_Role" EntitySet="ES_Role" />
             <End Role="ES_Role_Permission" EntitySet="ES_Role_Permission" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Role_Pe__PmId__48CFD27E" Association="Self.FK__ES_Role_Pe__PmId__48CFD27E">
+          <AssociationSet Name="FK__ES_Role_Pe__PmId__3E52440B" Association="Self.FK__ES_Role_Pe__PmId__3E52440B">
             <End Role="ES_Permission" EntitySet="ES_Permission" />
             <End Role="ES_Role_Permission" EntitySet="ES_Role_Permission" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Tag_Ex__TagId__76969D2E" Association="Self.FK__ES_Tag_Ex__TagId__76969D2E">
+          <AssociationSet Name="FK__ES_Tag_Ex__TagId__693CA210" Association="Self.FK__ES_Tag_Ex__TagId__693CA210">
             <End Role="ES_Tag" EntitySet="ES_Tag" />
             <End Role="ES_Tag_Exercise" EntitySet="ES_Tag_Exercise" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Tag_Exe__EsId__778AC167" Association="Self.FK__ES_Tag_Exe__EsId__778AC167">
+          <AssociationSet Name="FK__ES_Tag_Exe__EsId__6A30C649" Association="Self.FK__ES_Tag_Exe__EsId__6A30C649">
             <End Role="ES_Exercise" EntitySet="ES_Exercise" />
             <End Role="ES_Tag_Exercise" EntitySet="ES_Tag_Exercise" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_User__RoleId__4D94879B" Association="Self.FK__ES_User__RoleId__4D94879B">
+          <AssociationSet Name="FK__ES_User__RoleId__4316F928" Association="Self.FK__ES_User__RoleId__4316F928">
             <End Role="ES_Role" EntitySet="ES_Role" />
             <End Role="ES_User" EntitySet="ES_User" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_User_E__EmPap__7C4F7684" Association="Self.FK__ES_User_E__EmPap__7C4F7684">
+          <AssociationSet Name="FK__ES_User_E__EmPap__5535A963" Association="Self.FK__ES_User_E__EmPap__5535A963">
             <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
             <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_User_E__EmPtI__5535A963" Association="Self.FK__ES_User_E__EmPtI__5535A963">
+          <AssociationSet Name="FK__ES_User_E__EmPtI__4AB81AF0" Association="Self.FK__ES_User_E__EmPtI__4AB81AF0">
             <End Role="ES_ExamPart" EntitySet="ES_ExamPart" />
+            <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__UserI__49C3F6B7" Association="Self.FK__ES_User_E__UserI__49C3F6B7">
+            <End Role="ES_User" EntitySet="ES_User" />
             <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
           </AssociationSet>
           <AssociationSet Name="FK__ES_User_E__UserI__5441852A" Association="Self.FK__ES_User_E__UserI__5441852A">
             <End Role="ES_User" EntitySet="ES_User" />
-            <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ES_User_E__UserI__7B5B524B" Association="Self.FK__ES_User_E__UserI__7B5B524B">
-            <End Role="ES_User" EntitySet="ES_User" />
             <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExaminationSystemDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -525,9 +515,20 @@
           <Property Name="EmPaperScore" Type="Int32" Nullable="false" />
           <Property Name="EmPaperTrueScore" Type="Int32" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___Paper__619B8048" FromRole="ES_ExamPaper" ToRole="ES_Paper_Tag" />
-          <NavigationProperty Name="ES_User_ExamPaper" Relationship="Self.FK__ES_User_E__EmPap__7C4F7684" FromRole="ES_ExamPaper" ToRole="ES_User_ExamPaper" />
-          <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="ExaminationSystemDbModel.FK__ES_ExamPa__EmPap__17F790F9" FromRole="ES_ExamPaper" ToRole="ES_ExamPaper_Exercise" />
+          <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="Self.FK__ES_ExamPa__EmPap__6477ECF3" FromRole="ES_ExamPaper" ToRole="ES_ExamPaper_Exercise" />
+          <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___Paper__5CD6CB2B" FromRole="ES_ExamPaper" ToRole="ES_Paper_Tag" />
+          <NavigationProperty Name="ES_User_ExamPaper" Relationship="Self.FK__ES_User_E__EmPap__5535A963" FromRole="ES_ExamPaper" ToRole="ES_User_ExamPaper" />
+        </EntityType>
+        <EntityType Name="ES_ExamPaper_Exercise">
+          <Key>
+            <PropertyRef Name="EEId" />
+          </Key>
+          <Property Name="EEId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmPaperId" Type="Int32" />
+          <Property Name="EsId" Type="Int32" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_ExamPaper" Relationship="Self.FK__ES_ExamPa__EmPap__6477ECF3" FromRole="ES_ExamPaper_Exercise" ToRole="ES_ExamPaper" />
+          <NavigationProperty Name="ES_Exercise" Relationship="Self.FK__ES_ExamPap__EsId__656C112C" FromRole="ES_ExamPaper_Exercise" ToRole="ES_Exercise" />
         </EntityType>
         <EntityType Name="ES_ExamPart">
           <Key>
@@ -537,7 +538,7 @@
           <Property Name="EmPtStart" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EmPtEnd" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_User_ExamPart" Relationship="Self.FK__ES_User_E__EmPtI__5535A963" FromRole="ES_ExamPart" ToRole="ES_User_ExamPart" />
+          <NavigationProperty Name="ES_User_ExamPart" Relationship="Self.FK__ES_User_E__EmPtI__4AB81AF0" FromRole="ES_ExamPart" ToRole="ES_User_ExamPart" />
         </EntityType>
         <EntityType Name="ES_Exercise">
           <Key>
@@ -546,8 +547,8 @@
           <Property Name="EsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EsType" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="EsSubExerciseId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Exe__EsId__778AC167" FromRole="ES_Exercise" ToRole="ES_Tag_Exercise" />
-          <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="ExaminationSystemDbModel.FK__ES_ExamPap__EsId__18EBB532" FromRole="ES_Exercise" ToRole="ES_ExamPaper_Exercise" />
+          <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="Self.FK__ES_ExamPap__EsId__656C112C" FromRole="ES_Exercise" ToRole="ES_ExamPaper_Exercise" />
+          <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Exe__EsId__6A30C649" FromRole="ES_Exercise" ToRole="ES_Tag_Exercise" />
         </EntityType>
         <EntityType Name="ES_FillAnswer">
           <Key>
@@ -557,7 +558,7 @@
           <Property Name="FQId" Type="Int32" Nullable="false" />
           <Property Name="FAContent" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FAScore" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ES_FillQuestion" Relationship="Self.FK__ES_FillAns__FQId__6EF57B66" FromRole="ES_FillAnswer" ToRole="ES_FillQuestion" />
+          <NavigationProperty Name="ES_FillQuestion" Relationship="Self.FK__ES_FillAns__FQId__73BA3083" FromRole="ES_FillAnswer" ToRole="ES_FillQuestion" />
         </EntityType>
         <EntityType Name="ES_FillQuestion">
           <Key>
@@ -566,7 +567,7 @@
           <Property Name="FQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FQScore" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ES_FillAnswer" Relationship="Self.FK__ES_FillAns__FQId__6EF57B66" FromRole="ES_FillQuestion" ToRole="ES_FillAnswer" />
+          <NavigationProperty Name="ES_FillAnswer" Relationship="Self.FK__ES_FillAns__FQId__73BA3083" FromRole="ES_FillQuestion" ToRole="ES_FillAnswer" />
         </EntityType>
         <EntityType Name="ES_JudgeQuestion">
           <Key>
@@ -585,7 +586,7 @@
           <Property Name="MAId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MQId" Type="Int32" Nullable="false" />
           <Property Name="MAContent" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="ES_MultipleQuestion" Relationship="Self.FK__ES_Multipl__MQId__73BA3083" FromRole="ES_MultipleAnswer" ToRole="ES_MultipleQuestion" />
+          <NavigationProperty Name="ES_MultipleQuestion" Relationship="Self.FK__ES_Multipl__MQId__787EE5A0" FromRole="ES_MultipleAnswer" ToRole="ES_MultipleQuestion" />
         </EntityType>
         <EntityType Name="ES_MultipleQuestion">
           <Key>
@@ -601,7 +602,7 @@
           <Property Name="MQAns6" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MQAns7" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MQScore" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ES_MultipleAnswer" Relationship="Self.FK__ES_Multipl__MQId__73BA3083" FromRole="ES_MultipleQuestion" ToRole="ES_MultipleAnswer" />
+          <NavigationProperty Name="ES_MultipleAnswer" Relationship="Self.FK__ES_Multipl__MQId__787EE5A0" FromRole="ES_MultipleQuestion" ToRole="ES_MultipleAnswer" />
         </EntityType>
         <EntityType Name="ES_Paper_Tag">
           <Key>
@@ -613,8 +614,8 @@
           <Property Name="ExerciseNum" Type="Int32" Nullable="false" />
           <Property Name="IsNotSelect" Type="Boolean" Nullable="false" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_ExamPaper" Relationship="Self.FK__ES_Paper___Paper__619B8048" FromRole="ES_Paper_Tag" ToRole="ES_ExamPaper" />
-          <NavigationProperty Name="ES_Tag" Relationship="Self.FK__ES_Paper___TagId__628FA481" FromRole="ES_Paper_Tag" ToRole="ES_Tag" />
+          <NavigationProperty Name="ES_ExamPaper" Relationship="Self.FK__ES_Paper___Paper__5CD6CB2B" FromRole="ES_Paper_Tag" ToRole="ES_ExamPaper" />
+          <NavigationProperty Name="ES_Tag" Relationship="Self.FK__ES_Paper___TagId__5DCAEF64" FromRole="ES_Paper_Tag" ToRole="ES_Tag" />
         </EntityType>
         <EntityType Name="ES_Permission">
           <Key>
@@ -624,7 +625,7 @@
           <Property Name="PmName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PmDescribe" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_Role_Permission" Relationship="Self.FK__ES_Role_Pe__PmId__48CFD27E" FromRole="ES_Permission" ToRole="ES_Role_Permission" />
+          <NavigationProperty Name="ES_Role_Permission" Relationship="Self.FK__ES_Role_Pe__PmId__3E52440B" FromRole="ES_Permission" ToRole="ES_Role_Permission" />
         </EntityType>
         <EntityType Name="ES_Role">
           <Key>
@@ -634,8 +635,8 @@
           <Property Name="RoleName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RoleDescribe" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_Role_Permission" Relationship="Self.FK__ES_Role_P__RoleI__47DBAE45" FromRole="ES_Role" ToRole="ES_Role_Permission" />
-          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User__RoleId__4D94879B" FromRole="ES_Role" ToRole="ES_User" />
+          <NavigationProperty Name="ES_Role_Permission" Relationship="Self.FK__ES_Role_P__RoleI__3D5E1FD2" FromRole="ES_Role" ToRole="ES_Role_Permission" />
+          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User__RoleId__4316F928" FromRole="ES_Role" ToRole="ES_User" />
         </EntityType>
         <EntityType Name="ES_Role_Permission">
           <Key>
@@ -645,8 +646,8 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" />
           <Property Name="PmId" Type="Int32" Nullable="false" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_Permission" Relationship="Self.FK__ES_Role_Pe__PmId__48CFD27E" FromRole="ES_Role_Permission" ToRole="ES_Permission" />
-          <NavigationProperty Name="ES_Role" Relationship="Self.FK__ES_Role_P__RoleI__47DBAE45" FromRole="ES_Role_Permission" ToRole="ES_Role" />
+          <NavigationProperty Name="ES_Permission" Relationship="Self.FK__ES_Role_Pe__PmId__3E52440B" FromRole="ES_Role_Permission" ToRole="ES_Permission" />
+          <NavigationProperty Name="ES_Role" Relationship="Self.FK__ES_Role_P__RoleI__3D5E1FD2" FromRole="ES_Role_Permission" ToRole="ES_Role" />
         </EntityType>
         <EntityType Name="ES_SelectQuestion">
           <Key>
@@ -669,8 +670,8 @@
           <Property Name="TagName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TagDescribe" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___TagId__628FA481" FromRole="ES_Tag" ToRole="ES_Paper_Tag" />
-          <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Ex__TagId__76969D2E" FromRole="ES_Tag" ToRole="ES_Tag_Exercise" />
+          <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___TagId__5DCAEF64" FromRole="ES_Tag" ToRole="ES_Paper_Tag" />
+          <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Ex__TagId__693CA210" FromRole="ES_Tag" ToRole="ES_Tag_Exercise" />
         </EntityType>
         <EntityType Name="ES_Tag_Exercise">
           <Key>
@@ -680,8 +681,8 @@
           <Property Name="TagId" Type="Int32" />
           <Property Name="EsId" Type="Int32" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_Exercise" Relationship="Self.FK__ES_Tag_Exe__EsId__778AC167" FromRole="ES_Tag_Exercise" ToRole="ES_Exercise" />
-          <NavigationProperty Name="ES_Tag" Relationship="Self.FK__ES_Tag_Ex__TagId__76969D2E" FromRole="ES_Tag_Exercise" ToRole="ES_Tag" />
+          <NavigationProperty Name="ES_Exercise" Relationship="Self.FK__ES_Tag_Exe__EsId__6A30C649" FromRole="ES_Tag_Exercise" ToRole="ES_Exercise" />
+          <NavigationProperty Name="ES_Tag" Relationship="Self.FK__ES_Tag_Ex__TagId__693CA210" FromRole="ES_Tag_Exercise" ToRole="ES_Tag" />
         </EntityType>
         <EntityType Name="ES_User">
           <Key>
@@ -693,9 +694,9 @@
           <Property Name="UserName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RoleId" Type="Int32" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_Role" Relationship="Self.FK__ES_User__RoleId__4D94879B" FromRole="ES_User" ToRole="ES_Role" />
-          <NavigationProperty Name="ES_User_ExamPart" Relationship="Self.FK__ES_User_E__UserI__5441852A" FromRole="ES_User" ToRole="ES_User_ExamPart" />
-          <NavigationProperty Name="ES_User_ExamPaper" Relationship="Self.FK__ES_User_E__UserI__7B5B524B" FromRole="ES_User" ToRole="ES_User_ExamPaper" />
+          <NavigationProperty Name="ES_Role" Relationship="Self.FK__ES_User__RoleId__4316F928" FromRole="ES_User" ToRole="ES_Role" />
+          <NavigationProperty Name="ES_User_ExamPart" Relationship="Self.FK__ES_User_E__UserI__49C3F6B7" FromRole="ES_User" ToRole="ES_User_ExamPart" />
+          <NavigationProperty Name="ES_User_ExamPaper" Relationship="Self.FK__ES_User_E__UserI__5441852A" FromRole="ES_User" ToRole="ES_User_ExamPaper" />
         </EntityType>
         <EntityType Name="ES_User_ExamPaper">
           <Key>
@@ -705,8 +706,8 @@
           <Property Name="UserId" Type="Int32" />
           <Property Name="EmPaperId" Type="Int32" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_ExamPaper" Relationship="Self.FK__ES_User_E__EmPap__7C4F7684" FromRole="ES_User_ExamPaper" ToRole="ES_ExamPaper" />
-          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User_E__UserI__7B5B524B" FromRole="ES_User_ExamPaper" ToRole="ES_User" />
+          <NavigationProperty Name="ES_ExamPaper" Relationship="Self.FK__ES_User_E__EmPap__5535A963" FromRole="ES_User_ExamPaper" ToRole="ES_ExamPaper" />
+          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User_E__UserI__5441852A" FromRole="ES_User_ExamPaper" ToRole="ES_User" />
         </EntityType>
         <EntityType Name="ES_User_ExamPart">
           <Key>
@@ -715,20 +716,10 @@
           <Property Name="UEmPt" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="EmPtId" Type="Int32" />
-          <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_ExamPart" Relationship="Self.FK__ES_User_E__EmPtI__5535A963" FromRole="ES_User_ExamPart" ToRole="ES_ExamPart" />
-          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User_E__UserI__5441852A" FromRole="ES_User_ExamPart" ToRole="ES_User" />
           <Property Name="IsJoin" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ES_ExamPart" Relationship="Self.FK__ES_User_E__EmPtI__4AB81AF0" FromRole="ES_User_ExamPart" ToRole="ES_ExamPart" />
+          <NavigationProperty Name="ES_User" Relationship="Self.FK__ES_User_E__UserI__49C3F6B7" FromRole="ES_User_ExamPart" ToRole="ES_User" />
         </EntityType>
         <EntityType Name="User_ExamPart_ExamPaper_v">
           <Key>
@@ -752,7 +743,19 @@
           <Property Name="总分值" Type="Int32" />
           <Property Name="得分" Type="Int32" />
         </EntityType>
-        <Association Name="FK__ES_Paper___Paper__619B8048">
+        <Association Name="FK__ES_ExamPa__EmPap__6477ECF3">
+          <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
+          <End Role="ES_ExamPaper_Exercise" Type="Self.ES_ExamPaper_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_ExamPaper_Exercise">
+              <PropertyRef Name="EmPaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Paper___Paper__5CD6CB2B">
           <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
           <End Role="ES_Paper_Tag" Type="Self.ES_Paper_Tag" Multiplicity="*" />
           <ReferentialConstraint>
@@ -764,7 +767,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User_E__EmPap__7C4F7684">
+        <Association Name="FK__ES_User_E__EmPap__5535A963">
           <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
           <End Role="ES_User_ExamPaper" Type="Self.ES_User_ExamPaper" Multiplicity="*" />
           <ReferentialConstraint>
@@ -776,7 +779,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User_E__EmPtI__5535A963">
+        <Association Name="FK__ES_ExamPap__EsId__656C112C">
+          <End Role="ES_Exercise" Type="Self.ES_Exercise" Multiplicity="0..1" />
+          <End Role="ES_ExamPaper_Exercise" Type="Self.ES_ExamPaper_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Exercise">
+              <PropertyRef Name="EsId" />
+            </Principal>
+            <Dependent Role="ES_ExamPaper_Exercise">
+              <PropertyRef Name="EsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_User_E__EmPtI__4AB81AF0">
           <End Role="ES_ExamPart" Type="Self.ES_ExamPart" Multiplicity="0..1" />
           <End Role="ES_User_ExamPart" Type="Self.ES_User_ExamPart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -788,7 +803,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Tag_Exe__EsId__778AC167">
+        <Association Name="FK__ES_Tag_Exe__EsId__6A30C649">
           <End Role="ES_Exercise" Type="Self.ES_Exercise" Multiplicity="0..1" />
           <End Role="ES_Tag_Exercise" Type="Self.ES_Tag_Exercise" Multiplicity="*" />
           <ReferentialConstraint>
@@ -800,7 +815,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_FillAns__FQId__6EF57B66">
+        <Association Name="FK__ES_FillAns__FQId__73BA3083">
           <End Role="ES_FillQuestion" Type="Self.ES_FillQuestion" Multiplicity="1" />
           <End Role="ES_FillAnswer" Type="Self.ES_FillAnswer" Multiplicity="*" />
           <ReferentialConstraint>
@@ -812,7 +827,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Multipl__MQId__73BA3083">
+        <Association Name="FK__ES_Multipl__MQId__787EE5A0">
           <End Role="ES_MultipleQuestion" Type="Self.ES_MultipleQuestion" Multiplicity="1" />
           <End Role="ES_MultipleAnswer" Type="Self.ES_MultipleAnswer" Multiplicity="*" />
           <ReferentialConstraint>
@@ -824,7 +839,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Paper___TagId__628FA481">
+        <Association Name="FK__ES_Paper___TagId__5DCAEF64">
           <End Role="ES_Tag" Type="Self.ES_Tag" Multiplicity="0..1" />
           <End Role="ES_Paper_Tag" Type="Self.ES_Paper_Tag" Multiplicity="*" />
           <ReferentialConstraint>
@@ -836,7 +851,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Role_Pe__PmId__48CFD27E">
+        <Association Name="FK__ES_Role_Pe__PmId__3E52440B">
           <End Role="ES_Permission" Type="Self.ES_Permission" Multiplicity="1" />
           <End Role="ES_Role_Permission" Type="Self.ES_Role_Permission" Multiplicity="*" />
           <ReferentialConstraint>
@@ -848,7 +863,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Role_P__RoleI__47DBAE45">
+        <Association Name="FK__ES_Role_P__RoleI__3D5E1FD2">
           <End Role="ES_Role" Type="Self.ES_Role" Multiplicity="1" />
           <End Role="ES_Role_Permission" Type="Self.ES_Role_Permission" Multiplicity="*" />
           <ReferentialConstraint>
@@ -860,7 +875,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User__RoleId__4D94879B">
+        <Association Name="FK__ES_User__RoleId__4316F928">
           <End Role="ES_Role" Type="Self.ES_Role" Multiplicity="0..1" />
           <End Role="ES_User" Type="Self.ES_User" Multiplicity="*" />
           <ReferentialConstraint>
@@ -872,7 +887,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_Tag_Ex__TagId__76969D2E">
+        <Association Name="FK__ES_Tag_Ex__TagId__693CA210">
           <End Role="ES_Tag" Type="Self.ES_Tag" Multiplicity="0..1" />
           <End Role="ES_Tag_Exercise" Type="Self.ES_Tag_Exercise" Multiplicity="*" />
           <ReferentialConstraint>
@@ -884,7 +899,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User_E__UserI__5441852A">
+        <Association Name="FK__ES_User_E__UserI__49C3F6B7">
           <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
           <End Role="ES_User_ExamPart" Type="Self.ES_User_ExamPart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -896,7 +911,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ES_User_E__UserI__7B5B524B">
+        <Association Name="FK__ES_User_E__UserI__5441852A">
           <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
           <End Role="ES_User_ExamPaper" Type="Self.ES_User_ExamPaper" Multiplicity="*" />
           <ReferentialConstraint>
@@ -910,6 +925,7 @@
         </Association>
         <EntityContainer Name="ExaminationSystemDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ES_ExamPaper" EntityType="Self.ES_ExamPaper" />
+          <EntitySet Name="ES_ExamPaper_Exercise" EntityType="Self.ES_ExamPaper_Exercise" />
           <EntitySet Name="ES_ExamPart" EntityType="Self.ES_ExamPart" />
           <EntitySet Name="ES_Exercise" EntityType="Self.ES_Exercise" />
           <EntitySet Name="ES_FillAnswer" EntityType="Self.ES_FillAnswer" />
@@ -927,105 +943,68 @@
           <EntitySet Name="ES_User" EntityType="Self.ES_User" />
           <EntitySet Name="ES_User_ExamPaper" EntityType="Self.ES_User_ExamPaper" />
           <EntitySet Name="ES_User_ExamPart" EntityType="Self.ES_User_ExamPart" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="User_ExamPart_ExamPaper_v" EntityType="Self.User_ExamPart_ExamPaper_v" />
-          <AssociationSet Name="FK__ES_Paper___Paper__619B8048" Association="Self.FK__ES_Paper___Paper__619B8048">
+          <AssociationSet Name="FK__ES_ExamPa__EmPap__6477ECF3" Association="Self.FK__ES_ExamPa__EmPap__6477ECF3">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Paper___Paper__5CD6CB2B" Association="Self.FK__ES_Paper___Paper__5CD6CB2B">
             <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
             <End Role="ES_Paper_Tag" EntitySet="ES_Paper_Tag" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_User_E__EmPap__7C4F7684" Association="Self.FK__ES_User_E__EmPap__7C4F7684">
+          <AssociationSet Name="FK__ES_User_E__EmPap__5535A963" Association="Self.FK__ES_User_E__EmPap__5535A963">
             <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
             <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_User_E__EmPtI__5535A963" Association="Self.FK__ES_User_E__EmPtI__5535A963">
+          <AssociationSet Name="FK__ES_ExamPap__EsId__656C112C" Association="Self.FK__ES_ExamPap__EsId__656C112C">
+            <End Role="ES_Exercise" EntitySet="ES_Exercise" />
+            <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_User_E__EmPtI__4AB81AF0" Association="Self.FK__ES_User_E__EmPtI__4AB81AF0">
             <End Role="ES_ExamPart" EntitySet="ES_ExamPart" />
             <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Tag_Exe__EsId__778AC167" Association="Self.FK__ES_Tag_Exe__EsId__778AC167">
+          <AssociationSet Name="FK__ES_Tag_Exe__EsId__6A30C649" Association="Self.FK__ES_Tag_Exe__EsId__6A30C649">
             <End Role="ES_Exercise" EntitySet="ES_Exercise" />
             <End Role="ES_Tag_Exercise" EntitySet="ES_Tag_Exercise" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_FillAns__FQId__6EF57B66" Association="Self.FK__ES_FillAns__FQId__6EF57B66">
+          <AssociationSet Name="FK__ES_FillAns__FQId__73BA3083" Association="Self.FK__ES_FillAns__FQId__73BA3083">
             <End Role="ES_FillQuestion" EntitySet="ES_FillQuestion" />
             <End Role="ES_FillAnswer" EntitySet="ES_FillAnswer" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Multipl__MQId__73BA3083" Association="Self.FK__ES_Multipl__MQId__73BA3083">
+          <AssociationSet Name="FK__ES_Multipl__MQId__787EE5A0" Association="Self.FK__ES_Multipl__MQId__787EE5A0">
             <End Role="ES_MultipleQuestion" EntitySet="ES_MultipleQuestion" />
             <End Role="ES_MultipleAnswer" EntitySet="ES_MultipleAnswer" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Paper___TagId__628FA481" Association="Self.FK__ES_Paper___TagId__628FA481">
+          <AssociationSet Name="FK__ES_Paper___TagId__5DCAEF64" Association="Self.FK__ES_Paper___TagId__5DCAEF64">
             <End Role="ES_Tag" EntitySet="ES_Tag" />
             <End Role="ES_Paper_Tag" EntitySet="ES_Paper_Tag" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Role_Pe__PmId__48CFD27E" Association="Self.FK__ES_Role_Pe__PmId__48CFD27E">
+          <AssociationSet Name="FK__ES_Role_Pe__PmId__3E52440B" Association="Self.FK__ES_Role_Pe__PmId__3E52440B">
             <End Role="ES_Permission" EntitySet="ES_Permission" />
             <End Role="ES_Role_Permission" EntitySet="ES_Role_Permission" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Role_P__RoleI__47DBAE45" Association="Self.FK__ES_Role_P__RoleI__47DBAE45">
+          <AssociationSet Name="FK__ES_Role_P__RoleI__3D5E1FD2" Association="Self.FK__ES_Role_P__RoleI__3D5E1FD2">
             <End Role="ES_Role" EntitySet="ES_Role" />
             <End Role="ES_Role_Permission" EntitySet="ES_Role_Permission" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_User__RoleId__4D94879B" Association="Self.FK__ES_User__RoleId__4D94879B">
+          <AssociationSet Name="FK__ES_User__RoleId__4316F928" Association="Self.FK__ES_User__RoleId__4316F928">
             <End Role="ES_Role" EntitySet="ES_Role" />
             <End Role="ES_User" EntitySet="ES_User" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_Tag_Ex__TagId__76969D2E" Association="Self.FK__ES_Tag_Ex__TagId__76969D2E">
+          <AssociationSet Name="FK__ES_Tag_Ex__TagId__693CA210" Association="Self.FK__ES_Tag_Ex__TagId__693CA210">
             <End Role="ES_Tag" EntitySet="ES_Tag" />
             <End Role="ES_Tag_Exercise" EntitySet="ES_Tag_Exercise" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_User_E__UserI__5441852A" Association="Self.FK__ES_User_E__UserI__5441852A">
+          <AssociationSet Name="FK__ES_User_E__UserI__49C3F6B7" Association="Self.FK__ES_User_E__UserI__49C3F6B7">
             <End Role="ES_User" EntitySet="ES_User" />
             <End Role="ES_User_ExamPart" EntitySet="ES_User_ExamPart" />
           </AssociationSet>
-          <AssociationSet Name="FK__ES_User_E__UserI__7B5B524B" Association="Self.FK__ES_User_E__UserI__7B5B524B">
+          <AssociationSet Name="FK__ES_User_E__UserI__5441852A" Association="Self.FK__ES_User_E__UserI__5441852A">
             <End Role="ES_User" EntitySet="ES_User" />
             <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
           </AssociationSet>
-          <EntitySet Name="ES_ExamPaper_Exercise" EntityType="ExaminationSystemDbModel.ES_ExamPaper_Exercise" />
-          <AssociationSet Name="FK__ES_ExamPa__EmPap__17F790F9" Association="ExaminationSystemDbModel.FK__ES_ExamPa__EmPap__17F790F9">
-            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
-            <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ES_ExamPap__EsId__18EBB532" Association="ExaminationSystemDbModel.FK__ES_ExamPap__EsId__18EBB532">
-            <End Role="ES_Exercise" EntitySet="ES_Exercise" />
-            <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="ES_ExamPaper_Exercise">
-          <Key>
-            <PropertyRef Name="EEId" />
-          </Key>
-          <Property Name="EEId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmPaperId" Type="Int32" />
-          <Property Name="EsId" Type="Int32" />
-          <Property Name="IsDel" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ES_ExamPaper" Relationship="ExaminationSystemDbModel.FK__ES_ExamPa__EmPap__17F790F9" FromRole="ES_ExamPaper_Exercise" ToRole="ES_ExamPaper" />
-          <NavigationProperty Name="ES_Exercise" Relationship="ExaminationSystemDbModel.FK__ES_ExamPap__EsId__18EBB532" FromRole="ES_ExamPaper_Exercise" ToRole="ES_Exercise" />
-        </EntityType>
-        <Association Name="FK__ES_ExamPa__EmPap__17F790F9">
-          <End Type="ExaminationSystemDbModel.ES_ExamPaper" Role="ES_ExamPaper" Multiplicity="0..1" />
-          <End Type="ExaminationSystemDbModel.ES_ExamPaper_Exercise" Role="ES_ExamPaper_Exercise" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ES_ExamPaper">
-              <PropertyRef Name="EmPaperId" />
-            </Principal>
-            <Dependent Role="ES_ExamPaper_Exercise">
-              <PropertyRef Name="EmPaperId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ES_ExamPap__EsId__18EBB532">
-          <End Type="ExaminationSystemDbModel.ES_Exercise" Role="ES_Exercise" Multiplicity="0..1" />
-          <End Type="ExaminationSystemDbModel.ES_ExamPaper_Exercise" Role="ES_ExamPaper_Exercise" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ES_Exercise">
-              <PropertyRef Name="EsId" />
-            </Principal>
-            <Dependent Role="ES_ExamPaper_Exercise">
-              <PropertyRef Name="EsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1043,6 +1022,16 @@
                 <ScalarProperty Name="EmPaperMultipleNum" ColumnName="EmPaperMultipleNum" />
                 <ScalarProperty Name="EmPaperScore" ColumnName="EmPaperScore" />
                 <ScalarProperty Name="EmPaperTrueScore" ColumnName="EmPaperTrueScore" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_ExamPaper_Exercise">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamPaper_Exercise">
+              <MappingFragment StoreEntitySet="ES_ExamPaper_Exercise">
+                <ScalarProperty Name="EEId" ColumnName="EEId" />
+                <ScalarProperty Name="EmPaperId" ColumnName="EmPaperId" />
+                <ScalarProperty Name="EsId" ColumnName="EsId" />
                 <ScalarProperty Name="IsDel" ColumnName="IsDel" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1222,22 +1211,11 @@
           <EntitySetMapping Name="ES_User_ExamPart">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_User_ExamPart">
               <MappingFragment StoreEntitySet="ES_User_ExamPart">
-                <ScalarProperty Name="IsJoin" ColumnName="IsJoin" />
                 <ScalarProperty Name="UEmPt" ColumnName="UEmPt" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="EmPtId" ColumnName="EmPtId" />
+                <ScalarProperty Name="IsJoin" ColumnName="IsJoin" />
                 <ScalarProperty Name="IsDel" ColumnName="IsDel" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="ExaminationSystemDbModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1258,16 +1236,6 @@
                 <ScalarProperty Name="多选题数量" ColumnName="多选题数量" />
                 <ScalarProperty Name="总分值" ColumnName="总分值" />
                 <ScalarProperty Name="得分" ColumnName="得分" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ES_ExamPaper_Exercise">
-            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamPaper_Exercise">
-              <MappingFragment StoreEntitySet="ES_ExamPaper_Exercise">
-                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
-                <ScalarProperty Name="EsId" ColumnName="EsId" />
-                <ScalarProperty Name="EmPaperId" ColumnName="EmPaperId" />
-                <ScalarProperty Name="EEId" ColumnName="EEId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

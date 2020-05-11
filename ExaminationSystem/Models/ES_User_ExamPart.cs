@@ -17,8 +17,8 @@ namespace ExaminationSystem.Models
         public int UEmPt { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<int> EmPtId { get; set; }
-        public bool IsDel { get; set; }
         public bool IsJoin { get; set; }
+        public bool IsDel { get; set; }
     
         public virtual ES_ExamPart ES_ExamPart { get; set; }
         public virtual ES_User ES_User { get; set; }

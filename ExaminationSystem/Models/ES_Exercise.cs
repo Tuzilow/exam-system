@@ -17,8 +17,8 @@ namespace ExaminationSystem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ES_Exercise()
         {
-            this.ES_Tag_Exercise = new HashSet<ES_Tag_Exercise>();
             this.ES_ExamPaper_Exercise = new HashSet<ES_ExamPaper_Exercise>();
+            this.ES_Tag_Exercise = new HashSet<ES_Tag_Exercise>();
         }
     
         public int EsId { get; set; }
@@ -26,8 +26,8 @@ namespace ExaminationSystem.Models
         public int EsSubExerciseId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ES_Tag_Exercise> ES_Tag_Exercise { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_ExamPaper_Exercise> ES_ExamPaper_Exercise { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ES_Tag_Exercise> ES_Tag_Exercise { get; set; }
     }
 }

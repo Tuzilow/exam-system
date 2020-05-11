@@ -4,43 +4,42 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2cf009ea974e4f2ca09b7b83c033475b" Name="Diagram1">
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_ExamPaper" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_ExamPart" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Exercise" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_FillAnswer" Width="1.5" PointX="13" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_FillQuestion" Width="1.5" PointX="10.75" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_JudgeQuestion" Width="1.5" PointX="12.75" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_MultipleAnswer" Width="1.5" PointX="8" PointY="12.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_MultipleQuestion" Width="1.5" PointX="5.75" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Paper_Tag" Width="1.5" PointX="10" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Permission" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Role" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Role_Permission" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_SelectQuestion" Width="1.5" PointX="12.75" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Tag" Width="1.5" PointX="7.75" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Tag_Exercise" Width="1.5" PointX="10" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_User" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_User_ExamPaper" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_User_ExamPart" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.sysdiagrams" Width="1.5" PointX="12.75" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.User_ExamPart_ExamPaper_v" Width="1.5" PointX="10.75" PointY="14.625" IsExpanded="true" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Paper___Paper__619B8048" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__EmPap__7C4F7684" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__EmPtI__5535A963" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Tag_Exe__EsId__778AC167" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_FillAns__FQId__6EF57B66" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Multipl__MQId__73BA3083" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Paper___TagId__628FA481" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Role_Pe__PmId__48CFD27E" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Role_P__RoleI__47DBAE45" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User__RoleId__4D94879B" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Tag_Ex__TagId__76969D2E" ManuallyRouted="false" />
+      <Diagram DiagramId="c5de8610ae1a4be2aeca00b2d4c227c5" Name="Diagram1">
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_ExamPaper" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_ExamPaper_Exercise" Width="1.5" PointX="10" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_ExamPart" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Exercise" Width="1.5" PointX="7.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_FillAnswer" Width="1.5" PointX="13" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_FillQuestion" Width="1.5" PointX="10.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_JudgeQuestion" Width="1.5" PointX="12.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_MultipleAnswer" Width="1.5" PointX="8" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_MultipleQuestion" Width="1.5" PointX="5.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Paper_Tag" Width="1.5" PointX="13" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Permission" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Role" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Role_Permission" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_SelectQuestion" Width="1.5" PointX="10.75" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Tag" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Tag_Exercise" Width="1.5" PointX="10" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_User" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_User_ExamPaper" Width="1.5" PointX="5.25" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_User_ExamPart" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.User_ExamPart_ExamPaper_v" Width="1.5" PointX="12.75" PointY="15" IsExpanded="true" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamPa__EmPap__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Paper___Paper__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__EmPap__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamPap__EsId__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__EmPtI__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Tag_Exe__EsId__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_FillAns__FQId__73BA3083" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Multipl__MQId__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Paper___TagId__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Role_Pe__PmId__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Role_P__RoleI__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User__RoleId__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Tag_Ex__TagId__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__UserI__49C3F6B7" ManuallyRouted="false" />
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__UserI__5441852A" ManuallyRouted="false" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__UserI__7B5B524B" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_ExamPaper_Exercise" Width="1.5" PointX="15" PointY="6.625" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamPa__EmPap__17F790F9" />
-        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamPap__EsId__18EBB532" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

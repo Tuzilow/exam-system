@@ -207,9 +207,6 @@
     <Compile Include="Models\ES_User_ExamPart.cs">
       <DependentUpon>ESModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>ESModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_ExamPart_ExamPaper_v.cs">
       <DependentUpon>ESModel.tt</DependentUpon>
     </Compile>
@@ -232,8 +229,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Models\ESModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ESModel.Context.cs</LastGenOutput>
       <DependentUpon>ESModel.edmx</DependentUpon>
+      <LastGenOutput>ESModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\ESModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

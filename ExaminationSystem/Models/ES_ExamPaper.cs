@@ -17,9 +17,9 @@ namespace ExaminationSystem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ES_ExamPaper()
         {
+            this.ES_ExamPaper_Exercise = new HashSet<ES_ExamPaper_Exercise>();
             this.ES_Paper_Tag = new HashSet<ES_Paper_Tag>();
             this.ES_User_ExamPaper = new HashSet<ES_User_ExamPaper>();
-            this.ES_ExamPaper_Exercise = new HashSet<ES_ExamPaper_Exercise>();
         }
     
         public int EmPaperId { get; set; }
@@ -33,10 +33,10 @@ namespace ExaminationSystem.Models
         public bool IsDel { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ES_ExamPaper_Exercise> ES_ExamPaper_Exercise { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_Paper_Tag> ES_Paper_Tag { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_User_ExamPaper> ES_User_ExamPaper { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ES_ExamPaper_Exercise> ES_ExamPaper_Exercise { get; set; }
     }
 }
