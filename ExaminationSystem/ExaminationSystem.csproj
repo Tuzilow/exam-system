@@ -250,6 +250,7 @@
     <Content Include="Static\images\logo.png" />
     <Content Include="Static\images\logo1.png" />
     <Content Include="Components\user-table.js" />
+    <Content Include="Static\images\xzt.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -283,6 +284,7 @@
     <Content Include="Views\Home\Message.cshtml" />
     <Content Include="Views\BackEnd\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
