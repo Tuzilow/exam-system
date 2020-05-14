@@ -72,7 +72,6 @@ namespace ExaminationSystem.Controllers
                 userList.Add(new { id, account, password, name, role });
             }
 
-            // 序列化为JSON 传递到View
             return new { users = JsonConvert.SerializeObject(userList), totalCount };
         }
 

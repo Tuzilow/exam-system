@@ -259,6 +259,87 @@
     .el-table__empty-block {
       height: 60vh;
     }
+
+    .el-slider__bar {
+      background-color: #081842;
+    }
+
+    .el-slider__button {
+      border-color: #081842;
+    }
+
+    .new-exam {
+      height: 60vh;
+    }
+
+      .new-exam .main-content {
+        margin-top: 1rem;
+        position: relative;
+      }
+
+        .new-exam .main-content .transfer {
+          position: absolute;
+          /*top: -2rem;*/
+          left: 28rem;
+          flex-direction: column;
+          height: 100%;
+        }
+
+
+        .new-exam .main-content .el-checkbox {
+          width: 70%;
+        }
+
+        .new-exam .main-content .el-transfer {
+          height: 100%;
+        }
+
+        .new-exam .main-content .el-transfer-panel .el-transfer-panel__header {
+          height: 2.2rem;
+          padding: 0.5rem;
+        }
+
+    .exam-time-slider {
+      width: 16rem;
+    }
+
+    .new-exam .el-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .new-exam .el-form-item {
+      display: flex;
+    }
+
+    .new-exam .el-form-item__label {
+      flex: 1;
+    }
+
+    .new-exam .el-form-item__content {
+      flex: 9;
+    }
+
+    .new-exam .content {
+      width: 16rem;
+    }
+
+    .new-exam .el-form-item__label {
+      padding-left: 12px;
+      padding-right: 0;
+    }
+
+    .new-exam .submit-btn {
+      width: 24rem;
+      margin-top: 1rem;
+    }
+
+      .new-exam .submit-btn .el-form-item__content {
+        display: flex;
+        justify-content: center;
+      }
   </style>
 </head>
 <body>
@@ -300,9 +381,6 @@
               <li :class="[currentTab === 'score-table' ? 'active': '' ]" @@click="changeTab('score-table')">
                 <el-button type="text" class="sub-btn">考生成绩表</el-button>
               </li>
-              <li :class="[currentTab === 'change-user-exam' ? 'active': '' ]" @@click="changeTab('change-user-exam')">
-                <el-button type="text" class="sub-btn">调整考生场次</el-button>
-              </li>
             </ul>
           </el-collapse-item>
           <el-collapse-item title="" name="2">
@@ -315,7 +393,10 @@
                 <el-button type="text" class="sub-btn">场次列表</el-button>
               </li>
               <li :class="[currentTab === 'new-exam' ? 'active': '' ]" @@click="changeTab('new-exam')">
-                <el-button type="text" class="sub-btn">添加考试</el-button>
+                <el-button type="text" class="sub-btn">添加场次</el-button>
+              </li>
+              <li :class="[currentTab === 'change-user-exam' ? 'active': '' ]" @@click="changeTab('change-user-exam')">
+                <el-button type="text" class="sub-btn">调整考生场次</el-button>
               </li>
             </ul>
           </el-collapse-item>
@@ -366,6 +447,7 @@
         <score-table class="score-component"
                      :searchkey="searchKey"
                      @@select-change="scoreSelectValueChange"
+                     @@input-change="inputTextChange"
                      v-if="currentTab === 'score-table'"></score-table>
         <new-question v-if="currentTab === 'new-question'"></new-question>
         <new-paper v-if="currentTab === 'new-paper'"></new-paper>
@@ -460,7 +542,7 @@
               this.$message.error(data.message);
             }
           });
-        })
+        });
       },
       toLogout: function () {
         console.log('logout')

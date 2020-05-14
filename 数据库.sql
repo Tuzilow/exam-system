@@ -221,25 +221,25 @@ go
 -- 8.添加、修改、删除考试信息权限
 -- 9.注册、删除出卷人账号权限
 -- 10.查看私密题库权限
--- insert into ES_Permission(PmName, PmDescribe) values('DOEXAM', '获取试卷及答题权限');
--- insert into ES_Permission(PmName, PmDescribe) values('BACKEND', '进入后台权限');
--- insert into ES_Permission(PmName, PmDescribe) values('REGISTER', '注册、删除考生账号权限');
--- insert into ES_Permission(PmName, PmDescribe) values('ISSUE', '添加试题权限');
--- insert into ES_Permission(PmName, PmDescribe) values('PAPER', '生成试卷权限');
--- insert into ES_Permission(PmName, PmDescribe) values('CANEXAM', '授权答题权限的权限');
--- insert into ES_Permission(PmName, PmDescribe) values('OPTAG', '添加、修改、删除标签权限');
--- insert into ES_Permission(PmName, PmDescribe) values('OPEMMSG', '添加、修改、删除考试信息权限');
--- insert into ES_Permission(PmName, PmDescribe) values('AUTHOR', '注册、删除出卷人账号权限');
--- insert into ES_Permission(PmName, PmDescribe) values('SECRET', '查看私密题库权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('DOEXAM', '获取试卷及答题权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('BACKEND', '进入后台权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('REGISTER', '注册、删除考生账号权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('ISSUE', '添加试题权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('PAPER', '生成试卷权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('CANEXAM', '授权答题权限的权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('OPTAG', '添加、修改、删除标签权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('OPEMMSG', '添加、修改、删除考试信息权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('AUTHOR', '注册、删除出卷人账号权限');
+ --insert into ES_Permission(PmName, PmDescribe) values('SECRET', '查看私密题库权限');
 select * from ES_Permission;
 go
 -- 角色表数据
 -- 1.考生
 -- 2.出卷人
 -- 3.管理员
--- insert into ES_Role(RoleName, RoleDescribe) values('考生', '只有答题权限');
--- insert into ES_Role(RoleName, RoleDescribe) values('出卷人', '无答题权限，默认无查看私密题库权限，无注册、删除出卷人账号权限');
--- insert into ES_Role(RoleName, RoleDescribe) values('管理员', '有全部权限');
+ --insert into ES_Role(RoleName, RoleDescribe) values('考生', '只有答题权限');
+ --insert into ES_Role(RoleName, RoleDescribe) values('出卷人', '无答题权限，默认无查看私密题库权限，无注册、删除出卷人账号权限');
+ --insert into ES_Role(RoleName, RoleDescribe) values('管理员', '有全部权限');
 select * from ES_Role;
 go
 -- 权限角色表数据

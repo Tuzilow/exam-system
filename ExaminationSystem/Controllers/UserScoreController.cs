@@ -29,8 +29,8 @@ namespace ExaminationSystem.Controllers
                 int id = exam.EmPtId;
                 string tempDate = exam.EmPtStart.GetDateTimeFormats('o')[0];
                 string date = tempDate.Substring(0, tempDate.IndexOf('T')); // 将日期转为2020-05-06
-                string start = exam.EmPtStart.TimeOfDay.ToString(); // 开始时间
-                string end = exam.EmPtEnd.TimeOfDay.ToString(); // 结束时间
+                string start = exam.EmPtStart.ToString("T"); // 开始时间
+                string end = exam.EmPtEnd.ToString("T"); // 结束时间
                 string title = start.Substring(0, start.Length - 3) + "到" + end.Substring(0, end.Length - 3) + "场";
 
                 examList.Add(new { id, date, title });
@@ -89,6 +89,8 @@ namespace ExaminationSystem.Controllers
 
                 userScoreList.Add(new { userId, name, date, title, score });
             }
+
+            // TODO 返回数据应该包含总条数
 
             return JsonConvert.SerializeObject(userScoreList);
         }

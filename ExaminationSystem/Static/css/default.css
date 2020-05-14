@@ -18,3 +18,8 @@ ol, ul, li {
 .clearfix {
     *zoom: 1;
 }
+
+.el-button--primary {
+    background-color: #081842;
+    border-color: #081842;
+}

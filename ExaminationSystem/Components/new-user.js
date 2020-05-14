@@ -56,6 +56,13 @@
     onSubmit() {
       const { account, name, password, roleId } = this.newUser;
 
+      if (account === '' || name === '' || password === '' ) {
+        return this.$alert('请检查数据是否输入完整', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        });
+      }
+
       axios.post('/BackEnd/AddUser', { account, name, password, roleId }).then(res => {
         const { data } = res;
         if (data.code == 1) {
