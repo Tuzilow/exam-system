@@ -41,6 +41,7 @@
       isShowDialog: false,
       currentScore: 2,
       currentType: 'single',
+      // 富文本编辑器设置
       editorOption: {
         placeholder: '请输入题目',
         theme: 'snow',
@@ -55,7 +56,7 @@
             handlers: {
               'image': function (value) {
                 if (value) {
-                  alert('自定义图片')
+                  document.querySelector('.image-uploader input').click();
                 } else {
                   this.quill.format('image', false);
                 }
@@ -63,14 +64,18 @@
             }
           }
         }
-      }
+      },
+      // 图片上传设置
+      serverUrl: '/Image/UpLoad',
+      isUploading: false,
+      currentEditor: 'singleEditor'
     };
   },
   template: `
        <div class="new-paper">
         <div class="main-header">添加题目</div>
-        <div class="main-content">
-           <el-tabs type="border-card">
+        <div class="main-content"  v-loading="isUploading">
+           <el-tabs type="border-card" @tab-click="changeTab">
             <el-tab-pane label="单选题">
               <el-form :model="single" class="single">
                 <el-form-item class="title-editor-wrap">
@@ -78,8 +83,18 @@
                     title="请注意将正确答案输入到指定文本框中"
                     type="warning">
                   </el-alert>
+                  <el-upload
+                    class="image-uploader"
+                    :action="serverUrl"
+                    name="img"
+                    :show-file-list="false"
+                    :on-success="uploadSuccess"
+                    :on-error="uploadError"
+                    :before-upload="beforeUpload">
+                  </el-upload>
                   <quill-editor
                     class="title-editor"
+                    ref="singleEditor"
                     :content="single.title"
                     :options="editorOption"
                     @change="onSingleChange($event)"
@@ -111,6 +126,7 @@
                   </el-alert>
                   <quill-editor
                     class="title-editor"
+                    ref="multipleEditor"
                     :content="multiple.title"
                     :options="editorOption"
                     @change="onMultipleChange($event)"
@@ -162,6 +178,7 @@
                   </el-alert>
                   <quill-editor
                     class="title-editor"
+                    ref="judgmentEditor"
                     :content="judgment.title"
                     :options="editorOption"
                     @change="onJudgmentChange($event)"
@@ -184,6 +201,7 @@
                   <el-button type="success" @click="addFillAnswer" size="mini" style="width:100%;">添加答案</el-button>
                   <quill-editor
                     class="title-editor"
+                    ref="fillEditor"
                     :content="fill.title"
                     :options="editorOption"
                     @change="onFillChange($event)"
@@ -253,6 +271,50 @@
     },
     addFillAnswer: function () {
       this.fill.answers.push('');
+    },
+    // 上传图片前
+    beforeUpload: function () {
+      this.isUploading = true;
+    },
+    // 上传图片成功
+    uploadSuccess: function (res, file) {
+      // res为图片服务器返回的数据
+      // 获取富文本组件实例
+      let quill;
+      switch (this.currentEditor) {
+        case 'singleEditor': quill = this.$refs.singleEditor.quill; break;
+        case 'multipleEditor': quill = this.$refs.multipleEditor.quill; break;
+        case 'judgmentEditor': quill = this.$refs.judgmentEditor.quill; break;
+        case 'fillEditor': quill = this.$refs.fillEditor.quill; break;
+      }
+      // 如果上传成功
+      if (res.code === 0 && res.path !== null) {
+        // 获取光标所在位置
+        let length = quill.getSelection().index;
+        // 插入图片  res.info为服务器返回的图片地址
+        quill.insertEmbed(length, 'image', res.path);
+        // 调整光标到最后
+        quill.setSelection(length + 1)
+      } else {
+        this.$message.error(res.message);
+      }
+      // loading动画消失
+      this.isUploading = false
+    },
+    // 上传图片失败
+    uploadError: function () {
+      // loading动画消失
+      this.isUploading = false
+      this.$message.error(res.message);
+    },
+    // 改变当前Editor
+    changeTab: function (val) {
+      switch (val.index) {
+        case '0': this.currentEditor = 'singleEditor'; break;
+        case '1': this.currentEditor = 'multipleEditor'; break;
+        case '2': this.currentEditor = 'judgmentEditor'; break;
+        case '3': this.currentEditor = 'fillEditor'; break;
+      }
     }
   },
 });
