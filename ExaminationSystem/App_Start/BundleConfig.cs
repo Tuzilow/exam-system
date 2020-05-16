@@ -33,7 +33,16 @@ namespace ExaminationSystem
                       "~/Content/ElementUI/element-ui.css"));
             bundles.Add(new ScriptBundle("~/bundles/axios").Include(
                       "~/Scripts/axios.js"));
+            bundles.Add(new StyleBundle("~/Content/quillcss").Include(
+                      "~/Content/quill/quill.core.css",
+                      "~/Content/quill/quill.snow.css",
+                      "~/Content/quill/quill.bubble.css"));
+            bundles.Add(new ScriptBundle("~/bundles/quill").Include(
+                      "~/Scripts/quill/quill.js"));
+            bundles.Add(new ScriptBundle("~/bundles/vue-quill").Include(
+                      "~/Scripts/vue-quill-editor.js"));
 
+            // 组件
             bundles.Add(new ScriptBundle("~/component/new-user").Include(
                       "~/Components/new-user.js"));
             bundles.Add(new ScriptBundle("~/component/user-table").Include(

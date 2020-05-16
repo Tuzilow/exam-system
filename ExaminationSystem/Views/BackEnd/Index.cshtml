@@ -6,7 +6,11 @@
 @Scripts.Render("~/bundles/vue")
 @Scripts.Render("~/bundles/element")
 @Scripts.Render("~/bundles/axios")
+@Scripts.Render("~/bundles/quill")
+@Scripts.Render("~/bundles/vue-quill")
+
 @Styles.Render("~/Content/elementcss")
+@Styles.Render("~/Content/quillcss")
 
 <!DOCTYPE html>
 
@@ -187,160 +191,20 @@
             background-color: #fff;
           }
 
-    .new-user .main-content {
-      padding-top: 1rem;
-      padding-left: 2rem;
-      width: 24rem;
-    }
 
-      .new-user .main-content .el-form-item__content {
-        display: inline-block;
-      }
-
-      .new-user .main-content input {
-        width: 18rem;
-      }
-
-      .new-user .main-content .role-wrap {
-        padding-left: 0.7rem;
-      }
-
-      .new-user .main-content .new-btn {
-        margin-left: 3.3rem;
-        background-color: #081842;
-        border-color: #081842;
-      }
-
-    .main-wrap .el-dialog {
-      width: 25rem;
-    }
-
-    .edit-user .el-form-item__label,
-    .edit-user .el-form-item__content {
-      display: inline-block;
-    }
-
-    .edit-user .el-dialog__body {
-      padding: 15px 20px;
-      padding-right: 30px;
-    }
-
-    .edit-user .el-form-item {
-      display: flex;
-    }
-
-    .edit-user .el-form-item__label {
-      flex: 1.5;
-    }
-
-    .edit-user .el-form-item__content {
-      flex: 8.5;
-    }
-
-    .score-component .search-wrap {
-      justify-content: space-between !important;
-    }
-
-    .score-select,
-    .score-select .el-input {
-      width: 12rem !important;
-    }
-
-    .score-select {
-      margin-right: 1rem;
-      margin-left: 1rem;
-    }
-
-      .score-select .el-input__inner {
-        padding-right: 10px;
-        padding-left: 10px;
+      .main-wrap .el-dialog {
+        width: 25rem;
       }
 
     .el-table__empty-block {
       height: 60vh;
     }
-
-    .el-slider__bar {
-      background-color: #081842;
-    }
-
-    .el-slider__button {
-      border-color: #081842;
-    }
-
-    .new-exam {
-      height: 60vh;
-    }
-
-      .new-exam .main-content {
-        margin-top: 1rem;
-        position: relative;
-      }
-
-        .new-exam .main-content .transfer {
-          position: absolute;
-          /*top: -2rem;*/
-          left: 28rem;
-          flex-direction: column;
-          height: 100%;
-        }
-
-
-        .new-exam .main-content .el-checkbox {
-          width: 70%;
-        }
-
-        .new-exam .main-content .el-transfer {
-          height: 100%;
-        }
-
-        .new-exam .main-content .el-transfer-panel .el-transfer-panel__header {
-          height: 2.2rem;
-          padding: 0.5rem;
-        }
-
-    .exam-time-slider {
-      width: 16rem;
-    }
-
-    .new-exam .el-form {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-    }
-
-    .new-exam .el-form-item {
-      display: flex;
-    }
-
-    .new-exam .el-form-item__label {
-      flex: 1;
-    }
-
-    .new-exam .el-form-item__content {
-      flex: 9;
-    }
-
-    .new-exam .content {
-      width: 16rem;
-    }
-
-    .new-exam .el-form-item__label {
-      padding-left: 12px;
-      padding-right: 0;
-    }
-
-    .new-exam .submit-btn {
-      width: 24rem;
-      margin-top: 1rem;
-    }
-
-      .new-exam .submit-btn .el-form-item__content {
-        display: flex;
-        justify-content: center;
-      }
   </style>
+  <link href="~/Static/css/new-user.css" rel="stylesheet" />
+  <link href="~/Static/css/edit-user.css" rel="stylesheet" />
+  <link href="~/Static/css/score-table.css" rel="stylesheet" />
+  <link href="~/Static/css/new-exam.css" rel="stylesheet" />
+  <link href="~/Static/css/new-question.css" rel="stylesheet" />
 </head>
 <body>
   <el-container id="app">
@@ -479,6 +343,7 @@
 @Scripts.Render("~/component/tag-control")
 
 <script>
+  Vue.use(VueQuillEditor);
   const vm = new Vue({
     el: '#app',
     data: {

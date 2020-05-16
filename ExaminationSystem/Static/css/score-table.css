@@ -1,0 +1,18 @@
+﻿.score-component .search-wrap {
+    justify-content: space-between !important;
+}
+
+.score-select,
+.score-select .el-input {
+    width: 12rem !important;
+}
+
+.score-select {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+    .score-select .el-input__inner {
+        padding-right: 10px;
+        padding-left: 10px;
+    }

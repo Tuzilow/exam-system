@@ -1,0 +1,21 @@
+﻿.edit-user .el-form-item__label,
+.edit-user .el-form-item__content {
+    display: inline-block;
+}
+
+.edit-user .el-dialog__body {
+    padding: 15px 20px;
+    padding-right: 30px;
+}
+
+.edit-user .el-form-item {
+    display: flex;
+}
+
+.edit-user .el-form-item__label {
+    flex: 1.5;
+}
+
+.edit-user .el-form-item__content {
+    flex: 8.5;
+}

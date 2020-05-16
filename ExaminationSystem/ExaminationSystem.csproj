@@ -170,6 +170,9 @@
     <Compile Include="Models\ES_FillQuestion.cs">
       <DependentUpon>ESModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ES_Image.cs">
+      <DependentUpon>ESModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ES_JudgeQuestion.cs">
       <DependentUpon>ESModel.tt</DependentUpon>
     </Compile>
@@ -227,6 +230,9 @@
     <Content Include="Components\score-table.js" />
     <Content Include="Components\tag-control.js" />
     <Content Include="Content\ElementUI\element-ui.css" />
+    <Content Include="Content\quill\quill.bubble.css" />
+    <Content Include="Content\quill\quill.core.css" />
+    <Content Include="Content\quill\quill.snow.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -244,9 +250,18 @@
     <Content Include="Scripts\axios.min.js" />
     <Content Include="Scripts\ElementUI\element-ui.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\quill\quill.core.js" />
+    <Content Include="Scripts\quill\quill.js" />
+    <Content Include="Scripts\quill\quill.min.js" />
+    <Content Include="Scripts\vue-quill-editor.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Static\css\default.css" />
+    <Content Include="Static\css\edit-user.css" />
+    <Content Include="Static\css\new-exam.css" />
+    <Content Include="Static\css\new-question.css" />
+    <Content Include="Static\css\new-user.css" />
+    <Content Include="Static\css\score-table.css" />
     <Content Include="Static\images\logo.png" />
     <Content Include="Static\images\logo1.png" />
     <Content Include="Components\user-table.js" />
@@ -286,6 +301,7 @@
     <Content Include="Views\Home\Message.cshtml" />
     <Content Include="Views\BackEnd\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Scripts\quill\quill.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

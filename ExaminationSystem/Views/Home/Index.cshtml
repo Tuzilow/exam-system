@@ -131,7 +131,7 @@
       </el-menu>
     </el-header>
     <el-main class="el-main">
-      <el-calendar class="calendar" v-model="thisDay" first-day-of-week=7>
+      <el-calendar class="calendar" v-model="thisDay" :first-day-of-week="7">
         <template slot="dateCell" slot-scope="{date, data}">
 
           <div style="display:flex;justify-content:start;">

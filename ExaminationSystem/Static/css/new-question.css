@@ -1,0 +1,63 @@
+﻿.title-editor-wrap {
+    height: 6rem;
+    margin-bottom: 6rem;
+}
+
+.title-editor {
+    margin-top: 0.5rem;
+}
+
+.new-paper .answers {
+    display: flex;
+    flex-direction: row;
+}
+
+.new-paper .submit-btn {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.new-paper .answers .el-form-item__label {
+    width: 5rem;
+    text-align: center;
+}
+
+.new-paper .true-answer .el-form-item__label {
+    color: #67C23A;
+}
+
+.new-paper .false-answer .el-form-item__label {
+    color: #F56C6C;
+}
+
+.new-paper .answers .el-form-item__content {
+    flex: 10;
+}
+
+.new-paper .el-dialog__body {
+    text-align: center;
+}
+
+.new-paper .score-change {
+    margin-top: 0.5rem;
+}
+
+    .new-paper .score-change .el-input-number__decrease,
+    .new-paper .score-change .el-input-number__increase {
+        height: 95% !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+.new-paper .multiple .answers {
+    margin-bottom: 0.5rem;
+}
+
+.new-paper .multiple .el-checkbox {
+    margin-right: 1rem;
+}
+
+    .new-paper .multiple .el-checkbox.is-bordered + .el-checkbox.is-bordered {
+        margin-left: 0;
+    }

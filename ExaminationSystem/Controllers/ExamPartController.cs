@@ -247,6 +247,13 @@ namespace ExaminationSystem.Controllers
             }
         }
 
+        /// <summary>
+        /// 获取考生
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="keyword"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public object GetUsers(int pageIndex, string keyword = "", int pageSize = 10)
         {
             var users = from u in db.ES_User
@@ -289,6 +296,12 @@ namespace ExaminationSystem.Controllers
             return JsonConvert.SerializeObject(new { userInfo, totalCount });
         }
 
+        /// <summary>
+        /// 更改场次
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="partId"></param>
+        /// <returns></returns>
         [HttpPost]
         public string ChangeUserPart(int userId, int partId)
         {

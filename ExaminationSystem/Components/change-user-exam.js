@@ -72,6 +72,14 @@
 
         // 判断场次是否获取完成
         this.isLoading = this.isPartLoading === true;
+        if (this.isLoading === true) {
+          let loadTimer = setInterval(() => {
+            this.isLoading = this.isPartLoading === true;
+            if (this.isLoading === false) {
+              clearInterval(loadTimer);
+            }
+          }, 500);
+        }
       });
     },
     // 获取场次

@@ -317,3 +317,23 @@ go
 --where u.RoleId = 1 and u.IsDel = 0;
 select * from User_ExamPart_ExamPaper_v;
 go
+
+-- ÃÌº”Õº∆¨±Ì
+if not exists (select * from sysobjects where name='ES_Image')
+	create table ES_Image (
+		ImgId int primary key identity(1,1),
+		ImgTitle nvarchar(128) not null,
+		ImgUrl varchar(256) not null,
+		ImgOther varchar(256)
+	);
+go
+
+alter table ES_Exercise add ImgId int foreign key references ES_Image(ImgId);
+go
+alter table ES_SelectQuestion alter column SQTitle nvarchar(512);
+go
+alter table ES_JudgeQuestion alter column JQTitle nvarchar(512);
+go
+alter table ES_FillQuestion alter column FQTitle nvarchar(512);
+go
+alter table ES_MultipleQuestion alter column MQTitle nvarchar(512);

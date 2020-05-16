@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ExaminationSystemDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ExaminationSystemDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ES_ExamPaper">
           <Key>
             <PropertyRef Name="EmPaperId" />
@@ -44,6 +44,7 @@
           <Property Name="EsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EsType" Type="nchar" MaxLength="3" Nullable="false" />
           <Property Name="EsSubExerciseId" Type="int" Nullable="false" />
+          <Property Name="ImgId" Type="int" />
         </EntityType>
         <EntityType Name="ES_FillAnswer">
           <Key>
@@ -59,15 +60,24 @@
             <PropertyRef Name="FQId" />
           </Key>
           <Property Name="FQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FQTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="FQTitle" Type="nvarchar" MaxLength="512" />
           <Property Name="FQScore" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ES_Image">
+          <Key>
+            <PropertyRef Name="ImgId" />
+          </Key>
+          <Property Name="ImgId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImgTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ImgUrl" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="ImgOther" Type="varchar" MaxLength="256" />
         </EntityType>
         <EntityType Name="ES_JudgeQuestion">
           <Key>
             <PropertyRef Name="JQId" />
           </Key>
           <Property Name="JQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="JQTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="JQTitle" Type="nvarchar" MaxLength="512" />
           <Property Name="JQTrueAns" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="JQFalseAns" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="JQScore" Type="int" Nullable="false" />
@@ -85,7 +95,7 @@
             <PropertyRef Name="MQId" />
           </Key>
           <Property Name="MQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="MQTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="MQTitle" Type="nvarchar" MaxLength="512" />
           <Property Name="MQAns1" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="MQAns2" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="MQAns3" Type="nvarchar" MaxLength="64" Nullable="false" />
@@ -138,7 +148,7 @@
             <PropertyRef Name="SQId" />
           </Key>
           <Property Name="SQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SQTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SQTitle" Type="nvarchar" MaxLength="512" />
           <Property Name="SQTrueAns" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="SQAns1" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="SQAns2" Type="nvarchar" MaxLength="64" Nullable="false" />
@@ -239,6 +249,18 @@
             </Principal>
             <Dependent Role="ES_ExamPaper_Exercise">
               <PropertyRef Name="EsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_Exerci__ImgId__02FC7413">
+          <End Role="ES_Image" Type="Self.ES_Image" Multiplicity="0..1" />
+          <End Role="ES_Exercise" Type="Self.ES_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Image">
+              <PropertyRef Name="ImgId" />
+            </Principal>
+            <Dependent Role="ES_Exercise">
+              <PropertyRef Name="ImgId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -405,6 +427,7 @@
           <EntitySet Name="ES_Exercise" EntityType="Self.ES_Exercise" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_FillAnswer" EntityType="Self.ES_FillAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_FillQuestion" EntityType="Self.ES_FillQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ES_Image" EntityType="Self.ES_Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_JudgeQuestion" EntityType="Self.ES_JudgeQuestion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_MultipleAnswer" EntityType="Self.ES_MultipleAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_MultipleQuestion" EntityType="Self.ES_MultipleQuestion" Schema="dbo" store:Type="Tables" />
@@ -443,6 +466,10 @@
           <AssociationSet Name="FK__ES_ExamPap__EsId__656C112C" Association="Self.FK__ES_ExamPap__EsId__656C112C">
             <End Role="ES_Exercise" EntitySet="ES_Exercise" />
             <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_Exerci__ImgId__02FC7413" Association="Self.FK__ES_Exerci__ImgId__02FC7413">
+            <End Role="ES_Image" EntitySet="ES_Image" />
+            <End Role="ES_Exercise" EntitySet="ES_Exercise" />
           </AssociationSet>
           <AssociationSet Name="FK__ES_FillAns__FQId__73BA3083" Association="Self.FK__ES_FillAns__FQId__73BA3083">
             <End Role="ES_FillQuestion" EntitySet="ES_FillQuestion" />
@@ -497,8 +524,7 @@
             <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExaminationSystemDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -549,6 +575,8 @@
           <Property Name="EsSubExerciseId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="Self.FK__ES_ExamPap__EsId__656C112C" FromRole="ES_Exercise" ToRole="ES_ExamPaper_Exercise" />
           <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Exe__EsId__6A30C649" FromRole="ES_Exercise" ToRole="ES_Tag_Exercise" />
+          <Property Name="ImgId" Type="Int32" />
+          <NavigationProperty Name="ES_Image" Relationship="ExaminationSystemDbModel.FK__ES_Exerci__ImgId__02FC7413" FromRole="ES_Exercise" ToRole="ES_Image" />
         </EntityType>
         <EntityType Name="ES_FillAnswer">
           <Key>
@@ -565,7 +593,7 @@
             <PropertyRef Name="FQId" />
           </Key>
           <Property Name="FQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FQTitle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="FQScore" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ES_FillAnswer" Relationship="Self.FK__ES_FillAns__FQId__73BA3083" FromRole="ES_FillQuestion" ToRole="ES_FillAnswer" />
         </EntityType>
@@ -574,7 +602,7 @@
             <PropertyRef Name="JQId" />
           </Key>
           <Property Name="JQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="JQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JQTitle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="JQTrueAns" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="JQFalseAns" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="JQScore" Type="Int32" Nullable="false" />
@@ -593,7 +621,7 @@
             <PropertyRef Name="MQId" />
           </Key>
           <Property Name="MQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQTitle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="MQAns1" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MQAns2" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MQAns3" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
@@ -654,7 +682,7 @@
             <PropertyRef Name="SQId" />
           </Key>
           <Property Name="SQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SQTitle" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SQTitle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="SQTrueAns" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SQAns1" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SQAns2" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
@@ -1004,7 +1032,34 @@
             <End Role="ES_User" EntitySet="ES_User" />
             <End Role="ES_User_ExamPaper" EntitySet="ES_User_ExamPaper" />
           </AssociationSet>
+          <EntitySet Name="ES_Image" EntityType="ExaminationSystemDbModel.ES_Image" />
+          <AssociationSet Name="FK__ES_Exerci__ImgId__02FC7413" Association="ExaminationSystemDbModel.FK__ES_Exerci__ImgId__02FC7413">
+            <End Role="ES_Image" EntitySet="ES_Image" />
+            <End Role="ES_Exercise" EntitySet="ES_Exercise" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ES_Image">
+          <Key>
+            <PropertyRef Name="ImgId" />
+          </Key>
+          <Property Name="ImgId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImgTitle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ImgUrl" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="ImgOther" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ES_Exercise" Relationship="ExaminationSystemDbModel.FK__ES_Exerci__ImgId__02FC7413" FromRole="ES_Image" ToRole="ES_Exercise" />
+        </EntityType>
+        <Association Name="FK__ES_Exerci__ImgId__02FC7413">
+          <End Type="ExaminationSystemDbModel.ES_Image" Role="ES_Image" Multiplicity="0..1" />
+          <End Type="ExaminationSystemDbModel.ES_Exercise" Role="ES_Exercise" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_Image">
+              <PropertyRef Name="ImgId" />
+            </Principal>
+            <Dependent Role="ES_Exercise">
+              <PropertyRef Name="ImgId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1049,6 +1104,7 @@
           <EntitySetMapping Name="ES_Exercise">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Exercise">
               <MappingFragment StoreEntitySet="ES_Exercise">
+                <ScalarProperty Name="ImgId" ColumnName="ImgId" />
                 <ScalarProperty Name="EsId" ColumnName="EsId" />
                 <ScalarProperty Name="EsType" ColumnName="EsType" />
                 <ScalarProperty Name="EsSubExerciseId" ColumnName="EsSubExerciseId" />
@@ -1236,6 +1292,16 @@
                 <ScalarProperty Name="多选题数量" ColumnName="多选题数量" />
                 <ScalarProperty Name="总分值" ColumnName="总分值" />
                 <ScalarProperty Name="得分" ColumnName="得分" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_Image">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Image">
+              <MappingFragment StoreEntitySet="ES_Image">
+                <ScalarProperty Name="ImgOther" ColumnName="ImgOther" />
+                <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+                <ScalarProperty Name="ImgTitle" ColumnName="ImgTitle" />
+                <ScalarProperty Name="ImgId" ColumnName="ImgId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

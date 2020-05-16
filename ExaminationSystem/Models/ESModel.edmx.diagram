@@ -40,6 +40,8 @@
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Tag_Ex__TagId__693CA210" ManuallyRouted="false" />
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__UserI__49C3F6B7" ManuallyRouted="false" />
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__UserI__5441852A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Image" Width="1.5" PointX="5.5" PointY="2" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Exerci__ImgId__02FC7413" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

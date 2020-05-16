@@ -1,0 +1,23 @@
+﻿.new-user .main-content {
+    padding-top: 1rem;
+    padding-left: 2rem;
+    width: 24rem;
+}
+
+    .new-user .main-content .el-form-item__content {
+        display: inline-block;
+    }
+
+    .new-user .main-content input {
+        width: 18rem;
+    }
+
+    .new-user .main-content .role-wrap {
+        padding-left: 0.7rem;
+    }
+
+    .new-user .main-content .new-btn {
+        margin-left: 3.3rem;
+        background-color: #081842;
+        border-color: #081842;
+    }
