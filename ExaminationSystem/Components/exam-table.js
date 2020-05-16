@@ -3,13 +3,13 @@
   },
   data() {
     return {
-      exams: [
-        { id: 1, date: '2020-05-14', start: '08:00', end: '10:00' }
-      ],
+      exams: [],
       totalNum: 1,
       currentPage: 1,
       users: [],
-      isShowStudent: false
+      isShowStudent: false,
+      isLoading: true,
+      userLoading: true
     }
   },
   template: `
@@ -21,7 +21,7 @@
               数据按照日期倒序排列
             </div>
           </div>
-          <el-table :data="exams">
+          <el-table :data="exams" v-loading="isLoading">
             <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="date" label="日期"></el-table-column>
             <el-table-column prop="start" label="开始时间"></el-table-column>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <el-dialog title="考生一览" :visible="isShowStudent" @close="isShowStudent = false">
-          <el-table :data="users">
+          <el-table :data="users" v-loading="userLoading">
             <el-table-column prop="userId" label="ID"></el-table-column>
             <el-table-column prop="account" label="账号"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
@@ -49,23 +49,27 @@
     `,
   methods: {
     getExamParts: function () {
+      this.isLoading = true;
       axios.get('/ExamPart/GetExamPart', { params: { pageIndex: this.currentPage } }).then(res => {
         let { data } = res;
         let count = data.slice(data.length - 1);
 
         this.exams = data.slice(0, data.length - 1);
         this.totalNum = count[0];
+        this.isLoading = false;
       });
     },
     onChangePage: function (val) {
       this.currentPage = val;
     },
     showAllStu: function (id) {
+      this.userLoading = true;
       axios.get('/ExamPart/GetUserByExamPart', { params: { id } }).then(res => {
         this.users = res.data;
       });
 
       this.isShowStudent = true;
+      this.userLoading = false;
     },
     remove: function (id) {
       this.$confirm('此操作将删除该记录, 是否继续?', '提示', {

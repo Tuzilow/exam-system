@@ -10,13 +10,14 @@
         time: 120
       },
       users: [],
-      selectUsers: []
+      selectUsers: [],
+      isLoading: true
     }
   },
   template: `
        <div class="new-exam">
         <div class="main-header">添加场次</div>
-        <div class="main-content">
+        <div class="main-content"  v-loading="isLoading">
           <el-form :model="exam"  label-position="left" class="form">
             <el-form-item label="日期" prop="date">
               <el-date-picker
@@ -91,11 +92,13 @@
       let startTime = new Date(date.toLocaleDateString() + ' ' + start.getHours() + ':' + start.getMinutes() + ':' + start.getSeconds()).getTime();
       let endTime = new Date(date.toLocaleDateString() + ' ' + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds()).getTime();
 
+      this.isLoading = true;
       axios.post('/ExamPart/CreateNewPart', {
         start: startTime,
         end: endTime,
         userIds
       }).then(res => {
+        this.isLoading = false;
         const { data } = res;
         if (data.code === 1) {
           return this.$message.error(data.message);
@@ -111,9 +114,11 @@
     },
     // 获取可选考生
     getUser: function () {
+      this.isLoading = true;
       axios.get('/ExamPart/GetUser').then(res => {
         this.users = res.data;
-      })
+        this.isLoading = false;
+      });
     }
   },
   created() {

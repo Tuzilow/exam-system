@@ -11,9 +11,7 @@
   },
   data() {
     return {
-      userScore: [
-        { userId: 9999, name: '暂无数据', date: '暂无数据', exam: '暂无数据', score: 100 },
-      ],
+      userScore: [],
       examParts: [],
       totalNumToScore: 1,
       currentPage: 1

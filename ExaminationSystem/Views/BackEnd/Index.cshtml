@@ -442,7 +442,8 @@
                     @@input-change="inputTextChange"
                     @@search="searchByKeyword"
                     @@remove="removeOne"
-                    @@is-insert="refresh(currentPage)"></user-table>
+                    @@is-insert="refresh(currentPage)"
+                    v-loading="isLoading"></user-table>
         <new-user v-if="currentTab === 'new-user'" @@is-insert="refresh"></new-user>
         <score-table class="score-component"
                      :searchkey="searchKey"
@@ -453,7 +454,9 @@
         <new-paper v-if="currentTab === 'new-paper'"></new-paper>
         <new-exam v-if="currentTab === 'new-exam'"></new-exam>
         <exam-table v-if="currentTab === 'exam-table'"></exam-table>
-        <change-user-exam v-if="currentTab === 'change-user-exam'"></change-user-exam>
+        <change-user-exam v-if="currentTab === 'change-user-exam'"
+                          @@input-change="inputTextChange"
+                          :searchkey="searchKey"></change-user-exam>
         <tag-control v-if="currentTab === 'tag-control'"></tag-control>
         <question-table v-if="currentTab === 'question-table'"></question-table>
         <paper-table v-if="currentTab === 'paper-table'"></paper-table>
@@ -487,7 +490,7 @@
       totalNum: 100,
       currentPage: 1,
       loginUser: '',
-
+      isLoading: true
     },
     methods: {
       // 切换组件
@@ -504,12 +507,14 @@
       },
       // 更新用户列表
       updateUserList: function (pageIndex, keyword) {
+        this.isLoading = true;
         axios.get('/BackEnd/UserTableChange', {
           params: {
             pageIndex,
             keyword
           }
         }).then(res => {
+          this.isLoading = false;
           data = JSON.parse(
             JSON.parse(JSON.stringify(res.data)
               .replace(/=/g, ':')
@@ -565,6 +570,7 @@
       }
     },
     created() {
+      this.isLoading = false;
       this.users = JSON.parse(@Html.Raw(Json.Encode(ViewBag.Users)));
       this.totalNum = @ViewBag.TotalNum;
       this.totalNumToScore = 1;

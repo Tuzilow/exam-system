@@ -22,13 +22,14 @@
           { required: true, message: '请输入姓名', trigger: 'blur' },
           { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      isLoading: true
     }
   },
   template: `
       <div class="new-user">
         <div class="main-header">添加用户</div>
-        <div class="main-content">
+        <div class="main-content" v-loading="isLoading">
           <el-form :model="newUser" :rules="rules" label-position="right">
             <el-form-item label="账号" prop="account">
               <el-input v-model="newUser.account"></el-input>
@@ -63,7 +64,9 @@
         });
       }
 
+      this.isLoading = true;
       axios.post('/BackEnd/AddUser', { account, name, password, roleId }).then(res => {
+        this.isLoading = false;
         const { data } = res;
         if (data.code == 1) {
           return this.$message.error(data.message);

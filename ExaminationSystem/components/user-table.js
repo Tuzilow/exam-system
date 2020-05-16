@@ -36,7 +36,8 @@
           { required: true, message: '请输入姓名', trigger: 'blur' },
           { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      isLoading: true
     }
   },
   template: `
