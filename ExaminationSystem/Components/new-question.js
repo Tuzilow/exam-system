@@ -45,13 +45,23 @@
         placeholder: '请输入题目',
         theme: 'snow',
         modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'header': [1, 2, 3, false] }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['image']
-          ]
+          toolbar: {
+            container:
+              [['bold', 'italic', 'underline', 'strike'],
+              [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+              [{ 'header': [1, 2, 3, false] }],
+              [{ 'color': [] }, { 'background': [] }],
+              ['image']],
+            handlers: {
+              'image': function (value) {
+                if (value) {
+                  alert('自定义图片')
+                } else {
+                  this.quill.format('image', false);
+                }
+              }
+            }
+          }
         }
       }
     };
