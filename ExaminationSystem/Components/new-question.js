@@ -68,7 +68,14 @@
       // 图片上传设置
       serverUrl: '/Image/UpLoad',
       isUploading: false,
-      currentEditor: 'singleEditor'
+      currentEditor: 'singleEditor',
+      tags: [
+        { id: 1, name: '123' },
+        { id: 2, name: 'a' },
+        { id: 3, name: 's' },
+        { id: 4, name: 'c' },
+      ],
+      selTags: [] // 选中标签
     };
   },
   template: `
@@ -197,10 +204,14 @@
             </el-tab-pane>
             <el-tab-pane label="填空题">
               <el-form :model="fill" class="fill">
-                <el-form-item class="title-editor-wrap">
+                <el-form-item class="title-editor-wrap fill-editor-wrap">
+                  <el-alert
+                    title="请手动在题目中留下填写答案的位置，同时请按照正确答案的顺序设置答案。新增的答案框不能删除，请谨慎添加！！！"
+                    type="warning">
+                  </el-alert>
                   <el-button type="success" @click="addFillAnswer" size="mini" style="width:100%;">添加答案</el-button>
                   <quill-editor
-                    class="title-editor"
+                    class="title-editor fill-editor"
                     ref="fillEditor"
                     :content="fill.title"
                     :options="editorOption"
@@ -218,17 +229,27 @@
           </el-tabs>
         </div>
         <el-dialog
-          title="确认分数"
+          title="确认分数并选择标签"
           :visible="isShowDialog"
           @close="isShowDialog = false">
           <el-alert
             title="为保证同类型题目分数相同，请尽量不要修改分数"
             type="error">
           </el-alert>
-          <el-input-number v-model="currentScore" @change="scoreChange" :min="1" :max="10" class="score-change"></el-input-number>
+          <div class="submit-dialog">
+            <el-input-number v-model="currentScore" @change="scoreChange" :min="1" :max="10" class="score-change"></el-input-number>
+            <el-select v-model="selTags" filterable multiple placeholder="请选择标签" class="select-tag">
+              <el-option
+                v-for="item in tags"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="isShowDialog = false">取 消</el-button>
-            <el-button type="primary" @click="onSubmit">确定分数并提交</el-button>
+            <el-button type="primary" @click="onSubmit">提 交</el-button>
           </span>
         </el-dialog>
       </div>
@@ -257,6 +278,7 @@
     onSubmit: function () {
 
     },
+    // 获取题目
     onSingleChange: function (val) {
       this.single.title = val.html;
     },
@@ -269,6 +291,7 @@
     onFillChange: function (val) {
       this.fill.title = val.html;
     },
+    // 添加填空题答案
     addFillAnswer: function () {
       this.fill.answers.push('');
     },
@@ -315,6 +338,18 @@
         case '2': this.currentEditor = 'judgmentEditor'; break;
         case '3': this.currentEditor = 'fillEditor'; break;
       }
+    },
+    // 获得全部标签
+    getTags: function () {
+      this.isLoading = true;
+      axios.get('/Tag/GetTags').then(res => {
+        this.tags = res.data;
+        this.totalNum = res.data.length || 0;
+        this.isLoading = false;
+      });
     }
   },
+  created() {
+    this.getTags();
+  }
 });

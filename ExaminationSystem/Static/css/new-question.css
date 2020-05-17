@@ -7,6 +7,10 @@
     margin-top: 0.5rem;
 }
 
+.fill-editor-wrap {
+    margin-bottom: 8rem !important;
+}
+
 .new-paper .answers {
     display: flex;
     flex-direction: row;
@@ -38,7 +42,8 @@
     text-align: center;
 }
 
-.new-paper .score-change {
+.new-paper .score-change,
+.new-paper .select-tag {
     margin-top: 0.5rem;
 }
 
@@ -61,3 +66,10 @@
     .new-paper .multiple .el-checkbox.is-bordered + .el-checkbox.is-bordered {
         margin-left: 0;
     }
+
+
+.submit-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
