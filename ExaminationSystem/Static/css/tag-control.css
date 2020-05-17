@@ -1,0 +1,11 @@
+﻿.el-tag, .add-tag {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tag-cloud {
+    border: 1px solid #dfe6ec;
+    padding: 0.5rem;
+    padding-bottom: 0;
+    margin-bottom: 0.5rem;
+}

@@ -134,6 +134,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\UserScoreController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -263,6 +264,7 @@
     <Content Include="Static\css\new-question.css" />
     <Content Include="Static\css\new-user.css" />
     <Content Include="Static\css\score-table.css" />
+    <Content Include="Static\css\tag-control.css" />
     <Content Include="Static\images\logo.png" />
     <Content Include="Static\images\logo1.png" />
     <Content Include="Components\user-table.js" />
@@ -285,6 +287,7 @@
     <Folder Include="Views\Default\" />
     <Folder Include="Views\ExamPart\" />
     <Folder Include="Views\Image\" />
+    <Folder Include="Views\Tag\" />
     <Folder Include="Views\UserScore\" />
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,7 @@ namespace ExaminationSystem.Models
         public string ImgTitle { get; set; }
         public string ImgUrl { get; set; }
         public string ImgOther { get; set; }
+        public bool IsDel { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_Exercise> ES_Exercise { get; set; }

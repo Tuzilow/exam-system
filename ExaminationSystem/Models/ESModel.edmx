@@ -71,6 +71,7 @@
           <Property Name="ImgTitle" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ImgUrl" Type="varchar" MaxLength="256" Nullable="false" />
           <Property Name="ImgOther" Type="varchar" MaxLength="256" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_JudgeQuestion">
           <Key>
@@ -1047,6 +1048,7 @@
           <Property Name="ImgUrl" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="ImgOther" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ES_Exercise" Relationship="ExaminationSystemDbModel.FK__ES_Exerci__ImgId__02FC7413" FromRole="ES_Image" ToRole="ES_Exercise" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK__ES_Exerci__ImgId__02FC7413">
           <End Type="ExaminationSystemDbModel.ES_Image" Role="ES_Image" Multiplicity="0..1" />
@@ -1298,6 +1300,7 @@
           <EntitySetMapping Name="ES_Image">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Image">
               <MappingFragment StoreEntitySet="ES_Image">
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
                 <ScalarProperty Name="ImgOther" ColumnName="ImgOther" />
                 <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
                 <ScalarProperty Name="ImgTitle" ColumnName="ImgTitle" />

@@ -337,3 +337,7 @@ go
 alter table ES_FillQuestion alter column FQTitle nvarchar(512);
 go
 alter table ES_MultipleQuestion alter column MQTitle nvarchar(512);
+go
+alter table ES_Image add constraint UQ_Title unique(ImgTitle);
+go
+alter table ES_Image add IsDel bit not null default(0);

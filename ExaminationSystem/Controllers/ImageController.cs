@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 
@@ -30,8 +31,9 @@ namespace ExaminationSystem.Controllers
                     string fileName = f.FileName;
                     // 获取后缀
                     string fileFormat = fileName.Split('.')[fileName.Split('.').Length - 1];
-                    // 以时间戳命名存储
-                    string saveName = TimeHelper.GetTimeStamp() + '.' + fileFormat;
+                    // guid命名存储
+                    string guid = Guid.NewGuid().ToString();
+                    string saveName = guid + '.' + fileFormat;
                     string path = Path.Combine(dir + saveName);
                     f.SaveAs(path);
                     path = "/" + imageStr + saveName;
@@ -39,8 +41,9 @@ namespace ExaminationSystem.Controllers
                     // 存入数据库
                     ES_Image imageData = new ES_Image()
                     {
-                        ImgTitle = fileName,
-                        ImgUrl = path
+                        ImgTitle = guid,
+                        ImgUrl = path,
+                        ImgOther = fileName
                     };
                     db.ES_Image.Add(imageData);
                     if (db.SaveChanges() > 0)
