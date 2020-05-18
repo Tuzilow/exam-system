@@ -294,10 +294,9 @@
       let tagsId = this.selTags;
       submitData = { ...submitData, tagsId };
 
-      console.log(submitData)
       switch (this.currentType) {
         case 'single': this.addSingle(submitData); break;
-        case 'multiple': break;
+        case 'multiple': this.addMultiple(submitData); break;
         case 'judgment': break;
         case 'fill': break;
       }
@@ -401,10 +400,10 @@
       }
 
       let newSels = trueSels.map((item) => {
-        item.replace('选项', 'MQAns');
+        return item.replace('选项', 'MQAns');
       });
 
-      return { title, MQAns1, MQAns2, MQAns3, MQAns4, MQAns5, MQAns6, MQAns7, newSels, score };
+      return { title, answers: [MQAns1, MQAns2, MQAns3, MQAns4, MQAns5, MQAns6, MQAns7], trueSels: newSels, score };
     },
     // 获取判断
     getJudgment: function () {
@@ -453,6 +452,35 @@
           sel2: '',
           sel3: '',
           trueSel: '',
+          score: 2
+        };
+        this.selTags = [];
+        this.isShowDialog = false;
+        return this.$message({
+          message: data.message,
+          type: 'success'
+        });
+      });
+    },
+    // 添加多选题
+    addMultiple: function (data) {
+      axios.post('/Question/AddMultiple', { ...data }).then(res => {
+        this.isSubmitLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+
+        this.multiple = {
+          title: '',
+          MQAns1: '',
+          MQAns2: '',
+          MQAns3: '',
+          MQAns4: '',
+          MQAns5: '',
+          MQAns6: '',
+          MQAns7: '',
+          trueSels: ['选项1', '选项2'],
           score: 2
         };
         this.selTags = [];
