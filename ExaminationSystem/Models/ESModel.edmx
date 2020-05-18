@@ -101,9 +101,9 @@
           <Property Name="MQAns2" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="MQAns3" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="MQAns4" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="MQAns5" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="MQAns6" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="MQAns7" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="MQAns5" Type="nvarchar" MaxLength="64" />
+          <Property Name="MQAns6" Type="nvarchar" MaxLength="64" />
+          <Property Name="MQAns7" Type="nvarchar" MaxLength="64" />
           <Property Name="MQScore" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_Paper_Tag">
@@ -154,7 +154,7 @@
           <Property Name="SQAns1" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="SQAns2" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="SQAns3" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="SQAns4" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="SQAns4" Type="nvarchar" MaxLength="64" />
           <Property Name="SQScore" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_Tag">
@@ -627,9 +627,9 @@
           <Property Name="MQAns2" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MQAns3" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MQAns4" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MQAns5" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MQAns6" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MQAns7" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MQAns5" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="MQAns6" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="MQAns7" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="MQScore" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ES_MultipleAnswer" Relationship="Self.FK__ES_Multipl__MQId__787EE5A0" FromRole="ES_MultipleQuestion" ToRole="ES_MultipleAnswer" />
         </EntityType>
@@ -688,7 +688,7 @@
           <Property Name="SQAns1" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SQAns2" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SQAns3" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SQAns4" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SQAns4" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="SQScore" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_Tag">

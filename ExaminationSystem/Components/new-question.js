@@ -9,7 +9,7 @@
         sel1: '',
         sel2: '',
         sel3: '',
-        tureSel: '', // 正确答案
+        trueSel: '', // 正确答案
         score: 2
       },
       // 多选题
@@ -75,7 +75,8 @@
         { id: 3, name: 's' },
         { id: 4, name: 'c' },
       ],
-      selTags: [] // 选中标签
+      selTags: [], // 选中标签
+      isSubmitLoading: false
     };
   },
   template: `
@@ -108,7 +109,7 @@
                   />
                 </el-form-item>
                 <el-form-item label="正确选项" class="answers true-answer">
-                  <el-input v-model="single.tureSel"></el-input>
+                  <el-input v-model="single.trueSel"></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项1" class="answers false-answer">
                   <el-input v-model="single.sel1"></el-input>
@@ -120,7 +121,7 @@
                   <el-input v-model="single.sel3"></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="showScore('single')">提交</el-button>
+                  <el-button type="primary" @click="showScore('single')">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -172,7 +173,7 @@
                   </el-checkbox-group>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="showScore('multiple')">提交</el-button>
+                  <el-button type="primary" @click="showScore('multiple')">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -198,7 +199,7 @@
                   <el-input v-model="judgment.falseSel"></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="showScore('judgment')">提交</el-button>
+                  <el-button type="primary" @click="showScore('judgment')">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -222,7 +223,7 @@
                   <el-input v-model="fill.answers[index]"></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="showScore('fill')">提交</el-button>
+                  <el-button type="primary" @click="showScore('fill')">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -231,7 +232,8 @@
         <el-dialog
           title="确认分数并选择标签"
           :visible="isShowDialog"
-          @close="isShowDialog = false">
+          @close="isShowDialog = false"
+          v-loading="isSubmitLoading">
           <el-alert
             title="为保证同类型题目分数相同，请尽量不要修改分数"
             type="error">
@@ -255,8 +257,10 @@
       </div>
     `,
   methods: {
+    // 显示修改分数界面
     showScore: function (type) {
       this.currentType = type;
+
       let score;
       switch (type) {
         case 'single': score = this.single.score; break;
@@ -267,6 +271,7 @@
       this.currentScore = score;
       this.isShowDialog = true;
     },
+    // 切换tab时切换分数
     scoreChange: function (val) {
       switch (this.currentType) {
         case 'single': this.single.score = val; break;
@@ -276,6 +281,26 @@
       }
     },
     onSubmit: function () {
+      this.isSubmitLoading = true;
+      // 获取要提交的数据
+      let submitData;
+      switch (this.currentType) {
+        case 'single': submitData = this.getSingle(); break;
+        case 'multiple': submitData = this.getMultiple(); break;
+        case 'judgment': submitData = this.getJudgment(); break;
+        case 'fill': submitData = this.getFill(); break;
+      }
+      // 获取选中的标签
+      let tagsId = this.selTags;
+      submitData = { ...submitData, tagsId };
+
+      console.log(submitData)
+      switch (this.currentType) {
+        case 'single': this.addSingle(submitData); break;
+        case 'multiple': break;
+        case 'judgment': break;
+        case 'fill': break;
+      }
 
     },
     // 获取题目
@@ -332,6 +357,7 @@
     },
     // 改变当前Editor
     changeTab: function (val) {
+      this.selTags = [];
       switch (val.index) {
         case '0': this.currentEditor = 'singleEditor'; break;
         case '1': this.currentEditor = 'multipleEditor'; break;
@@ -346,6 +372,95 @@
         this.tags = res.data;
         this.totalNum = res.data.length || 0;
         this.isLoading = false;
+      });
+    },
+    // 获取要提交的单选数据
+    getSingle: function () {
+      let { title, sel1, sel2, sel3, trueSel, score } = this.single;
+
+      if (title === '' || trueSel === '' || sel1 === '' || sel2 === '' || sel3 === '') {
+        this.$message({
+          type: 'error',
+          message: '请将所有内容填写完整后提交'
+        });
+        return null;
+      }
+
+      return { title, trueSel, sel1, sel2, sel3, score };
+    },
+    // 获取多选
+    getMultiple: function () {
+      let { title, MQAns1, MQAns2, MQAns3, MQAns4, MQAns5, MQAns6, MQAns7, trueSels, score } = this.multiple;
+
+      if (title === '' || MQAns1 === '' || MQAns2 === '' || MQAns3 === '' || MQAns4 === '') {
+        this.$message({
+          type: 'error',
+          message: '请至少填写题目和四个答案'
+        });
+        return null;
+      }
+
+      let newSels = trueSels.map((item) => {
+        item.replace('选项', 'MQAns');
+      });
+
+      return { title, MQAns1, MQAns2, MQAns3, MQAns4, MQAns5, MQAns6, MQAns7, newSels, score };
+    },
+    // 获取判断
+    getJudgment: function () {
+      let { title, trueSel, falseSel, score } = this.judgment;
+
+      if (title === '' || trueSel === '' || falseSel === '') {
+        this.$message({
+          type: 'error',
+          message: '请将所有内容填写完整后提交'
+        });
+        return null;
+      }
+
+      return { title, trueSel, falseSel, score };
+    },
+    // 获取填空
+    getFill: function () {
+      let { title, score, answers } = this.fill;
+
+      if (title === '' || answers[0] === '') {
+        this.$message({
+          type: 'error',
+          message: '请将所有内容填写完整后提交'
+        });
+        return null;
+      }
+
+      let newAnswers = answers.filter((item) => {
+        return item !== '';
+      });
+
+      return { title, score, newAnswers };
+    },
+    // 添加单选题
+    addSingle: function (data) {
+      axios.post('/Question/AddSingle', { ...data }).then(res => {
+        this.isSubmitLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+
+        this.single = {
+          title: '',
+          sel1: '',
+          sel2: '',
+          sel3: '',
+          trueSel: '',
+          score: 2
+        };
+        this.selTags = [];
+        this.isShowDialog = false;
+        return this.$message({
+          message: data.message,
+          type: 'success'
+        });
       });
     }
   },

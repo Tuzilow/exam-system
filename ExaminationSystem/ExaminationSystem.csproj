@@ -134,6 +134,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\UserScoreController.cs" />
     <Compile Include="Global.asax.cs">
@@ -287,6 +288,7 @@
     <Folder Include="Views\Default\" />
     <Folder Include="Views\ExamPart\" />
     <Folder Include="Views\Image\" />
+    <Folder Include="Views\Question\" />
     <Folder Include="Views\Tag\" />
     <Folder Include="Views\UserScore\" />
   </ItemGroup>

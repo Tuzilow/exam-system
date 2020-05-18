@@ -154,7 +154,7 @@ if not exists (select * from sysobjects where name='ES_SelectQuestion')
 		SQAns1 nvarchar(64) not null,
 		SQAns2 nvarchar(64) not null,
 		SQAns3 nvarchar(64) not null,
-		SQAns4 nvarchar(64) not null,
+		SQAns4 nvarchar(64),
 		SQScore int not null
 	);
 
@@ -196,9 +196,9 @@ if not exists (select * from sysobjects where name='ES_MultipleQuestion')
 		MQAns2 nvarchar(64) not null,
 		MQAns3 nvarchar(64) not null,
 		MQAns4 nvarchar(64) not null,
-		MQAns5 nvarchar(64) not null,
-		MQAns6 nvarchar(64) not null,
-		MQAns7 nvarchar(64) not null,
+		MQAns5 nvarchar(64),
+		MQAns6 nvarchar(64),
+		MQAns7 nvarchar(64),
 		MQScore int not null
 	);
 go
