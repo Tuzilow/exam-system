@@ -208,5 +208,162 @@ namespace ExaminationSystem.Controllers
 
             return JsonConvert.SerializeObject(new { code, message });
         }
+
+        /// <summary>
+        /// 添加判断题
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="trueSel"></param>
+        /// <param name="falseSel"></param>
+        /// <param name="score"></param>
+        /// <param name="tagsId"></param>
+        /// <returns></returns>
+        public string AddJudgment(string title, string trueSel, string falseSel, int score, int[] tagsId)
+        {
+            int code;
+            string message;
+
+            ES_JudgeQuestion judge = new ES_JudgeQuestion()
+            {
+                JQTitle = title,
+                JQTrueAns = trueSel,
+                JQFalseAns = falseSel,
+                JQScore = score
+            };
+            try
+            {
+                db.ES_JudgeQuestion.Add(judge);
+
+                if (db.SaveChanges() > 0)
+                {
+
+                    // 添加答案，将题目关联到总表
+                    var question = db.ES_JudgeQuestion.OrderByDescending(jq => jq.JQId).FirstOrDefault();
+
+                    int esId = AddExercise("多选题", question.JQId); // 获取对应在总表中的id
+                    if (esId != -1)
+                    {
+                        if (tagsId == null || tagsId.Length == 0)
+                        {
+                            code = 0;
+                            message = "添加成功";
+
+                            return JsonConvert.SerializeObject(new { code, message });
+                        }
+                        // 添加标签
+                        foreach (int tagId in tagsId)
+                        {
+                            ES_Tag_Exercise te = new ES_Tag_Exercise()
+                            {
+                                TagId = tagId,
+                                EsId = esId
+                            };
+
+                            db.ES_Tag_Exercise.Add(te);
+                        }
+                        if (db.SaveChanges() >= tagsId.Length)
+                        {
+                            code = 0;
+                            message = "添加成功";
+
+                            return JsonConvert.SerializeObject(new { code, message });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex.Message;
+
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+
+            code = 1;
+            message = "服务器错误！题目添加失败";
+
+            return JsonConvert.SerializeObject(new { code, message });
+        }
+
+        /// <summary>
+        /// 添加判断题
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="score"></param>
+        /// <param name="answers"></param>
+        /// <param name="tagsId"></param>
+        /// <returns></returns>
+        public string AddFill(string title, int score, string[] answers, int[] tagsId)
+        {
+            int code;
+            string message;
+
+            ES_FillQuestion fill = new ES_FillQuestion()
+            {
+                FQTitle = title,
+                FQScore = score
+            };
+
+            try
+            {
+                db.ES_FillQuestion.Add(fill);
+
+                if (db.SaveChanges() > 0)
+                {
+                    var question = db.ES_FillQuestion.OrderByDescending(fq=>fq.FQId).FirstOrDefault();
+                    foreach (string ans in answers)
+                    {
+                        ES_FillAnswer answer = new ES_FillAnswer()
+                        {
+                            FQId = question.FQId,
+                            FAContent = ans
+                        };
+                        db.ES_FillAnswer.Add(answer);
+                    }
+                    int addRes = db.SaveChanges();
+                    int esId = AddExercise("填空题", question.FQId); // 获取对应在总表中的id
+                    if (addRes >= answers.Length && esId != -1)
+                    {
+                        if (tagsId == null || tagsId.Length == 0)
+                        {
+                            code = 0;
+                            message = "添加成功";
+
+                            return JsonConvert.SerializeObject(new { code, message });
+                        }
+                        // 添加标签
+                        foreach (int tagId in tagsId)
+                        {
+                            ES_Tag_Exercise te = new ES_Tag_Exercise()
+                            {
+                                TagId = tagId,
+                                EsId = esId
+                            };
+
+                            db.ES_Tag_Exercise.Add(te);
+                        }
+                        if (db.SaveChanges() >= tagsId.Length)
+                        {
+                            code = 0;
+                            message = "添加成功";
+
+                            return JsonConvert.SerializeObject(new { code, message });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex.Message;
+
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+
+            code = 1;
+            message = "服务器错误！题目添加失败";
+
+            return JsonConvert.SerializeObject(new { code, message });
+        }
     }
 }

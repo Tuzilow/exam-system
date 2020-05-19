@@ -28,7 +28,7 @@
       // 判断题
       judgment: {
         title: '',
-        tureSel: '', // 正确答案
+        trueSel: '', // 正确答案
         falseSel: '', // 错误答案
         score: 2
       },
@@ -109,16 +109,16 @@
                   />
                 </el-form-item>
                 <el-form-item label="正确选项" class="answers true-answer">
-                  <el-input v-model="single.trueSel"></el-input>
+                  <el-input v-model.trim="single.trueSel"></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项1" class="answers false-answer">
-                  <el-input v-model="single.sel1"></el-input>
+                  <el-input v-model.trim="single.sel1"></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项2" class="answers false-answer">
-                  <el-input v-model="single.sel2"></el-input>
+                  <el-input v-model.trim="single.sel2"></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项3" class="answers false-answer">
-                  <el-input v-model="single.sel3"></el-input>
+                  <el-input v-model.trim="single.sel3"></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
                   <el-button type="primary" @click="showScore('single')">确 定</el-button>
@@ -141,25 +141,25 @@
                   />
                 </el-form-item>
                 <el-form-item label="选项1" class="answers">
-                  <el-input v-model="multiple.MQAns1"></el-input>
+                  <el-input v-model.trim="multiple.MQAns1"></el-input>
                 </el-form-item>
                 <el-form-item label="选项2" class="answers">
-                  <el-input v-model="multiple.MQAns2"></el-input>
+                  <el-input v-model.trim="multiple.MQAns2"></el-input>
                 </el-form-item>
                 <el-form-item label="选项3" class="answers">
-                  <el-input v-model="multiple.MQAns3"></el-input>
+                  <el-input v-model.trim="multiple.MQAns3"></el-input>
                 </el-form-item>
                 <el-form-item label="选项4" class="answers">
-                  <el-input v-model="multiple.MQAns4"></el-input>
+                  <el-input v-model.trim="multiple.MQAns4"></el-input>
                 </el-form-item>
                 <el-form-item label="选项5" class="answers">
-                  <el-input v-model="multiple.MQAns5"></el-input>
+                  <el-input v-model.trim="multiple.MQAns5"></el-input>
                 </el-form-item>
                 <el-form-item label="选项6" class="answers">
-                  <el-input v-model="multiple.MQAns6"></el-input>
+                  <el-input v-model.trim="multiple.MQAns6"></el-input>
                 </el-form-item>
                 <el-form-item label="选项7" class="answers">
-                  <el-input v-model="multiple.MQAns7"></el-input>
+                  <el-input v-model.trim="multiple.MQAns7"></el-input>
                 </el-form-item>
                 <el-form-item label="正确选项" class="answers">
                   <el-checkbox-group v-model="multiple.trueSels" :min="2">
@@ -193,10 +193,10 @@
                   />
                 </el-form-item>
                 <el-form-item label="正确选项" class="answers true-answer">
-                  <el-input v-model="judgment.tureSel"></el-input>
+                  <el-input v-model.trim="judgment.trueSel"></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项" class="answers false-answer">
-                  <el-input v-model="judgment.falseSel"></el-input>
+                  <el-input v-model.trim="judgment.falseSel"></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
                   <el-button type="primary" @click="showScore('judgment')">确 定</el-button>
@@ -220,7 +220,7 @@
                   />
                 </el-form-item>
                 <el-form-item label="答案" class="answers" v-for="(item, index) in fill.answers" :key="index">
-                  <el-input v-model="fill.answers[index]"></el-input>
+                  <el-input v-model.trim="fill.answers[index]"></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
                   <el-button type="primary" @click="showScore('fill')">确 定</el-button>
@@ -297,8 +297,8 @@
       switch (this.currentType) {
         case 'single': this.addSingle(submitData); break;
         case 'multiple': this.addMultiple(submitData); break;
-        case 'judgment': break;
-        case 'fill': break;
+        case 'judgment': this.addJudgment(submitData); break;
+        case 'fill': this.addFill(submitData); break;
       }
 
     },
@@ -435,7 +435,7 @@
         return item !== '';
       });
 
-      return { title, score, newAnswers };
+      return { title, score, answers: newAnswers };
     },
     // 添加单选题
     addSingle: function (data) {
@@ -483,6 +483,50 @@
           trueSels: ['选项1', '选项2'],
           score: 2
         };
+        this.selTags = [];
+        this.isShowDialog = false;
+        return this.$message({
+          message: data.message,
+          type: 'success'
+        });
+      });
+    },
+    // 添加判断题
+    addJudgment: function (data) {
+      axios.post('/Question/AddJudgment', { ...data }).then(res => {
+        this.isSubmitLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+
+        this.judgment = {
+          title: '',
+          trueSel: '',
+          falseSel: '',
+          score: 2
+        }
+        this.selTags = [];
+        this.isShowDialog = false;
+        return this.$message({
+          message: data.message,
+          type: 'success'
+        });
+      });
+    },
+    addFill: function (data) {
+      axios.post('/Question/AddFill', { ...data }).then(res => {
+        this.isSubmitLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+
+        this.fill = {
+          title: '',
+          answers: [''],
+          score: 2
+        }
         this.selTags = [];
         this.isShowDialog = false;
         return this.$message({
