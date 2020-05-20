@@ -366,7 +366,11 @@ namespace ExaminationSystem.Controllers
             return JsonConvert.SerializeObject(new { code, message });
         }
 
-
+        /// <summary>
+        /// 获取单选题
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
         public string GetSingle(int pageIndex = 1)
         {
             int code;
@@ -405,6 +409,89 @@ namespace ExaminationSystem.Controllers
                     int score = question.SQScore;
 
                     questionList.Add(new { id, title, trueSel, sel1, sel2, sel3, score });
+                }
+
+                questionList.Add(totalCount);
+
+                // 序列化为JSON 传递到View
+                return JsonConvert.SerializeObject(questionList);
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex;
+
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+        }
+
+        /// <summary>
+        /// 获取多选题
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        public string GetMultiple(int pageIndex = 1)
+        {
+            int code;
+            string message;
+            try
+            {
+                var questions = from e in db.ES_Exercise
+                                where e.EsType == "单选题"
+                                join mq in db.ES_MultipleQuestion on e.EsSubExerciseId equals mq.MQId
+                                select new
+                                {
+                                    e.EsId,
+                                    mq.MQTitle,
+                                    mq.MQAns1,
+                                    mq.MQAns2,
+                                    mq.MQAns3,
+                                    mq.MQAns4,
+                                    mq.MQAns5,
+                                    mq.MQAns6,
+                                    mq.MQAns7,
+                                    mq.MQScore,
+                                    mq.MQId,
+                                    mq.ES_MultipleAnswer
+                                };
+
+                int totalCount = questions.Count();
+
+                questions = questions.OrderBy(q => q.EsId).Skip((pageIndex - 1) * 10).Take(10);
+
+                // 格式化
+                List<object> questionList = new List<object>();
+
+              
+                foreach (var question in questions)
+                {
+                    // 获取答案
+                    var trueAns = from mqa in db.ES_MultipleAnswer
+                                    where mqa.MQId == question.MQId
+                                    select new
+                                    {
+                                        mqa.MAContent
+                                    };
+
+                    // 转为数组
+                    List<string> trueSels = new List<string>();
+                    foreach (var ans in trueAns)
+                    {
+                        trueSels.Add(ans.MAContent);
+                    }
+
+                    int id = question.EsId;
+                    string title = question.MQTitle;
+                    string MQAns1 = question.MQAns1;
+                    string MQAns2 = question.MQAns2;
+                    string MQAns3 = question.MQAns3;
+                    string MQAns4 = question.MQAns4;
+                    string MQAns5 = question.MQAns5;
+                    string MQAns6 = question.MQAns6;
+                    string MQAns7 = question.MQAns7;
+                    int score = question.MQScore;
+
+                    questionList.Add(new { id, title, MQAns1, MQAns2, MQAns3, MQAns4, MQAns5, MQAns6, MQAns7, score, trueSels });
                 }
 
                 questionList.Add(totalCount);

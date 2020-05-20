@@ -1,5 +1,25 @@
-﻿.el-table_2_column_8 .cell {
+﻿.question-table .cell {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+
+.alert-warp li {
+    display: flex;
+    justify-content: center;
+}
+
+.alert-warp .title {
+    flex: 2;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 2px 4px;
+    border: 1px solid #dfe6ec;
+}
+
+.alert-warp .content {
+    flex: 8;
+    padding: 2px 4px;
+    border: 1px solid #dfe6ec;
 }

@@ -32,6 +32,9 @@
                 class="content"
                 v-model="exam.start"
                 placeholder="开始时间"
+                :picker-options="{
+                  selectableRange: '08:00:00 - 19:00:00'
+                }"
                 @change="changeTime"
               >
               </el-time-picker>
