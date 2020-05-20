@@ -240,7 +240,7 @@ namespace ExaminationSystem.Controllers
                     // 添加答案，将题目关联到总表
                     var question = db.ES_JudgeQuestion.OrderByDescending(jq => jq.JQId).FirstOrDefault();
 
-                    int esId = AddExercise("多选题", question.JQId); // 获取对应在总表中的id
+                    int esId = AddExercise("判断题", question.JQId); // 获取对应在总表中的id
                     if (esId != -1)
                     {
                         if (tagsId == null || tagsId.Length == 0)
@@ -462,16 +462,16 @@ namespace ExaminationSystem.Controllers
                 // 格式化
                 List<object> questionList = new List<object>();
 
-              
+
                 foreach (var question in questions)
                 {
                     // 获取答案
                     var trueAns = from mqa in db.ES_MultipleAnswer
-                                    where mqa.MQId == question.MQId
-                                    select new
-                                    {
-                                        mqa.MAContent
-                                    };
+                                  where mqa.MQId == question.MQId
+                                  select new
+                                  {
+                                      mqa.MAContent
+                                  };
 
                     // 转为数组
                     List<string> trueSels = new List<string>();
@@ -492,6 +492,123 @@ namespace ExaminationSystem.Controllers
                     int score = question.MQScore;
 
                     questionList.Add(new { id, title, MQAns1, MQAns2, MQAns3, MQAns4, MQAns5, MQAns6, MQAns7, score, trueSels });
+                }
+
+                questionList.Add(totalCount);
+
+                // 序列化为JSON 传递到View
+                return JsonConvert.SerializeObject(questionList);
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex;
+
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+        }
+
+        /// <summary>
+        /// 获取判断题
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        public string GetJudgment(int pageIndex = 1)
+        {
+            int code;
+            string message;
+            try
+            {
+                var questions = from e in db.ES_Exercise
+                                where e.EsType == "判断题"
+                                join jq in db.ES_JudgeQuestion on e.EsSubExerciseId equals jq.JQId
+                                select new
+                                {
+                                    e.EsId,
+                                    jq.JQTitle,
+                                    jq.JQTrueAns,
+                                    jq.JQFalseAns,
+                                    jq.JQScore
+                                };
+
+                int totalCount = questions.Count();
+
+                questions = questions.OrderBy(q => q.EsId).Skip((pageIndex - 1) * 10).Take(10);
+
+                // 格式化
+                List<object> questionList = new List<object>();
+
+                foreach (var question in questions)
+                {
+                    int id = question.EsId;
+                    string title = question.JQTitle;
+                    string trueSel = question.JQTrueAns;
+                    string falseSel = question.JQFalseAns;
+                    int score = question.JQScore;
+
+                    questionList.Add(new { id, title, trueSel, falseSel, score });
+                }
+
+                questionList.Add(totalCount);
+
+                // 序列化为JSON 传递到View
+                return JsonConvert.SerializeObject(questionList);
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex;
+
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+        }
+
+        public string GetFill(int pageIndex = 1)
+        {
+            int code;
+            string message;
+            try
+            {
+                var questions = from e in db.ES_Exercise
+                                where e.EsType == "填空题"
+                                join fq in db.ES_FillQuestion on e.EsSubExerciseId equals fq.FQId
+                                select new
+                                {
+                                    e.EsId,
+                                    fq.FQTitle,
+                                    fq.FQId,
+                                    fq.FQScore
+                                };
+
+                int totalCount = questions.Count();
+
+                questions = questions.OrderBy(q => q.EsId).Skip((pageIndex - 1) * 10).Take(10);
+
+                // 格式化
+                List<object> questionList = new List<object>();
+
+                foreach (var question in questions)
+                {
+                    // 获取答案
+                    var trueAns = from fqa in db.ES_FillAnswer
+                                  where fqa.FQId == question.FQId
+                                  select new
+                                  {
+                                      fqa.FAContent
+                                  };
+
+                    // 转为数组
+                    List<string> answers = new List<string>();
+                    foreach (var ans in trueAns)
+                    {
+                        answers.Add(ans.FAContent);
+                    }
+
+                    int id = question.EsId;
+                    string title = question.FQTitle;
+                    int score = question.FQId;
+
+                    questionList.Add(new { id, title, answers, score });
                 }
 
                 questionList.Add(totalCount);

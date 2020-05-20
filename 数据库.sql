@@ -343,7 +343,7 @@ alter table ES_Image add constraint UQ_Title unique(ImgTitle);
 go
 alter table ES_Image add IsDel bit not null default(0);
 go
-alter table ES_Exercise add IsDel bit not null default(0);
+alter table ES_Exercise add IsDel bit not null default(0); -- 题目总表添加删除标志
 go
 
 -- 考试记录表

@@ -46,7 +46,7 @@
       fills: [{
         id: 1,
         title: '<p>adfasdfsa()adfasdfsa</p>',
-        answers: ['aa'], // 答案array
+        answers: '', // 答案array
         score: 2
       }],
       totalNum: 1,
@@ -185,9 +185,9 @@
       this.currentPage = val;
       switch (this.currentType) {
         case '单选题': this.getSingle(); break;
-        case '多选题': this.GetMultiple(); break;
-        case '判断题': break;
-        case '填空题': break;
+        case '多选题': this.getMultiple(); break;
+        case '判断题': this.getJudgment(); break;
+        case '填空题': this.getFill(); break;
       }
     },
     // 获取单选题
@@ -211,7 +211,7 @@
       });
     },
     // 获取多选题
-    GetMultiple: function () {
+    getMultiple: function () {
       this.isLoading = true;
       axios.get('/Question/GetMultiple', {
         params: {
@@ -225,7 +225,6 @@
         }
         let count = data.slice(data.length - 1);
         let multiples = data.slice(0, data.length - 1);
-
         // 将答案编号转为答案内容
         for (var mul in multiples) {
           var oldTrueSels = multiples[mul].trueSels;
@@ -241,15 +240,62 @@
         this.totalNum = count[0];
         this.multiples = multiples;
       });
+    },
+    // 获取判断题
+    getJudgment: function () {
+      this.isLoading = true;
+      axios.get('/Question/GetJudgment', {
+        params: {
+          pageIndex: this.currentPage
+        }
+      }).then(res => {
+        this.isLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+        let count = data.slice(data.length - 1);
+        let judgments = data.slice(0, data.length - 1);
+
+        this.totalNum = count[0];
+        this.judgments = judgments;
+      });
+    },
+    // 获取填空题
+    getFill: function () {
+      this.isLoading = true;
+      axios.get('/Question/GetFill', {
+        params: {
+          pageIndex: this.currentPage
+        }
+      }).then(res => {
+        this.isLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+        let count = data.slice(data.length - 1);
+        let fills = data.slice(0, data.length - 1);
+
+        // 将答案编号转为答案内容
+        for (var fillIndex in fills) {
+          var oldAns = fills[fillIndex].answers;
+
+          fills[fillIndex].answers = oldAns.join(',');
+        }
+
+        this.totalNum = count[0];
+        this.fills = fills;
+      });
     }
   },
   watch: {
     currentType: function (val, oldVal) {
       switch (val) {
         case '单选题': this.getSingle(); break;
-        case '多选题': this.GetMultiple(); break;
-        case '判断题': break;
-        case '填空题': break;
+        case '多选题': this.getMultiple(); break;
+        case '判断题': this.getJudgment(); break;
+        case '填空题': this.getFill(); break;
       }
     }
   },
