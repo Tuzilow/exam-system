@@ -42,6 +42,10 @@
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_User_E__UserI__5441852A" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_Image" Width="1.5" PointX="5.5" PointY="2" />
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_Exerci__ImgId__02FC7413" />
+        <EntityTypeShape EntityType="ExaminationSystemDbModel.ES_ExamLog" Width="1.5" PointX="10.25" PointY="0.75" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamLo__EmPap__503BEA1C" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamLo__EmPtI__51300E55" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamLo__UserI__4F47C5E3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

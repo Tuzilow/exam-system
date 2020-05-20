@@ -25,6 +25,7 @@ namespace ExaminationSystem.Models
         public string EsType { get; set; }
         public int EsSubExerciseId { get; set; }
         public Nullable<int> ImgId { get; set; }
+        public bool IsDel { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_ExamPaper_Exercise> ES_ExamPaper_Exercise { get; set; }

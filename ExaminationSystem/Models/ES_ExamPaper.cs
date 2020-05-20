@@ -20,6 +20,7 @@ namespace ExaminationSystem.Models
             this.ES_ExamPaper_Exercise = new HashSet<ES_ExamPaper_Exercise>();
             this.ES_Paper_Tag = new HashSet<ES_Paper_Tag>();
             this.ES_User_ExamPaper = new HashSet<ES_User_ExamPaper>();
+            this.ES_ExamLog = new HashSet<ES_ExamLog>();
         }
     
         public int EmPaperId { get; set; }
@@ -38,5 +39,7 @@ namespace ExaminationSystem.Models
         public virtual ICollection<ES_Paper_Tag> ES_Paper_Tag { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_User_ExamPaper> ES_User_ExamPaper { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ES_ExamLog> ES_ExamLog { get; set; }
     }
 }

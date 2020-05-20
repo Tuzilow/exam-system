@@ -310,7 +310,7 @@ namespace ExaminationSystem.Controllers
 
                 if (db.SaveChanges() > 0)
                 {
-                    var question = db.ES_FillQuestion.OrderByDescending(fq=>fq.FQId).FirstOrDefault();
+                    var question = db.ES_FillQuestion.OrderByDescending(fq => fq.FQId).FirstOrDefault();
                     foreach (string ans in answers)
                     {
                         ES_FillAnswer answer = new ES_FillAnswer()
@@ -364,6 +364,61 @@ namespace ExaminationSystem.Controllers
             message = "服务器错误！题目添加失败";
 
             return JsonConvert.SerializeObject(new { code, message });
+        }
+
+
+        public string GetSingle(int pageIndex = 1)
+        {
+            int code;
+            string message;
+            try
+            {
+                var questions = from e in db.ES_Exercise
+                                where e.EsType == "单选题"
+                                join sq in db.ES_SelectQuestion on e.EsSubExerciseId equals sq.SQId
+                                select new
+                                {
+                                    e.EsId,
+                                    sq.SQTitle,
+                                    sq.SQAns1,
+                                    sq.SQAns2,
+                                    sq.SQAns3,
+                                    sq.SQTrueAns,
+                                    sq.SQScore
+                                };
+
+                int totalCount = questions.Count();
+
+                questions = questions.OrderBy(q => q.EsId).Skip((pageIndex - 1) * 10).Take(10);
+
+                // 格式化
+                List<object> questionList = new List<object>();
+
+                foreach (var question in questions)
+                {
+                    int id = question.EsId;
+                    string title = question.SQTitle;
+                    string trueSel = question.SQTrueAns;
+                    string sel1 = question.SQAns1;
+                    string sel2 = question.SQAns2;
+                    string sel3 = question.SQAns3;
+                    int score = question.SQScore;
+
+                    questionList.Add(new { id, title, trueSel, sel1, sel2, sel3, score });
+                }
+
+                questionList.Add(totalCount);
+
+                // 序列化为JSON 传递到View
+                return JsonConvert.SerializeObject(questionList);
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex;
+
+                return JsonConvert.SerializeObject(new { code, message });
+            }
         }
     }
 }

@@ -121,7 +121,8 @@ if not exists (select * from sysobjects where name='ES_Exercise')
 	create table ES_Exercise (
 		EsId int primary key identity(1,1),
 		EsType nchar(3) not null, -- 题目类型
-		EsSubExerciseId int not null -- 子分类下题目Id，根据EsType确定哪个分类
+		EsSubExerciseId int not null, -- 子分类下题目Id，根据EsType确定哪个分类
+		IsDel bit not null default(0)
 	);
 
 go
@@ -341,3 +342,20 @@ go
 alter table ES_Image add constraint UQ_Title unique(ImgTitle);
 go
 alter table ES_Image add IsDel bit not null default(0);
+go
+alter table ES_Exercise add IsDel bit not null default(0);
+go
+
+-- 考试记录表
+if not exists (select * from sysobjects where name='ES_ExamLog')
+	create table ES_ExamLog (
+		LogId int primary key identity(1,1),
+		UserId int foreign key references ES_User(UserId), --考生id
+		EmPaperId int foreign key references ES_ExamPaper(EmPaperId), --试卷id
+		ExercisesId varchar(512) not null, -- 题目id们
+		EmPtId int foreign key references ES_ExamPart(EmPtId), -- 场次id
+		IsStart bit not null default(0), --是否已经开始考试
+		IsSubmit bit not null default(0), -- 是否已经交卷
+		Answers nvarchar(max) -- 考生提交的答案
+	);
+go

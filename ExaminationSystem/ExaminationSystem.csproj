@@ -155,6 +155,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ESModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ES_ExamLog.cs">
+      <DependentUpon>ESModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ES_ExamPaper.cs">
       <DependentUpon>ESModel.tt</DependentUpon>
     </Compile>
@@ -264,6 +267,7 @@
     <Content Include="Static\css\new-exam.css" />
     <Content Include="Static\css\new-question.css" />
     <Content Include="Static\css\new-user.css" />
+    <Content Include="Static\css\question-table.css" />
     <Content Include="Static\css\score-table.css" />
     <Content Include="Static\css\tag-control.css" />
     <Content Include="Static\images\logo.png" />

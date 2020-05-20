@@ -46,5 +46,6 @@ namespace ExaminationSystem.Models
         public virtual DbSet<ES_User_ExamPart> ES_User_ExamPart { get; set; }
         public virtual DbSet<User_ExamPart_ExamPaper_v> User_ExamPart_ExamPaper_v { get; set; }
         public virtual DbSet<ES_Image> ES_Image { get; set; }
+        public virtual DbSet<ES_ExamLog> ES_ExamLog { get; set; }
     }
 }

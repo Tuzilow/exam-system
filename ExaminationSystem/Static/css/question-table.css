@@ -1,0 +1,5 @@
+﻿.el-table_2_column_8 .cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

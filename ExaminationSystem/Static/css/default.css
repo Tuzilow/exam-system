@@ -23,3 +23,9 @@ ol, ul, li {
     background-color: #081842;
     border-color: #081842;
 }
+
+.line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

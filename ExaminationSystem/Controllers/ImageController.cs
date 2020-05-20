@@ -15,7 +15,6 @@ namespace ExaminationSystem.Controllers
     {
         readonly ExaminationSystemDbEntities db = new ExaminationSystemDbEntities();
 
-        // TODO 待完善 已经存入数据库，如何将题目和图片关联
         public string UpLoad()
         {
             int code;

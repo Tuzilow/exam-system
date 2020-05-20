@@ -5,6 +5,19 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ExaminationSystemDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ES_ExamLog">
+          <Key>
+            <PropertyRef Name="LogId" />
+          </Key>
+          <Property Name="LogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="EmPaperId" Type="int" />
+          <Property Name="ExercisesId" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="EmPtId" Type="int" />
+          <Property Name="IsStart" Type="bit" Nullable="false" />
+          <Property Name="IsSubmit" Type="bit" Nullable="false" />
+          <Property Name="Answers" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="ES_ExamPaper">
           <Key>
             <PropertyRef Name="EmPaperId" />
@@ -45,6 +58,7 @@
           <Property Name="EsType" Type="nchar" MaxLength="3" Nullable="false" />
           <Property Name="EsSubExerciseId" Type="int" Nullable="false" />
           <Property Name="ImgId" Type="int" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_FillAnswer">
           <Key>
@@ -229,6 +243,42 @@
           <Property Name="总分值" Type="int" />
           <Property Name="得分" Type="int" />
         </EntityType>
+        <Association Name="FK__ES_ExamLo__EmPap__503BEA1C">
+          <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
+          <End Role="ES_ExamLog" Type="Self.ES_ExamLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_ExamLog">
+              <PropertyRef Name="EmPaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_ExamLo__EmPtI__51300E55">
+          <End Role="ES_ExamPart" Type="Self.ES_ExamPart" Multiplicity="0..1" />
+          <End Role="ES_ExamLog" Type="Self.ES_ExamLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPart">
+              <PropertyRef Name="EmPtId" />
+            </Principal>
+            <Dependent Role="ES_ExamLog">
+              <PropertyRef Name="EmPtId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_ExamLo__UserI__4F47C5E3">
+          <End Role="ES_User" Type="Self.ES_User" Multiplicity="0..1" />
+          <End Role="ES_ExamLog" Type="Self.ES_ExamLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ES_ExamLog">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__ES_ExamPa__EmPap__6477ECF3">
           <End Role="ES_ExamPaper" Type="Self.ES_ExamPaper" Multiplicity="0..1" />
           <End Role="ES_ExamPaper_Exercise" Type="Self.ES_ExamPaper_Exercise" Multiplicity="*" />
@@ -422,6 +472,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ExaminationSystemDbModelStoreContainer">
+          <EntitySet Name="ES_ExamLog" EntityType="Self.ES_ExamLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_ExamPaper" EntityType="Self.ES_ExamPaper" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_ExamPaper_Exercise" EntityType="Self.ES_ExamPaper_Exercise" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ES_ExamPart" EntityType="Self.ES_ExamPart" Schema="dbo" store:Type="Tables" />
@@ -460,6 +511,18 @@
     [User_ExamPart_ExamPaper_v].[得分] AS [得分]
     FROM [dbo].[User_ExamPart_ExamPaper_v] AS [User_ExamPart_ExamPaper_v]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK__ES_ExamLo__EmPap__503BEA1C" Association="Self.FK__ES_ExamLo__EmPap__503BEA1C">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_ExamLog" EntitySet="ES_ExamLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_ExamLo__EmPtI__51300E55" Association="Self.FK__ES_ExamLo__EmPtI__51300E55">
+            <End Role="ES_ExamPart" EntitySet="ES_ExamPart" />
+            <End Role="ES_ExamLog" EntitySet="ES_ExamLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_ExamLo__UserI__4F47C5E3" Association="Self.FK__ES_ExamLo__UserI__4F47C5E3">
+            <End Role="ES_User" EntitySet="ES_User" />
+            <End Role="ES_ExamLog" EntitySet="ES_ExamLog" />
+          </AssociationSet>
           <AssociationSet Name="FK__ES_ExamPa__EmPap__6477ECF3" Association="Self.FK__ES_ExamPa__EmPap__6477ECF3">
             <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
             <End Role="ES_ExamPaper_Exercise" EntitySet="ES_ExamPaper_Exercise" />
@@ -545,6 +608,7 @@
           <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="Self.FK__ES_ExamPa__EmPap__6477ECF3" FromRole="ES_ExamPaper" ToRole="ES_ExamPaper_Exercise" />
           <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___Paper__5CD6CB2B" FromRole="ES_ExamPaper" ToRole="ES_Paper_Tag" />
           <NavigationProperty Name="ES_User_ExamPaper" Relationship="Self.FK__ES_User_E__EmPap__5535A963" FromRole="ES_ExamPaper" ToRole="ES_User_ExamPaper" />
+          <NavigationProperty Name="ES_ExamLog" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__EmPap__503BEA1C" FromRole="ES_ExamPaper" ToRole="ES_ExamLog" />
         </EntityType>
         <EntityType Name="ES_ExamPaper_Exercise">
           <Key>
@@ -566,6 +630,7 @@
           <Property Name="EmPtEnd" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ES_User_ExamPart" Relationship="Self.FK__ES_User_E__EmPtI__4AB81AF0" FromRole="ES_ExamPart" ToRole="ES_User_ExamPart" />
+          <NavigationProperty Name="ES_ExamLog" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__EmPtI__51300E55" FromRole="ES_ExamPart" ToRole="ES_ExamLog" />
         </EntityType>
         <EntityType Name="ES_Exercise">
           <Key>
@@ -578,6 +643,7 @@
           <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Exe__EsId__6A30C649" FromRole="ES_Exercise" ToRole="ES_Tag_Exercise" />
           <Property Name="ImgId" Type="Int32" />
           <NavigationProperty Name="ES_Image" Relationship="ExaminationSystemDbModel.FK__ES_Exerci__ImgId__02FC7413" FromRole="ES_Exercise" ToRole="ES_Image" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_FillAnswer">
           <Key>
@@ -726,6 +792,7 @@
           <NavigationProperty Name="ES_Role" Relationship="Self.FK__ES_User__RoleId__4316F928" FromRole="ES_User" ToRole="ES_Role" />
           <NavigationProperty Name="ES_User_ExamPart" Relationship="Self.FK__ES_User_E__UserI__49C3F6B7" FromRole="ES_User" ToRole="ES_User_ExamPart" />
           <NavigationProperty Name="ES_User_ExamPaper" Relationship="Self.FK__ES_User_E__UserI__5441852A" FromRole="ES_User" ToRole="ES_User_ExamPaper" />
+          <NavigationProperty Name="ES_ExamLog" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__UserI__4F47C5E3" FromRole="ES_User" ToRole="ES_ExamLog" />
         </EntityType>
         <EntityType Name="ES_User_ExamPaper">
           <Key>
@@ -1038,6 +1105,19 @@
             <End Role="ES_Image" EntitySet="ES_Image" />
             <End Role="ES_Exercise" EntitySet="ES_Exercise" />
           </AssociationSet>
+          <EntitySet Name="ES_ExamLog" EntityType="ExaminationSystemDbModel.ES_ExamLog" />
+          <AssociationSet Name="FK__ES_ExamLo__EmPap__503BEA1C" Association="ExaminationSystemDbModel.FK__ES_ExamLo__EmPap__503BEA1C">
+            <End Role="ES_ExamPaper" EntitySet="ES_ExamPaper" />
+            <End Role="ES_ExamLog" EntitySet="ES_ExamLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_ExamLo__EmPtI__51300E55" Association="ExaminationSystemDbModel.FK__ES_ExamLo__EmPtI__51300E55">
+            <End Role="ES_ExamPart" EntitySet="ES_ExamPart" />
+            <End Role="ES_ExamLog" EntitySet="ES_ExamLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ES_ExamLo__UserI__4F47C5E3" Association="ExaminationSystemDbModel.FK__ES_ExamLo__UserI__4F47C5E3">
+            <End Role="ES_User" EntitySet="ES_User" />
+            <End Role="ES_ExamLog" EntitySet="ES_ExamLog" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ES_Image">
           <Key>
@@ -1059,6 +1139,58 @@
             </Principal>
             <Dependent Role="ES_Exercise">
               <PropertyRef Name="ImgId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ES_ExamLog">
+          <Key>
+            <PropertyRef Name="LogId" />
+          </Key>
+          <Property Name="LogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="EmPaperId" Type="Int32" />
+          <Property Name="ExercisesId" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="EmPtId" Type="Int32" />
+          <Property Name="IsStart" Type="Boolean" Nullable="false" />
+          <Property Name="IsSubmit" Type="Boolean" Nullable="false" />
+          <Property Name="Answers" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ES_ExamPaper" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__EmPap__503BEA1C" FromRole="ES_ExamLog" ToRole="ES_ExamPaper" />
+          <NavigationProperty Name="ES_ExamPart" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__EmPtI__51300E55" FromRole="ES_ExamLog" ToRole="ES_ExamPart" />
+          <NavigationProperty Name="ES_User" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__UserI__4F47C5E3" FromRole="ES_ExamLog" ToRole="ES_User" />
+        </EntityType>
+        <Association Name="FK__ES_ExamLo__EmPap__503BEA1C">
+          <End Type="ExaminationSystemDbModel.ES_ExamPaper" Role="ES_ExamPaper" Multiplicity="0..1" />
+          <End Type="ExaminationSystemDbModel.ES_ExamLog" Role="ES_ExamLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPaper">
+              <PropertyRef Name="EmPaperId" />
+            </Principal>
+            <Dependent Role="ES_ExamLog">
+              <PropertyRef Name="EmPaperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_ExamLo__EmPtI__51300E55">
+          <End Type="ExaminationSystemDbModel.ES_ExamPart" Role="ES_ExamPart" Multiplicity="0..1" />
+          <End Type="ExaminationSystemDbModel.ES_ExamLog" Role="ES_ExamLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_ExamPart">
+              <PropertyRef Name="EmPtId" />
+            </Principal>
+            <Dependent Role="ES_ExamLog">
+              <PropertyRef Name="EmPtId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ES_ExamLo__UserI__4F47C5E3">
+          <End Type="ExaminationSystemDbModel.ES_User" Role="ES_User" Multiplicity="0..1" />
+          <End Type="ExaminationSystemDbModel.ES_ExamLog" Role="ES_ExamLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ES_User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ES_ExamLog">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1106,6 +1238,7 @@
           <EntitySetMapping Name="ES_Exercise">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Exercise">
               <MappingFragment StoreEntitySet="ES_Exercise">
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
                 <ScalarProperty Name="ImgId" ColumnName="ImgId" />
                 <ScalarProperty Name="EsId" ColumnName="EsId" />
                 <ScalarProperty Name="EsType" ColumnName="EsType" />
@@ -1305,6 +1438,20 @@
                 <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
                 <ScalarProperty Name="ImgTitle" ColumnName="ImgTitle" />
                 <ScalarProperty Name="ImgId" ColumnName="ImgId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ES_ExamLog">
+            <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamLog">
+              <MappingFragment StoreEntitySet="ES_ExamLog">
+                <ScalarProperty Name="Answers" ColumnName="Answers" />
+                <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
+                <ScalarProperty Name="IsStart" ColumnName="IsStart" />
+                <ScalarProperty Name="EmPtId" ColumnName="EmPtId" />
+                <ScalarProperty Name="ExercisesId" ColumnName="ExercisesId" />
+                <ScalarProperty Name="EmPaperId" ColumnName="EmPaperId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LogId" ColumnName="LogId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

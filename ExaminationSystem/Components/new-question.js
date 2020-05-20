@@ -230,12 +230,12 @@
           </el-tabs>
         </div>
         <el-dialog
-          title="确认分数并选择标签"
+          title="确认参考分数并选择标签"
           :visible="isShowDialog"
           @close="isShowDialog = false"
           v-loading="isSubmitLoading">
           <el-alert
-            title="为保证同类型题目分数相同，请尽量不要修改分数"
+            title="可以不选择标签直接保存"
             type="error">
           </el-alert>
           <div class="submit-dialog">
