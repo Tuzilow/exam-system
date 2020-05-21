@@ -18,8 +18,13 @@
     border: 1px solid #dfe6ec;
 }
 
+
 .alert-warp .content {
     flex: 8;
     padding: 2px 4px;
     border: 1px solid #dfe6ec;
 }
+
+    .alert-warp .content img {
+        height: 1rem;
+    }

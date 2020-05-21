@@ -134,6 +134,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PaperController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\UserScoreController.cs" />
@@ -265,6 +266,7 @@
     <Content Include="Static\css\default.css" />
     <Content Include="Static\css\edit-user.css" />
     <Content Include="Static\css\new-exam.css" />
+    <Content Include="Static\css\new-paper.css" />
     <Content Include="Static\css\new-question.css" />
     <Content Include="Static\css\new-user.css" />
     <Content Include="Static\css\question-table.css" />
@@ -292,6 +294,7 @@
     <Folder Include="Views\Default\" />
     <Folder Include="Views\ExamPart\" />
     <Folder Include="Views\Image\" />
+    <Folder Include="Views\Paper\" />
     <Folder Include="Views\Question\" />
     <Folder Include="Views\Tag\" />
     <Folder Include="Views\UserScore\" />

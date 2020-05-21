@@ -378,7 +378,7 @@ namespace ExaminationSystem.Controllers
             try
             {
                 var questions = from e in db.ES_Exercise
-                                where e.EsType == "单选题"
+                                where e.EsType == "单选题" && e.IsDel == false
                                 join sq in db.ES_SelectQuestion on e.EsSubExerciseId equals sq.SQId
                                 select new
                                 {
@@ -437,7 +437,7 @@ namespace ExaminationSystem.Controllers
             try
             {
                 var questions = from e in db.ES_Exercise
-                                where e.EsType == "单选题"
+                                where e.EsType == "单选题" && e.IsDel == false
                                 join mq in db.ES_MultipleQuestion on e.EsSubExerciseId equals mq.MQId
                                 select new
                                 {
@@ -520,7 +520,7 @@ namespace ExaminationSystem.Controllers
             try
             {
                 var questions = from e in db.ES_Exercise
-                                where e.EsType == "判断题"
+                                where e.EsType == "判断题" && e.IsDel == false
                                 join jq in db.ES_JudgeQuestion on e.EsSubExerciseId equals jq.JQId
                                 select new
                                 {
@@ -563,6 +563,11 @@ namespace ExaminationSystem.Controllers
             }
         }
 
+        /// <summary>
+        /// 获取填空题
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
         public string GetFill(int pageIndex = 1)
         {
             int code;
@@ -570,7 +575,7 @@ namespace ExaminationSystem.Controllers
             try
             {
                 var questions = from e in db.ES_Exercise
-                                where e.EsType == "填空题"
+                                where e.EsType == "填空题" && e.IsDel == false
                                 join fq in db.ES_FillQuestion on e.EsSubExerciseId equals fq.FQId
                                 select new
                                 {
@@ -623,6 +628,48 @@ namespace ExaminationSystem.Controllers
 
                 return JsonConvert.SerializeObject(new { code, message });
             }
+        }
+
+        /// <summary>
+        /// 删除题目
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string RemoveQuestion(int id)
+        {
+            int code;
+            string message;
+
+            var question = db.ES_Exercise.Where(e => e.EsId == id && e.IsDel == false).FirstOrDefault();
+
+
+            if (question != null)
+            {
+                try
+                {
+                    question.IsDel = true;
+                    db.Entry(question).State = System.Data.Entity.EntityState.Modified;
+
+                    if (db.SaveChanges() > 0)
+                    {
+                        code = 0;
+                        message = "删除成功";
+
+                        return JsonConvert.SerializeObject(new { code, message });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    code = 1;
+                    message = "服务端错误" + ex;
+
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+            }
+            code = 1;
+            message = "未找到该记录";
+
+            return JsonConvert.SerializeObject(new { code, message });
         }
     }
 }

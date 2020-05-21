@@ -48,6 +48,7 @@
       </div>
     `,
   methods: {
+    // 获取场次
     getExamParts: function () {
       this.isLoading = true;
       axios.get('/ExamPart/GetExamPart', { params: { pageIndex: this.currentPage } }).then(res => {
@@ -62,6 +63,7 @@
     onChangePage: function (val) {
       this.currentPage = val;
     },
+    // 展示该场次所有学生
     showAllStu: function (id) {
       this.userLoading = true;
       axios.get('/ExamPart/GetUserByExamPart', { params: { id } }).then(res => {
@@ -71,6 +73,7 @@
       this.isShowStudent = true;
       this.userLoading = false;
     },
+    // 删除
     remove: function (id) {
       this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',

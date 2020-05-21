@@ -19,6 +19,7 @@ namespace ExaminationSystem.Models
         {
             this.ES_User_ExamPart = new HashSet<ES_User_ExamPart>();
             this.ES_ExamLog = new HashSet<ES_ExamLog>();
+            this.ES_ExamPaper = new HashSet<ES_ExamPaper>();
         }
     
         public int EmPtId { get; set; }
@@ -30,5 +31,7 @@ namespace ExaminationSystem.Models
         public virtual ICollection<ES_User_ExamPart> ES_User_ExamPart { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_ExamLog> ES_ExamLog { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ES_ExamPaper> ES_ExamPaper { get; set; }
     }
 }

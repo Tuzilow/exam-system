@@ -11,44 +11,13 @@
       ],
       currentType: '单选题',
       // 单选题
-      singles: [{
-        id: 1,
-        title: '单选题1',
-        sel1: 's1',
-        sel2: 's2',
-        sel3: 's3',
-        trueSel: 't1', // 正确答案
-        score: 2
-      }],
+      singles: [],
       // 多选题
-      multiples: [{
-        id: 1,
-        title: '多选题1',
-        MQAns1: '吗',
-        MQAns2: 'a',
-        MQAns3: 'aa',
-        MQAns4: 'ss',
-        MQAns5: 'a',
-        MQAns6: '???',
-        MQAns7: 'a',
-        trueSels: '', // 正确选项
-        score: 2
-      }],
+      multiples: [],
       // 判断题
-      judgments: [{
-        id: 1,
-        title: '判断题',
-        trueSel: 'vvvv', // 正确答案
-        falseSel: 'xxxx', // 错误答案
-        score: 2
-      }],
+      judgments: [],
       // 填空题
-      fills: [{
-        id: 1,
-        title: '<p>adfasdfsa()adfasdfsa</p>',
-        answers: '', // 答案array
-        score: 2
-      }],
+      fills: [],
       totalNum: 1,
       currentPage: 1,
       isLoading: false
@@ -178,12 +147,38 @@
       }
       return res;
     },
-    remove: function () {
+    // 删除题目
+    remove: function (id) {
+      this.$confirm('此操作将删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post('/Question/RemoveQuestion', { id }).then(res => {
+          this.isLoading = false;
+          const { data } = res;
+          if (data.code === 1) {
+            return this.$message.error(data.message);
+          }
 
+          this.getQuestions(this.currentType);
+
+          return this.$message({
+            message: data.message,
+            type: 'success'
+          });
+        });
+      }).catch(err => {
+        console.log(err);
+      });
     },
     onChangePage: function (val) {
       this.currentPage = val;
-      switch (this.currentType) {
+      this.getQuestions(this.currentType);
+    },
+    // 获取题目
+    getQuestions: function (type) {
+      switch (type) {
         case '单选题': this.getSingle(); break;
         case '多选题': this.getMultiple(); break;
         case '判断题': this.getJudgment(); break;
@@ -291,12 +286,8 @@
   },
   watch: {
     currentType: function (val, oldVal) {
-      switch (val) {
-        case '单选题': this.getSingle(); break;
-        case '多选题': this.getMultiple(); break;
-        case '判断题': this.getJudgment(); break;
-        case '填空题': this.getFill(); break;
-      }
+      this.currentPage = 1;
+      this.getQuestions(val);
     }
   },
   created() {

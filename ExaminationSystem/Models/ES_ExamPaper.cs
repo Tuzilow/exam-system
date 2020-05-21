@@ -32,6 +32,11 @@ namespace ExaminationSystem.Models
         public int EmPaperScore { get; set; }
         public Nullable<int> EmPaperTrueScore { get; set; }
         public bool IsDel { get; set; }
+        public int EmPaperSelectScore { get; set; }
+        public int EmPaperFillScore { get; set; }
+        public int EmPaperJudgeScore { get; set; }
+        public int EmPaperMultipleScore { get; set; }
+        public Nullable<int> EmPtId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_ExamPaper_Exercise> ES_ExamPaper_Exercise { get; set; }
@@ -41,5 +46,6 @@ namespace ExaminationSystem.Models
         public virtual ICollection<ES_User_ExamPaper> ES_User_ExamPaper { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_ExamLog> ES_ExamLog { get; set; }
+        public virtual ES_ExamPart ES_ExamPart { get; set; }
     }
 }

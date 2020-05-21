@@ -46,6 +46,7 @@
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamLo__EmPap__503BEA1C" />
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamLo__EmPtI__51300E55" />
         <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamLo__UserI__4F47C5E3" />
+        <AssociationConnector Association="ExaminationSystemDbModel.FK__ES_ExamPa__EmPtI__607251E5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

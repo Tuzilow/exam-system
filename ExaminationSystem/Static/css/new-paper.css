@@ -1,0 +1,70 @@
+﻿.new-paper .error .el-input__inner {
+    border-color: #F56C6C;
+    color: #F56C6C;
+}
+
+.new-paper .main-content {
+    width: 50vw;
+}
+
+.new-paper .el-form-item {
+    margin-bottom: 0.4rem;
+}
+
+.new-paper .el-form-item__label {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+
+.new-paper .select-warp,
+.new-paper .el-form-item__content {
+    display: flex;
+}
+
+    .new-paper .select-warp .el-form-item,
+    .new-paper .el-form-item__content span {
+        flex: 2;
+    }
+
+        .new-paper .el-form-item__content span.total-score {
+            flex: 1;
+        }
+
+        .new-paper .el-form-item__content span .el-input-number {
+            margin-left: 1rem;
+        }
+
+        .new-paper .select-warp .el-select,
+        .new-paper .select-warp .el-form-item .el-input__inner {
+            width: 100%;
+        }
+
+    .new-paper .select-warp .el-select {
+        box-sizing: border-box;
+        padding-right: 1rem;
+    }
+
+.new-paper .el-input-number__decrease,
+.new-paper .el-input-number__increase {
+    height: 95% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.new-paper .max-score {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+}
+
+    .new-paper .max-score .el-form-item__label {
+        margin-right: 1rem;
+    }
+
+.new-paper .submit-btn .el-form-item__content {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}

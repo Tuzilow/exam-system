@@ -75,11 +75,16 @@ if not exists (select * from sysobjects where name='ES_ExamPaper')
 		EmPaperId int primary key identity(1,1),
 		EmPaperName nvarchar(32) not null,
 		EmPaperSelectNum int not null, -- 选择题数量
+		EmPaperSelectScore int not null, -- 选择题数量
 		EmPaperFillNum int not null, -- 填空题数量
+		EmPaperFillScore int not null, -- 填空题数量
 		EmPaperJudgeNum int not null, -- 判断题数量
+		EmPaperJudgeScore int not null, -- 判断题数量
 		EmPaperMultipleNum int not null, -- 多选题数量
+		EmPaperMultipleScore int not null, -- 多选题数量
 		EmPaperScore int not null default(100), -- 总分值
 		EmPaperTrueScore int default(0), -- 得分
+		EmPtId int foreign key references ES_ExamPart(EmPtId),
 		IsDel bit not null default(0)
 	);
 
@@ -344,6 +349,15 @@ go
 alter table ES_Image add IsDel bit not null default(0);
 go
 alter table ES_Exercise add IsDel bit not null default(0); -- 题目总表添加删除标志
+go
+alter table ES_ExamPaper alter column EmPaperName nvarchar(512);
+alter table ES_ExamPaper add
+	EmPaperSelectScore int not null,
+	EmPaperFillScore int not null, 
+	EmPaperJudgeScore int not null,
+	EmPaperMultipleScore int not null;
+
+
 go
 
 -- 考试记录表

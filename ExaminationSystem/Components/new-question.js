@@ -80,7 +80,7 @@
     };
   },
   template: `
-       <div class="new-paper">
+       <div class="new-question">
         <div class="main-header">添加题目</div>
         <div class="main-content"  v-loading="isUploading">
            <el-tabs type="border-card" @tab-click="changeTab">
