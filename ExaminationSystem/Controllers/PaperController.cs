@@ -11,6 +11,22 @@ namespace ExaminationSystem.Controllers
     public class PaperController : Controller
     {
         readonly ExaminationSystemDbEntities db = new ExaminationSystemDbEntities();
+
+        /// <summary>
+        /// 添加试卷
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="singleNum"></param>
+        /// <param name="singleScore"></param>
+        /// <param name="multipleNum"></param>
+        /// <param name="multipleScore"></param>
+        /// <param name="judgmentNum"></param>
+        /// <param name="judgmentScore"></param>
+        /// <param name="fillNum"></param>
+        /// <param name="fillScore"></param>
+        /// <param name="tags"></param>
+        /// <param name="partId"></param>
+        /// <returns></returns>
         public string AddPaper(string title, int singleNum, int singleScore, int multipleNum, int multipleScore, int judgmentNum, int judgmentScore, int fillNum, int fillScore, int[] tags, int partId)
         {
             int code;
@@ -42,9 +58,10 @@ namespace ExaminationSystem.Controllers
                         return JsonConvert.SerializeObject(new { code, message });
                     }
 
-                    // 添加试卷与tag的关联
+                    // 获取添加的试卷对象
                     var newPaper = db.ES_ExamPaper.Where(p => p.IsDel == false).OrderByDescending(p => p.EmPaperId).FirstOrDefault();
 
+                    // 添加试卷与tag的关联
                     if (newPaper != null)
                     {
                         for (int i = 0; i < tags.Length; i++)
@@ -77,5 +94,7 @@ namespace ExaminationSystem.Controllers
             message = "试卷添加失败！服务端错误";
             return JsonConvert.SerializeObject(new { code, message });
         }
+
+
     }
 }

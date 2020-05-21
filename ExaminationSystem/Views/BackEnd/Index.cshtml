@@ -246,14 +246,14 @@
                 <el-button type="text" class="sub-btn">添加新用户</el-button>
               </li>
               <li :class="[currentTab === 'score-table' ? 'active': '' ]" @@click="changeTab('score-table')">
-                <el-button type="text" class="sub-btn">考生成绩表</el-button>
+                <el-button type="text" class="sub-btn">考生成绩/考试记录</el-button>
               </li>
             </ul>
           </el-collapse-item>
           <el-collapse-item title="" name="2">
             <template slot="title">
               <i class="el-icon-s-order"></i>
-              考试管理
+              场次管理
             </template>
             <ul>
               <li :class="[currentTab === 'exam-table' ? 'active': '' ]" @@click="changeTab('exam-table')">

@@ -437,7 +437,7 @@ namespace ExaminationSystem.Controllers
             try
             {
                 var questions = from e in db.ES_Exercise
-                                where e.EsType == "单选题" && e.IsDel == false
+                                where e.EsType == "多选题" && e.IsDel == false
                                 join mq in db.ES_MultipleQuestion on e.EsSubExerciseId equals mq.MQId
                                 select new
                                 {

@@ -5,7 +5,7 @@
     return {
       exam: {
         date: new Date().toLocaleDateString(),
-        start: new Date().getTime(),
+        start: new Date(new Date().toLocaleDateString() + ' 08:00:00').getTime(),
         end: '',
         time: 120
       },

@@ -1,10 +1,12 @@
-﻿.new-paper .error .el-input__inner {
+﻿
+.new-paper .error .el-input__inner {
     border-color: #F56C6C;
     color: #F56C6C;
 }
 
 .new-paper .main-content {
     width: 50vw;
+    padding-left: 1rem;
 }
 
 .new-paper .el-form-item {
@@ -14,6 +16,7 @@
 .new-paper .el-form-item__label {
     padding-top: 0;
     padding-bottom: 0;
+    color: #303133;
 }
 
 
@@ -25,6 +28,8 @@
     .new-paper .select-warp .el-form-item,
     .new-paper .el-form-item__content span {
         flex: 2;
+        color: #606266;
+        font-weight: 300;
     }
 
         .new-paper .el-form-item__content span.total-score {
@@ -68,3 +73,7 @@
     justify-content: center;
     margin-top: 0.5rem;
 }
+
+    .new-paper .submit-btn .el-form-item__content span {
+        color: #fff;
+    }
