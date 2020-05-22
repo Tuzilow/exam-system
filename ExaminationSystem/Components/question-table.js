@@ -106,8 +106,6 @@
   methods: {
     // 题目详情
     show: function (row) {
-      console.log(row)
-
       let htmlStr = '<ul class="alert-warp">';
       for (var index in row) {
         htmlStr += '<li><span class="title">' +

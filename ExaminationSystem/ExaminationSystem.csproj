@@ -269,6 +269,7 @@
     <Content Include="Static\css\new-paper.css" />
     <Content Include="Static\css\new-question.css" />
     <Content Include="Static\css\new-user.css" />
+    <Content Include="Static\css\paper-table.css" />
     <Content Include="Static\css\question-table.css" />
     <Content Include="Static\css\score-table.css" />
     <Content Include="Static\css\tag-control.css" />
