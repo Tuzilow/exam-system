@@ -52,8 +52,8 @@ go
 if not exists (select * from sysobjects where name='ES_ExamPart')
 	create table ES_ExamPart (
 		EmPtId int primary key identity(1,1),
-		EmPtStart datetime not null,
-		EmPtEnd datetime not null,
+		EmPtStart datetime unique not null,
+		EmPtEnd datetime unique not null,
 		IsDel bit not null default(0)
 	);
 
@@ -356,7 +356,7 @@ alter table ES_ExamPaper add
 	EmPaperFillScore int not null, 
 	EmPaperJudgeScore int not null,
 	EmPaperMultipleScore int not null;
-
+alter table ES_ExamPaper add EmPtId int foreign key references ES_ExamPart(EmPtId);
 
 go
 
@@ -373,3 +373,6 @@ if not exists (select * from sysobjects where name='ES_ExamLog')
 		Answers nvarchar(max) -- 考生提交的答案
 	);
 go
+
+alter table ES_ExamPart add constraint UQ_Start unique(EmPtStart);
+alter table ES_ExamPart add constraint UQ_End unique(EmPtEnd);

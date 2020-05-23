@@ -1,0 +1,22 @@
+﻿body {
+    box-sizing: border-box;
+    background: #ccc;
+}
+
+.header {
+    padding: 12px 16px;
+    background-color: #081842;
+    color: #fffffa;
+}
+
+    .header .el-page-header__content {
+        color: #fffffa;
+    }
+
+.exam-card {
+    margin: 1rem;
+    min-height: 80vh;
+}
+.exam-card .title {
+    text-align:center;
+}

@@ -136,6 +136,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PaperController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
+    <Compile Include="Controllers\StartExamController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\UserScoreController.cs" />
     <Compile Include="Global.asax.cs">
@@ -272,6 +273,7 @@
     <Content Include="Static\css\paper-table.css" />
     <Content Include="Static\css\question-table.css" />
     <Content Include="Static\css\score-table.css" />
+    <Content Include="Static\css\start-exam.css" />
     <Content Include="Static\css\tag-control.css" />
     <Content Include="Static\images\logo.png" />
     <Content Include="Static\images\logo1.png" />
@@ -292,13 +294,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Default\" />
-    <Folder Include="Views\ExamPart\" />
-    <Folder Include="Views\Image\" />
-    <Folder Include="Views\Paper\" />
-    <Folder Include="Views\Question\" />
-    <Folder Include="Views\Tag\" />
-    <Folder Include="Views\UserScore\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\ElementUI\fonts\element-icons.woff" />
@@ -317,6 +312,7 @@
     <Content Include="Views\BackEnd\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Scripts\quill\quill.min.js.map" />
+    <Content Include="Views\StartExam\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

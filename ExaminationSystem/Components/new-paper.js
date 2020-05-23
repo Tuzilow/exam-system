@@ -187,11 +187,11 @@
     },
     multipleNumChange: function (val) {
       this.paper.multiple.num = val;
-      this.paper.multiple.total = this.paper.single.num * this.paper.multiple.score;
+      this.paper.multiple.total = this.paper.multiple.num * this.paper.multiple.score;
     },
     multipleScoreChange: function (val) {
       this.paper.multiple.score = val;
-      this.paper.multiple.total = this.paper.single.num * this.paper.multiple.score;
+      this.paper.multiple.total = this.paper.multiple.num * this.paper.multiple.score;
     },
     judgmentNumChange: function (val) {
       this.paper.judgment.num = val;

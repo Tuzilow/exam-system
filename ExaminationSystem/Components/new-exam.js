@@ -92,8 +92,8 @@
       let userIds = this.selectUsers;
 
 
-      let startTime = new Date(date.toLocaleDateString() + ' ' + start.getHours() + ':' + start.getMinutes() + ':' + start.getSeconds()).getTime();
-      let endTime = new Date(date.toLocaleDateString() + ' ' + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds()).getTime();
+      let startTime = new Date(new Date(date).toLocaleDateString() + ' ' + start.getHours() + ':' + start.getMinutes() + ':' + start.getSeconds()).getTime();
+      let endTime = new Date(new Date(date).toLocaleDateString() + ' ' + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds()).getTime();
 
       this.isLoading = true;
       axios.post('/ExamPart/CreateNewPart', {

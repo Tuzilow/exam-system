@@ -17,6 +17,7 @@
           <Property Name="IsStart" Type="bit" Nullable="false" />
           <Property Name="IsSubmit" Type="bit" Nullable="false" />
           <Property Name="Answers" Type="nvarchar(max)" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_ExamPaper">
           <Key>
@@ -1189,6 +1190,7 @@
           <NavigationProperty Name="ES_ExamPaper" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__EmPap__503BEA1C" FromRole="ES_ExamLog" ToRole="ES_ExamPaper" />
           <NavigationProperty Name="ES_ExamPart" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__EmPtI__51300E55" FromRole="ES_ExamLog" ToRole="ES_ExamPart" />
           <NavigationProperty Name="ES_User" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__UserI__4F47C5E3" FromRole="ES_ExamLog" ToRole="ES_User" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK__ES_ExamLo__EmPap__503BEA1C">
           <End Type="ExaminationSystemDbModel.ES_ExamPaper" Role="ES_ExamPaper" Multiplicity="0..1" />
@@ -1493,6 +1495,7 @@
           <EntitySetMapping Name="ES_ExamLog">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamLog">
               <MappingFragment StoreEntitySet="ES_ExamLog">
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
                 <ScalarProperty Name="Answers" ColumnName="Answers" />
                 <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />
                 <ScalarProperty Name="IsStart" ColumnName="IsStart" />

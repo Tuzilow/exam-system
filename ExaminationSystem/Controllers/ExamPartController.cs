@@ -142,10 +142,10 @@ namespace ExaminationSystem.Controllers
                 foreach (var user_part in user_parts)
                 {
                     user_part.IsDel = true;
+                    db.Entry(user_part).State = System.Data.Entity.EntityState.Modified;
                 }
             }
 
-            db.Entry(user_parts).State = System.Data.Entity.EntityState.Modified;
 
             if (part != null)
             {
