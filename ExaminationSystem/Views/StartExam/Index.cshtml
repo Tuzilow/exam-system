@@ -24,6 +24,10 @@
     <div>
       <el-card class="exam-card" v-loading="isLoading">
         <h2 class="title">{{ title }}</h2>
+        <p class="time">
+          <span>考试时间：{{ start.toLocaleString() }} - {{ end.toLocaleString() }}</span>
+          <span>剩余时间：{{ timer }}</span>
+        </p>
         <el-divider></el-divider>
         <div class="single-wrap">
           <p class="single-title">一、选择题</p>
@@ -101,8 +105,8 @@
   new Vue({
     el: '#app',
     data: {
-      start: null,
-      end: null,
+      start: new Date(),
+      end: new Date(),
       isLoading: false,
       userName: '',
       partId: 0,
@@ -115,7 +119,8 @@
       singleSort: [],
       multipleSort: [],
       judgmentSort: [],
-      answers:null
+      answers: null,
+      timer:null
     },
     methods: {
       goBack() {
@@ -145,6 +150,9 @@
           if (current >= start && current <= end) {
             this.start = start;
             this.end = end;
+
+
+
             this.userName = data.name;
             this.partId = data.partId;
 
@@ -197,14 +205,23 @@
           this.isLoading = false;
           var data = res.data;
           this.title = data.title;
+
+          // 添加单选题答案存放数组
+          for (var i = 0; i < data.singles.length; i++) {
+            data.singles[i].ans = '';
+          }
           this.singles = data.singles;
 
           // 添加多选题答案存放数组
           for (var i = 0; i < data.multiples.length; i++) {
             data.multiples[i].ans = [];
           }
-
           this.multiples = data.multiples;
+
+          // 添加判断题答案存放数组
+          for (var i = 0; i < data.judgments.length; i++) {
+            data.judgments[i].ans = '';
+          }
           this.judgments = data.judgments;
 
           // 添加填空题答案存放数组
@@ -219,6 +236,8 @@
           this.fillAnsNum = data.fillAnsNum;
 
           this.answers = data.answers;
+          this.loadAnswer(this.answers);
+
 
           this.setSingleSort(this.singles.length);
           this.setMultipleSort(this.multiples.length);
@@ -277,19 +296,83 @@
       },
       // 保存答案
       save() {
+        this.isLoading = true;
         var id = localStorage.getItem('id');
         var ansStr = this.getAnswer();
         axios.post('/StartExam/SaveLog', { ansStr, id }).then(res => {
-          console.log(res);
+          this.isLoading = false;
+          var data = res.data;
+          if (data.code === 1) {
+            return this.$message.error(data.message);
+          }
+          return this.$message({
+            message: data.message,
+            type: 'success'
+          });
         })
       },
+      // 加载保存的答案
       loadAnswer(ansStr) {
-        // TODO 将答案加载到卷子上
+        var ansObj = JSON.parse(ansStr);
+
+        var singleLength = this.singles.length;
+        var multipleLength = this.multiples.length;
+        var judgmentLength = this.judgments.length;
+        var fillLength = this.fills.length;
+
+        for (var i = 0; i < ansObj.length; i++) {
+          for (var j = 0; j < singleLength; j++) {
+            if (this.singles[j].EsId === ansObj[i].EsId) {
+              this.singles[j].ans = ansObj[i].ans;
+            }
+          }
+          for (var j = 0; j < multipleLength; j++) {
+            if (this.multiples[j].EsId === ansObj[i].EsId) {
+              this.multiples[j].ans = ansObj[i].ans;
+            }
+          }
+          for (var j = 0; j < judgmentLength; j++) {
+            if (this.judgments[j].EsId === ansObj[i].EsId) {
+              this.judgments[j].ans = ansObj[i].ans;
+            }
+          }
+          for (var j = 0; j < fillLength; j++) {
+            if (this.fills[j].EsId === ansObj[i].EsId) {
+              this.fills[j].ans = ansObj[i].ans;
+            }
+          }
+        }
+      },
+      // 获得剩余时间
+      getDiffTime() {
+        var diff = new Date(this.end).getTime() - new Date().getTime();
+        var temp1 = diff % (24 * 3600 * 1000);
+        var h = Math.floor(temp1 / (3600 * 1000));
+        var temp2 = temp1 % (3600 * 1000)
+        var m = Math.floor(temp2 / (60 * 1000));
+        var temp3 = temp2 % (60 * 1000);
+        var s = Math.round(temp3 / 1000);
+
+        return h + '小时' + m + '分钟' + s + '秒';
+      },
+      // 倒计时
+      setCountDown() {
+        var clock = window.setInterval(() => {
+          var time = this.getDiffTime();
+          this.timer = time;
+          if (time === '0小时0分钟0秒') {
+            window.clearInterval(clock);
+          }
+        }, 1000);
       }
     },
     created() {
+      console.log('created');
       this.checkUser();
       this.doAuth();
+    },
+    mounted() {
+      this.setCountDown();
     }
   })
 </script>
