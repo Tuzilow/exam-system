@@ -26,10 +26,11 @@
         <h2 class="title">{{ title }}</h2>
         <el-divider></el-divider>
         <div class="single-wrap">
+          <p class="single-title">一、选择题</p>
           <ul>
             <li class="single-item" v-for="item,index in singles" :key="item.EsId">
-              {{index + 1}}.
-              <div v-html="item.SQTitle"></div>
+              <span class="title-index">{{index + 1}}.</span>
+              <div v-html="item.SQTitle" class="title-content"></div>
               <el-radio-group v-model="item.ans">
                 <el-radio :label="singleSort[index][0]">A. {{item[singleSort[index][0]]}}</el-radio>
                 <el-radio :label="singleSort[index][1]">B. {{item[singleSort[index][1]]}}</el-radio>
@@ -38,6 +39,57 @@
               </el-radio-group>
             </li>
           </ul>
+        </div>
+        <div class="multiple-wrap">
+          <p class="multiple-title">二、多选题</p>
+          <ul>
+            <li class="multiple-item" v-for="item,index in multiples" :key="item.EsId">
+              <span class="title-index">{{index + 1}}.</span>
+              <div v-html="item.MQTitle" class="title-content"></div>
+              <el-checkbox-group v-model="item.ans">
+                <el-checkbox v-if="item[multipleSort[index][0]] != null" :label="multipleSort[index][0]">{{item[multipleSort[index][0]]}}</el-checkbox>
+                <el-checkbox v-if="item[multipleSort[index][1]] != null" :label="multipleSort[index][1]">{{item[multipleSort[index][1]]}}</el-checkbox>
+                <el-checkbox v-if="item[multipleSort[index][2]] != null" :label="multipleSort[index][2]">{{item[multipleSort[index][2]]}}</el-checkbox>
+                <el-checkbox v-if="item[multipleSort[index][3]] != null" :label="multipleSort[index][3]">{{item[multipleSort[index][3]]}}</el-checkbox>
+                <el-checkbox v-if="item[multipleSort[index][4]] != null" :label="multipleSort[index][4]">{{item[multipleSort[index][4]]}}</el-checkbox>
+                <el-checkbox v-if="item[multipleSort[index][5]] != null" :label="multipleSort[index][5]">{{item[multipleSort[index][5]]}}</el-checkbox>
+                <el-checkbox v-if="item[multipleSort[index][6]] != null" :label="multipleSort[index][6]">{{item[multipleSort[index][6]]}}</el-checkbox>
+              </el-checkbox-group>
+            </li>
+          </ul>
+        </div>
+        <div class="judgment-wrap">
+          <p class="judgment-title">三、判断题</p>
+          <ul>
+            <li class="judgment-item" v-for="item,index in judgments" :key="item.EsId">
+              <span class="title-index">{{index + 1}}.</span>
+              <div v-html="item.JQTitle" class="title-content"></div>
+              <el-radio-group v-model="item.ans">
+                <el-radio :label="judgmentSort[index][0]">{{item[judgmentSort[index][0]]}}</el-radio>
+                <el-radio :label="judgmentSort[index][1]">{{item[judgmentSort[index][1]]}}</el-radio>
+              </el-radio-group>
+            </li>
+          </ul>
+        </div>
+        <div class="fill-wrap">
+          <p class="fill-title">四、填空题</p>
+          <ul>
+            <li class="fill-item" v-for="item,index in fills" :key="item.EsId">
+              <span class="title-index">{{index + 1}}.</span>
+              <div v-html="item.FQTitle" class="title-content"></div>
+              <div class="fill-answer">
+                <p v-for="num,numIdx in fillAnsNum[index]" :key="numIdx" class="fill-answer-item">
+                  <span>第{{numIdx + 1}}个空：</span>
+                  <el-input v-model="item.ans[numIdx]" placeholder="请输入内容"></el-input>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <el-divider></el-divider>
+        <div class="btns">
+          <el-button @@click="save">保 存</el-button>
+          <el-button type="success">交 卷</el-button>
         </div>
       </el-card>
     </div>
@@ -56,11 +108,14 @@
       partId: 0,
       title: '',
       fills: [],
+      fillAnsNum: [],
       judgments: [],
       multiples: [],
       singles: [],
-      singleAns: [],
-      singleSort: []
+      singleSort: [],
+      multipleSort: [],
+      judgmentSort: [],
+      answers:null
     },
     methods: {
       goBack() {
@@ -143,11 +198,31 @@
           var data = res.data;
           this.title = data.title;
           this.singles = data.singles;
+
+          // 添加多选题答案存放数组
+          for (var i = 0; i < data.multiples.length; i++) {
+            data.multiples[i].ans = [];
+          }
+
           this.multiples = data.multiples;
           this.judgments = data.judgments;
-          this.fills = data.fills;
 
-          this.setSingleSort();
+          // 添加填空题答案存放数组
+          for (var i = 0; i < data.fills.length; i++) {
+            data.fills[i].ans = [];
+            for (var j = 0; j < data.fillAnsNum[i]; j++) {
+              data.fills[i].ans[j] = '';
+            }
+          }
+
+          this.fills = data.fills;
+          this.fillAnsNum = data.fillAnsNum;
+
+          this.answers = data.answers;
+
+          this.setSingleSort(this.singles.length);
+          this.setMultipleSort(this.multiples.length);
+          this.setJudgmentSort(this.judgments.length);
         });
       },
       // 随机排序
@@ -161,10 +236,55 @@
         }
         return arr;
       },
-      setSingleSort() {
-        for (var i = 0; i < this.singles.length; i++) {
+      // 打乱单选题选项
+      setSingleSort(length) {
+        for (var i = 0; i < length; i++) {
           this.singleSort.push(this.shuffle(['SQAns1', 'SQAns2', 'SQAns3', 'SQTrueAns']));
         }
+      },
+      // 打乱多选题选项
+      setMultipleSort(length) {
+        for (var i = 0; i < length; i++) {
+          this.multipleSort.push(this.shuffle(['MQAns1', 'MQAns2', 'MQAns3', 'MQAns4', 'MQAns5', 'MQAns6', 'MQAns7']));
+        }
+      },
+      // 打乱判断题选项
+      setJudgmentSort(length) {
+        for (var i = 0; i < length; i++) {
+          this.judgmentSort.push(this.shuffle(['JQFalseAns', 'JQTrueAns']));
+        }
+      },
+      // 获取答案
+      getAnswer() {
+        var answers = [];
+        for (var i = 0; i < this.singles.length; i++) {
+          var single = this.singles[i];
+          answers.push({ EsId: single.EsId, ans: single.ans });
+        }
+        for (var i = 0; i < this.multiples.length; i++) {
+          var multiple = this.multiples[i];
+          answers.push({ EsId: multiple.EsId, ans: multiple.ans });
+        }
+        for (var i = 0; i < this.judgments.length; i++) {
+          var judgment = this.judgments[i];
+          answers.push({ EsId: judgment.EsId, ans: judgment.ans });
+        }
+        for (var i = 0; i < this.fills.length; i++) {
+          var fill = this.fills[i];
+          answers.push({ EsId: fill.EsId, ans: fill.ans });
+        }
+        return JSON.stringify(answers);
+      },
+      // 保存答案
+      save() {
+        var id = localStorage.getItem('id');
+        var ansStr = this.getAnswer();
+        axios.post('/StartExam/SaveLog', { ansStr, id }).then(res => {
+          console.log(res);
+        })
+      },
+      loadAnswer(ansStr) {
+        // TODO 将答案加载到卷子上
       }
     },
     created() {

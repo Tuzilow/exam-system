@@ -14,9 +14,89 @@
     }
 
 .exam-card {
-    margin: 1rem;
+    margin: 2rem 6rem;
     min-height: 80vh;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
-.exam-card .title {
+
+    .exam-card .title {
+        text-align: center;
+    }
+
+    .exam-card .single-wrap .single-title,
+    .exam-card .multiple-wrap .multiple-title,
+    .exam-card .fill-wrap .fill-title,
+    .exam-card .judgment-wrap .judgment-title {
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .exam-card .multiple-wrap .multiple-title,
+    .exam-card .fill-wrap .fill-title,
+    .exam-card .judgment-wrap .judgment-title {
+        margin-top: 1.5rem;
+    }
+
+    .exam-card .single-wrap .single-item,
+    .exam-card .multiple-wrap .multiple-item,
+    .exam-card .fill-wrap .fill-item,
+    .exam-card .judgment-wrap .judgment-item {
+        padding: 1rem 2rem 1rem 2rem;
+        border: 1px solid #E4E7ED;
+        border-radius: 5px;
+    }
+
+    .exam-card .single-wrap .title-index,
+    .exam-card .fill-wrap .title-index,
+    .exam-card .multiple-wrap .title-index,
+    .exam-card .judgment-wrap .title-index {
+        font-size: 20px;
+        line-height: 1rem;
+    }
+
+    .exam-card .single-wrap .title-content,
+    .exam-card .fill-wrap .title-content,
+    .exam-card .multiple-wrap .title-content,
+    .exam-card .judgment-wrap .title-content {
+        display: inline-block;
+        font-size: 18px;
+    }
+
+    .exam-card .single-wrap .el-radio-group,
+    .exam-card .judgment-wrap .el-radio-group,
+    .exam-card .multiple-wrap .el-checkbox-group {
+        display: block;
+        padding-top: 0.5rem;
+        padding-left: 1rem;
+        font-size: 16px;
+        display:flex;
+        flex-direction:column;
+    }
+        .exam-card .single-wrap .el-radio-group .el-radio,
+        .exam-card .judgment-wrap .el-radio-group .el-radio,
+        .exam-card .multiple-wrap .el-checkbox-group .el-checkbox {
+            margin-top: .5rem;
+        }
+
+        .exam-card .single-wrap .el-radio-group .el-radio__label,
+        .exam-card .judgment-wrap .el-radio-group .el-radio__label,
+        .exam-card .multiple-wrap .el-checkbox-group .el-checkbox__label {
+            font-size: 16px;
+        }
+
+    .exam-card .fill-wrap .fill-answer {
+        margin-top: 1rem;
+    }
+    .exam-card .fill-wrap .fill-answer-item {
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+    .exam-card .fill-wrap .fill-answer-item span {
+        width: 6rem;
+    }
+
+.exam-card .btns {
     text-align:center;
 }

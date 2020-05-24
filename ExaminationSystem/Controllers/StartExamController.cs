@@ -329,9 +329,21 @@ namespace ExaminationSystem.Controllers
                 // 获取填空题
                 var fills = GetFill(paper.EmPaperFillNum).ToList();
 
+                // 获取填空答案数量
+                List<int> fillAnsNum = new List<int>();
+
+                foreach (var fill in fills)
+                {
+                    int fillId = Convert.ToInt32(fill.GetType().GetProperty("FQId").GetValue(fill));
+
+                    fillAnsNum.Add((from fa in db.ES_FillAnswer
+                                    where fa.FQId == fillId
+                                    select fa).Count());
+                }
+
                 CreateLog(new List<List<object>>() { singles, multiples, judgments, fills }, userId, paper.EmPaperId, partId);
 
-                return JsonConvert.SerializeObject(new { title = paper.EmPaperName, singles, multiples, judgments, fills });
+                return JsonConvert.SerializeObject(new { title = paper.EmPaperName, singles, multiples, judgments, fills, fillAnsNum });
             }
 
             // TODO 如果有标签
@@ -431,17 +443,74 @@ namespace ExaminationSystem.Controllers
                             break;
                         case "填空题":
                             var fill = GetFillById(question.EsId);
+                            int fillId = Convert.ToInt32(fill.GetType().GetProperty("FQId").GetValue(fill));
                             fills.Add(fill);
                             break;
                     }
                 });
+
+                // 获取填空答案数量
+                List<int> fillAnsNum = new List<int>();
+
+                foreach (var fill in fills)
+                {
+                    int fillId = Convert.ToInt32(fill.GetType().GetProperty("FQId").GetValue(fill));
+
+                    fillAnsNum.Add((from fa in db.ES_FillAnswer
+                                    where fa.FQId == fillId
+                                    select fa).Count());
+                }
 
                 string title = (from l in db.ES_ExamLog
                                 join p in db.ES_ExamPaper on l.EmPaperId equals p.EmPaperId
                                 where l.UserId == id && l.IsDel == false && p.IsDel == false
                                 select p.EmPaperName).FirstOrDefault();
 
-                return JsonConvert.SerializeObject(new { title, singles, multiples, judgments, fills, answers = log.Answers });
+                return JsonConvert.SerializeObject(new { title, singles, multiples, judgments, fills, fillAnsNum, answers = log.Answers });
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex.Message;
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+        }
+
+        /// <summary>
+        /// 保存试卷
+        /// </summary>
+        /// <param name="ansStr"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string SaveLog(string ansStr, int id)
+        {
+            int code;
+            string message;
+            try
+            {
+                var log = (from l in db.ES_ExamLog
+                           where l.UserId == id && l.IsStart == true && l.IsSubmit == false
+                           select l).FirstOrDefault();
+
+                if (log == null)
+                {
+                    code = 1;
+                    message = "无此考试记录";
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+
+                log.Answers = ansStr;
+                db.Entry(log).State = System.Data.Entity.EntityState.Modified;
+
+                if (db.SaveChanges() > 0)
+                {
+                    code = 0;
+                    message = "保存成功";
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+                code = 1;
+                message = "保存失败";
+                return JsonConvert.SerializeObject(new { code, message });
             }
             catch (Exception ex)
             {
