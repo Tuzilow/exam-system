@@ -6,6 +6,7 @@
 @Scripts.Render("~/bundles/vue")
 @Scripts.Render("~/bundles/element")
 @Styles.Render("~/Content/elementcss")
+@Scripts.Render("~/bundles/axios")
 
 <!DOCTYPE html>
 
@@ -52,7 +53,7 @@
     <div id="app">
       <el-page-header @@back="goBack" content="成绩查询" class="header"></el-page-header>
       <div>
-        <el-card class="msg-card">
+        <el-card class="msg-card" v-loading="isLoading">
           <div slot="header" class="clearfix">
             <span>{{message.account}} 的成绩单</span>
           </div>
@@ -61,7 +62,7 @@
             <li>考试日期：{{message.date}}</li>
             <li>考试场次：{{message.title}}</li>
             <li>试卷：{{message.paperTitle}}</li>
-            <li>分数（得分/总分）：<span>{{message.trueScore}}</span>/<span>{{message.score}}</span></li>
+            <li>分数：<span>{{message.score}}</span></li>
           </ul>
         </el-card>
       </div>
@@ -75,21 +76,52 @@
     data: {
       message: {
         id: 1,
-        account: '111111111',
-        name: '王小明',
-        date: '2020-05-12',
-        title: '8:00到10:00场',
-        paperTitle: '试卷标题',
-        score: '100',
-        trueScore: '80'
+        account: '',
+        name: '',
+        date: '',
+        title: '',
+        paperTitle: '',
+        score: 0,
+        isLoading: false
       }
     },
     methods: {
       goBack() {
         window.location.href = '/Home/Index';
+      },
+      getScore() {
+        this.isLoading = true;
+        var id = localStorage.getItem('id');
+        axios.get('/Home/GetScore', {
+          params: {
+            id
+          }
+        }).then(res => {
+          this.isLoading = false;
+          var data = res.data;
+          if (data.code === 1) {
+            return this.$confirm(data.message, '提示', {
+              confirmButtonText: '确定',
+              type: 'error'
+            }).then(() => {
+              this.goBack();
+            }).catch(() => {
+              this.goBack();
+            });
+          }
+
+          this.message.id = data.userId;
+          this.message.name = data.name;
+          this.message.account = data.account;
+          this.message.date = data.date;
+          this.message.title = data.title;
+          this.message.paperTitle = data.paperTitle;
+          this.message.score = data.score;
+        })
       }
     },
     created() {
+      this.getScore();
     }
   });
 </script>
