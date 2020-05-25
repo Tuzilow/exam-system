@@ -50,3 +50,7 @@
 .paper-more .answers {
     color: #67C23A;
 }
+.paper-more img {
+    display:block;
+    width: 20rem;
+}

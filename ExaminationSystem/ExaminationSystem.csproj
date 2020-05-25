@@ -314,6 +314,7 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Scripts\quill\quill.min.js.map" />
     <Content Include="Views\StartExam\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\ExamSystem.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

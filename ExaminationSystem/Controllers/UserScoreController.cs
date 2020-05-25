@@ -45,7 +45,7 @@ namespace ExaminationSystem.Controllers
                                pr.EmPaperName
                            };
 
-                if (ptId != null || ptId != 0)
+                if (ptId != null && ptId != 0)
                 {
                     logs = logs.Where(l => l.EmPtId == ptId);
                 }

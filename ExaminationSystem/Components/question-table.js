@@ -196,8 +196,8 @@
         if (data.code === 1) {
           return this.$message.error(data.message);
         }
-        let count = data.slice(data.length - 1);
-        let singles = data.slice(0, data.length - 1);
+        var count = data.slice(data.length - 1);
+        var singles = data.slice(0, data.length - 1);
 
         this.totalNum = count[0];
         this.singles = singles;

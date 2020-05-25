@@ -408,6 +408,18 @@
             window.clearInterval(clock);
           }
         }, 1000);
+      },
+      stop() {
+
+        var allowNum = 3; // 允许三次切屏，超过则提交
+        window.onblur = () => {
+          if (allowNum < 1) {
+            this.onSubmit();
+          }
+          allowNum--;
+          alert("您已切屏,超过三次自动提交试卷")
+        }
+
       }
     },
     watch: {
@@ -421,6 +433,7 @@
       console.log('created');
       this.checkUser();
       this.doAuth();
+      this.stop();
     },
     mounted() {
       this.setCountDown();

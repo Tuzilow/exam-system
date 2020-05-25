@@ -221,7 +221,14 @@
     // 获取标签
     getTags: function () {
       axios.get('/Tag/GetTags').then(res => {
-        this.paper.tags = res.data;
+        var data = res.data;
+        tags = data.slice(1, data.length);
+
+        if (localStorage.getItem('id') != 1) {
+          this.paper.tags = tags;
+        } else {
+          this.paper.tags = data;
+        }
       });
     },
     // 获取场次
