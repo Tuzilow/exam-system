@@ -374,5 +374,7 @@ if not exists (select * from sysobjects where name='ES_ExamLog')
 	);
 go
 
-alter table ES_ExamPart add constraint UQ_Start unique(EmPtStart);
-alter table ES_ExamPart add constraint UQ_End unique(EmPtEnd);
+alter table ES_ExamLog add IsDel bit not null default(0)
+
+alter table ES_ExamPart drop constraint UQ_Start;
+alter table ES_ExamPart drop constraint UQ_End;

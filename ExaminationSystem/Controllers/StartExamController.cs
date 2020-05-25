@@ -495,7 +495,7 @@ namespace ExaminationSystem.Controllers
                 if (log == null)
                 {
                     code = 1;
-                    message = "无此考试记录";
+                    message = "无此考试记录或您已提交试卷";
                     return JsonConvert.SerializeObject(new { code, message });
                 }
 
@@ -510,6 +510,185 @@ namespace ExaminationSystem.Controllers
                 }
                 code = 1;
                 message = "保存失败";
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex.Message;
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+        }
+
+        public string FinishExam(string ansStr, int id)
+        {
+            List<AnswerInfo> ans = JsonConvert.DeserializeObject<List<AnswerInfo>>(ansStr);
+
+            int code;
+            string message;
+            try
+            {
+                var log = (from l in db.ES_ExamLog
+                           where l.UserId == id && l.IsStart == true && l.IsSubmit == false && l.IsDel == false
+                           select l).FirstOrDefault();
+
+                if (log == null)
+                {
+                    code = 1;
+                    message = "获取题目失败";
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+
+
+
+
+                var scores = (from p in db.ES_ExamPaper
+                              where p.EmPaperId == log.EmPaperId && p.IsDel == false && log.IsDel == false
+                              select new
+                              {
+                                  p.EmPaperSelectScore,
+                                  p.EmPaperMultipleScore,
+                                  p.EmPaperJudgeScore,
+                                  p.EmPaperFillScore
+                              }).FirstOrDefault();
+
+                if (scores == null)
+                {
+                    code = 1;
+                    message = "获取分数失败";
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+
+                List<string> exIdList = new List<string>(log.ExercisesId.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
+
+                double singleScore = 0;
+                double multipleScore = 0;
+                double judgmentScore = 0;
+                double fillScore = 0;
+
+                // 获取记录中的所有题目
+                exIdList.ForEach(esIdStr =>
+                {
+                    int esId = Convert.ToInt32(esIdStr);
+
+                    // 获取该题考生的答案
+                    AnswerInfo nowAns = null;
+                    ans.ForEach(ansItem =>
+                    {
+                        if (ansItem.EsId == esId)
+                        {
+                            nowAns = ansItem;
+                        }
+                    });
+
+                    // 获取该题
+                    var question = (from q in db.ES_Exercise
+                                    where q.EsId == esId
+                                    select q).FirstOrDefault();
+                    // 判断对错，计算分数
+                    switch (question.EsType)
+                    {
+                        case "单选题":
+                            var single = GetSingleById(question.EsId);
+                            string trueSel = single.GetType().GetProperty("SQTrueAns").GetValue(single).ToString();
+
+                            if (trueSel == nowAns.Ans[0])
+                            {
+                                singleScore += scores.EmPaperSelectScore;
+                            }
+                            break;
+                        case "多选题":
+                            var multiple = GetMultipleById(question.EsId);
+                            int MQId = Convert.ToInt32(multiple.GetType().GetProperty("MQId").GetValue(multiple));
+
+                            var mulAns = from ma in db.ES_MultipleAnswer
+                                         where ma.MQId == MQId
+                                         select ma;
+
+                            if (mulAns.Count() >= nowAns.Ans.Count())
+                            {
+                                int trueNum = 0;
+                                foreach (var item in mulAns)
+                                {
+                                    for (int i = 0; i < nowAns.Ans.Count(); i++)
+                                    {
+                                        if (item.MAContent == nowAns.Ans[i])
+                                        {
+                                            trueNum++;
+                                            continue;
+                                        }
+                                    }
+                                }
+
+                                if (trueNum == mulAns.Count())
+                                {
+                                    multipleScore += scores.EmPaperMultipleScore;
+                                }
+                                else if (trueNum != 0)// 如果没有全对
+                                {
+                                    multipleScore += scores.EmPaperMultipleScore / 2;
+                                }
+                            }
+                            break;
+                        case "判断题":
+                            var judgment = GetJudgmentById(question.EsId);
+                            string jQTrueSel = judgment.GetType().GetProperty("JQTrueAns").GetValue(judgment).ToString();
+
+                            if (jQTrueSel == nowAns.Ans[0])
+                            {
+                                judgmentScore += scores.EmPaperJudgeScore;
+                            }
+                            break;
+                        case "填空题":
+                            var fill = GetFillById(question.EsId);
+                            int fillId = Convert.ToInt32(fill.GetType().GetProperty("FQId").GetValue(fill));
+
+                            var fillAns = from fa in db.ES_FillAnswer
+                                          where fa.FQId == fillId
+                                          select fa;
+
+                            if (fillAns.Count() >= nowAns.Ans.Count())
+                            {
+                                int trueNum = 0;
+                                foreach (var item in fillAns)
+                                {
+                                    for (int i = 0; i < nowAns.Ans.Count(); i++)
+                                    {
+                                        if (item.FAContent == nowAns.Ans[i])
+                                        {
+                                            trueNum++;
+                                            continue;
+                                        }
+                                    }
+                                }
+
+                                if (trueNum == fillAns.Count())
+                                {
+                                    judgmentScore += scores.EmPaperJudgeScore;
+                                }
+                                else if (trueNum != 0)// 如果没有全对
+                                {
+                                    judgmentScore += scores.EmPaperMultipleScore / fillAns.Count();
+                                }
+                            }
+                            break;
+                    }
+                });
+                double finalScore = singleScore + multipleScore + judgmentScore + fillScore;
+
+                log.Answers = ansStr;
+                log.IsSubmit = true;
+                log.ExamScore = finalScore;
+
+                db.Entry(log).State = System.Data.Entity.EntityState.Modified;
+
+                if (db.SaveChanges() > 0)
+                {
+                    return JsonConvert.SerializeObject(new { singleScore, multipleScore, judgmentScore, fillScore, finalScore });
+                }
+
+                code = 1;
+                message = "考生记录保存失败";
                 return JsonConvert.SerializeObject(new { code, message });
             }
             catch (Exception ex)

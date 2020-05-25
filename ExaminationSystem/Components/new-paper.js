@@ -36,7 +36,7 @@
                   <el-option
                     v-for="part in paper.parts"
                     :key="part.id"
-                    :label="part.title"
+                    :label="part.date + '@' + part.title"
                     :value="part.id">
                   </el-option>
                 </el-select>

@@ -35,7 +35,7 @@
             <li class="single-item" v-for="item,index in singles" :key="item.EsId">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.SQTitle" class="title-content"></div>
-              <el-radio-group v-model="item.ans">
+              <el-radio-group v-model="item.ans[0]">
                 <el-radio :label="singleSort[index][0]">A. {{item[singleSort[index][0]]}}</el-radio>
                 <el-radio :label="singleSort[index][1]">B. {{item[singleSort[index][1]]}}</el-radio>
                 <el-radio :label="singleSort[index][2]">C. {{item[singleSort[index][2]]}}</el-radio>
@@ -68,7 +68,7 @@
             <li class="judgment-item" v-for="item,index in judgments" :key="item.EsId">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.JQTitle" class="title-content"></div>
-              <el-radio-group v-model="item.ans">
+              <el-radio-group v-model="item.ans[0]">
                 <el-radio :label="judgmentSort[index][0]">{{item[judgmentSort[index][0]]}}</el-radio>
                 <el-radio :label="judgmentSort[index][1]">{{item[judgmentSort[index][1]]}}</el-radio>
               </el-radio-group>
@@ -93,7 +93,7 @@
         <el-divider></el-divider>
         <div class="btns">
           <el-button @@click="save">保 存</el-button>
-          <el-button type="success">交 卷</el-button>
+          <el-button type="success" @@click="onSubmit">交 卷</el-button>
         </div>
       </el-card>
     </div>
@@ -120,14 +120,39 @@
       multipleSort: [],
       judgmentSort: [],
       answers: null,
-      timer:null
+      timer: null
     },
     methods: {
+      // 提交并获取分数
+      onSubmit() {
+        this.isLoading = true;
+        var id = localStorage.getItem('id');
+        var ansStr = JSON.stringify(this.getAnswer());
+        axios.post('/StartExam/FinishExam', { ansStr, id }).then(res => {
+          this.isLoading = false;
+          var data = res.data;
+          if (data.code === 1) {
+            return this.$message.error(data.message);
+          }
+
+          var score = data.singleScore + data.multipleScore + data.judgmentScore + data.fillScore;
+
+          return this.$confirm('您的成绩为：' + score, '考试结束，请离开考场', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          }).then(() => {
+            this.goBack();
+          }).catch(() => {
+            this.goBack();
+          });
+        });
+      },
       goBack() {
         window.location.href = '/Home/Index';
       },
       // 验证是否可以参加考试
       doAuth() {
+        this.isLoading = true;
         var id = localStorage.getItem('id');
         axios.post('/StartExam/Auth', { id }).then(res => {
           var data = res.data;
@@ -204,11 +229,25 @@
         }).then(res => {
           this.isLoading = false;
           var data = res.data;
+
+          if (data.code === 1) {
+            this.$confirm(data.message, '提示', {
+              confirmButtonText: '确定',
+              type: 'error'
+            }).then(() => {
+              this.goBack();
+            }).catch(() => {
+              this.goBack();
+            });
+          }
+
           this.title = data.title;
 
           // 添加单选题答案存放数组
           for (var i = 0; i < data.singles.length; i++) {
-            data.singles[i].ans = '';
+            //data.singles[i].ans = '';
+            data.singles[i].ans = [];
+            data.singles[i].ans.push('');
           }
           this.singles = data.singles;
 
@@ -220,7 +259,9 @@
 
           // 添加判断题答案存放数组
           for (var i = 0; i < data.judgments.length; i++) {
-            data.judgments[i].ans = '';
+            //data.judgments[i].ans = '';
+            data.judgments[i].ans = [];
+            data.judgments[i].ans.push('');
           }
           this.judgments = data.judgments;
 
@@ -235,8 +276,10 @@
           this.fills = data.fills;
           this.fillAnsNum = data.fillAnsNum;
 
-          this.answers = data.answers;
-          this.loadAnswer(this.answers);
+          if (data.answers != null) {
+            this.answers = data.answers;
+            this.loadAnswer(this.answers);
+          }
 
 
           this.setSingleSort(this.singles.length);
@@ -292,24 +335,25 @@
           var fill = this.fills[i];
           answers.push({ EsId: fill.EsId, ans: fill.ans });
         }
-        return JSON.stringify(answers);
+        return answers;
       },
       // 保存答案
       save() {
         this.isLoading = true;
         var id = localStorage.getItem('id');
-        var ansStr = this.getAnswer();
+        var ansStr = JSON.stringify(this.getAnswer());
         axios.post('/StartExam/SaveLog', { ansStr, id }).then(res => {
           this.isLoading = false;
           var data = res.data;
           if (data.code === 1) {
             return this.$message.error(data.message);
           }
+
           return this.$message({
             message: data.message,
             type: 'success'
           });
-        })
+        });
       },
       // 加载保存的答案
       loadAnswer(ansStr) {

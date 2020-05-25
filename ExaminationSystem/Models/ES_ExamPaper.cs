@@ -30,7 +30,7 @@ namespace ExaminationSystem.Models
         public int EmPaperJudgeNum { get; set; }
         public int EmPaperMultipleNum { get; set; }
         public int EmPaperScore { get; set; }
-        public Nullable<int> EmPaperTrueScore { get; set; }
+        public Nullable<double> EmPaperTrueScore { get; set; }
         public bool IsDel { get; set; }
         public int EmPaperSelectScore { get; set; }
         public int EmPaperFillScore { get; set; }

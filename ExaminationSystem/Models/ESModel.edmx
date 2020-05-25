@@ -18,6 +18,7 @@
           <Property Name="IsSubmit" Type="bit" Nullable="false" />
           <Property Name="Answers" Type="nvarchar(max)" />
           <Property Name="IsDel" Type="bit" Nullable="false" />
+          <Property Name="ExamScore" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_ExamPaper">
           <Key>
@@ -30,7 +31,7 @@
           <Property Name="EmPaperJudgeNum" Type="int" Nullable="false" />
           <Property Name="EmPaperMultipleNum" Type="int" Nullable="false" />
           <Property Name="EmPaperScore" Type="int" Nullable="false" />
-          <Property Name="EmPaperTrueScore" Type="int" />
+          <Property Name="EmPaperTrueScore" Type="float" />
           <Property Name="IsDel" Type="bit" Nullable="false" />
           <Property Name="EmPaperSelectScore" Type="int" Nullable="false" />
           <Property Name="EmPaperFillScore" Type="int" Nullable="false" />
@@ -625,7 +626,7 @@
           <Property Name="EmPaperJudgeNum" Type="Int32" Nullable="false" />
           <Property Name="EmPaperMultipleNum" Type="Int32" Nullable="false" />
           <Property Name="EmPaperScore" Type="Int32" Nullable="false" />
-          <Property Name="EmPaperTrueScore" Type="Int32" />
+          <Property Name="EmPaperTrueScore" Type="Double" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ES_ExamPaper_Exercise" Relationship="Self.FK__ES_ExamPa__EmPap__6477ECF3" FromRole="ES_ExamPaper" ToRole="ES_ExamPaper_Exercise" />
           <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___Paper__5CD6CB2B" FromRole="ES_ExamPaper" ToRole="ES_Paper_Tag" />
@@ -1191,6 +1192,7 @@
           <NavigationProperty Name="ES_ExamPart" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__EmPtI__51300E55" FromRole="ES_ExamLog" ToRole="ES_ExamPart" />
           <NavigationProperty Name="ES_User" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__UserI__4F47C5E3" FromRole="ES_ExamLog" ToRole="ES_User" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
+          <Property Name="ExamScore" Type="Double" Nullable="false" />
         </EntityType>
         <Association Name="FK__ES_ExamLo__EmPap__503BEA1C">
           <End Type="ExaminationSystemDbModel.ES_ExamPaper" Role="ES_ExamPaper" Multiplicity="0..1" />
@@ -1495,6 +1497,7 @@
           <EntitySetMapping Name="ES_ExamLog">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamLog">
               <MappingFragment StoreEntitySet="ES_ExamLog">
+                <ScalarProperty Name="ExamScore" ColumnName="ExamScore" />
                 <ScalarProperty Name="IsDel" ColumnName="IsDel" />
                 <ScalarProperty Name="Answers" ColumnName="Answers" />
                 <ScalarProperty Name="IsSubmit" ColumnName="IsSubmit" />

@@ -23,6 +23,7 @@ namespace ExaminationSystem.Models
         public bool IsSubmit { get; set; }
         public string Answers { get; set; }
         public bool IsDel { get; set; }
+        public double ExamScore { get; set; }
     
         public virtual ES_ExamPaper ES_ExamPaper { get; set; }
         public virtual ES_ExamPart ES_ExamPart { get; set; }
