@@ -7,7 +7,7 @@
       papers: [],
       parts: [],
       currentPage: 1,
-      totalNum: 0,
+      totalNum: 1,
       currentSelectPart: null
     }
   },
@@ -145,9 +145,11 @@
       }).then(res => {
         this.isLoading = false;
         let { data } = res;
-        console.log(partId, data)
-        let papers = data.slice(0, data.length - 1);
 
+        var count = data.slice(data.length - 1);
+        var papers = data.slice(0, data.length - 1);
+
+        this.totalNum = count[0];
         this.papers = papers;
       });
     }
@@ -155,5 +157,10 @@
   created() {
     this.getExamPart();
     this.getPaper();
+  },
+  watch: {
+    currentPage: function () {
+      this.getPaper();
+    }
   }
 });

@@ -16,3 +16,37 @@
         padding-right: 10px;
         padding-left: 10px;
     }
+
+.paper-more li {
+    padding: .1rem .2rem;
+}
+.paper-more .el-dialog--center {
+    width: 50vw;
+}
+.paper-more .big-title {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+.paper-more .title-index,
+.paper-more .title-content {
+    display: inline-block;
+    margin-bottom: 0.4rem;
+}
+.paper-more .el-radio-group,
+.paper-more .el-checkbox-group {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+.paper-more .fill-answer-item {
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.paper-more .fill-answer-item span {
+    width: 5rem;
+}
+
+.paper-more .answers-wrap,
+.paper-more .answers {
+    color: #67C23A;
+}

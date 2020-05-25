@@ -13,86 +13,125 @@ namespace ExaminationSystem.Controllers
         readonly ExaminationSystemDbEntities db = new ExaminationSystemDbEntities();
 
         /// <summary>
-        /// 获取场次
-        /// </summary>
-        /// <returns></returns>
-        public string GetExamPart()
-        {
-            // 获取所有考试场次
-            var exams = from ep in db.ES_ExamPart where ep.IsDel == false orderby ep.EmPtId descending select ep;
-
-            // 格式化
-            List<object> examList = new List<object>();
-
-            foreach (var exam in exams)
-            {
-                int id = exam.EmPtId;
-                string tempDate = exam.EmPtStart.GetDateTimeFormats('o')[0];
-                string date = tempDate.Substring(0, tempDate.IndexOf('T')); // 将日期转为2020-05-06
-                string start = exam.EmPtStart.ToString("T"); // 开始时间
-                string end = exam.EmPtEnd.ToString("T"); // 结束时间
-                string title = start.Substring(0, start.Length - 3) + "到" + end.Substring(0, end.Length - 3) + "场";
-
-                examList.Add(new { id, date, title });
-            }
-
-            // 序列化为JSON 传递到View
-            return JsonConvert.SerializeObject(examList);
-        }
-
-        /// <summary>
         /// 根据场次ID获取学生成绩列表
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string GetUserScoreByPartId(string id, int pageIndex)
+        public string GetUserScore(int pageIndex = 1, string keyword="", int ptId = 0)
         {
-            var userScores = from u in db.ES_User
-                             join up in db.ES_User_ExamPart on u.UserId equals up.UserId
-                             join epart in db.ES_ExamPart on up.EmPtId equals epart.EmPtId
-                             join upaper in db.ES_User_ExamPaper on u.UserId equals upaper.UserId
-                             join epaper in db.ES_ExamPaper on upaper.EmPaperId equals epaper.EmPaperId
-                             where u.IsDel == false && u.RoleId == 1
-                             select new
-                             {
-                                 u.UserId,
-                                 u.UserName,
-                                 epart.EmPtId,
-                                 epart.EmPtStart,
-                                 epart.EmPtEnd,
-                                 epaper.EmPaperTrueScore
-                             };
-
-            if (id != "" && id != "0")
+            int code;
+            string message;
+            try
             {
-                int emptId = Convert.ToInt32(id);
-                userScores = userScores.Where(u => u.EmPtId == emptId);
+                var logs = from l in db.ES_ExamLog
+                           where l.IsDel == false
+                           join u in db.ES_User on l.UserId equals u.UserId
+                           join pt in db.ES_ExamPart on l.EmPtId equals pt.EmPtId
+                           join pr in db.ES_ExamPaper on l.EmPaperId equals pr.EmPaperId
+                           where pt.IsDel == false && pr.IsDel == false && u.IsDel == false
+                           select new
+                           {
+                               u.UserId,
+                               u.UserName,
+                               l.LogId,
+                               l.IsSubmit,
+                               l.ExercisesId,
+                               l.Answers,
+                               l.ExamScore,
+                               l.EmPtId,
+                               l.EmPaperId,
+                               pt.EmPtStart,
+                               pt.EmPtEnd,
+                               pr.EmPaperName
+                           };
+
+                if (ptId != null || ptId != 0)
+                {
+                    logs = logs.Where(l => l.EmPtId == ptId);
+                }
+
+                if (keyword != "")
+                {
+                    logs = logs.Where(l => l.UserName.Contains(keyword));
+                }
+
+                int totalCount = logs.Count();
+
+                logs = logs.OrderBy(l => l.LogId).Skip((pageIndex - 1) * 10).Take(10);
+
+                List<object> logList = new List<object>();
+
+                foreach (var log in logs)
+                {
+                    int userId = log.UserId;
+                    string userName = log.UserName;
+                    int logId = log.LogId;
+                    string isSubmit = log.IsSubmit == false ? "否" : "是";
+                    string exercisesId = log.ExercisesId;
+                    string answers = log.Answers;
+                    double score = log.ExamScore;
+                    int partId = Convert.ToInt32(log.EmPtId);
+                    int paperId = Convert.ToInt32(log.EmPaperId);
+
+                    string tempDate = log.EmPtStart.GetDateTimeFormats('o')[0];
+                    string date = tempDate.Substring(0, tempDate.IndexOf('T')); // 将日期转为2020-05-06
+                    string start = log.EmPtStart.ToString("T"); // 开始时间
+                    string end = log.EmPtEnd.ToString("T"); // 结束时间
+                    string title = start.Substring(0, start.Length - 3) + "到" + end.Substring(0, end.Length - 3) + "场";
+
+                    string examTitle = log.EmPaperName;
+
+                    logList.Add(new { userId, userName, logId, isSubmit, exercisesId, answers, score, partId, paperId, date, title, examTitle });
+                }
+
+                logList.Add(totalCount);
+
+                return JsonConvert.SerializeObject(logList);
             }
-
-            int totalCount = userScores.Count();
-            int totalPages = Convert.ToInt32(Math.Ceiling((double)totalCount / 10));
-
-            userScores = userScores.OrderBy(u => u.UserId).Skip((pageIndex - 1) * 10).Take(10);
-
-            List<object> userScoreList = new List<object>();
-
-            foreach (var userScore in userScores)
+            catch (Exception ex)
             {
-                int userId = userScore.UserId;
-                string name = userScore.UserName;
-                string tempDate = userScore.EmPtStart.GetDateTimeFormats('o')[0];
-                string date = tempDate.Substring(0, tempDate.IndexOf('T')); // 将日期转为2020-05-06
-                string start = userScore.EmPtStart.TimeOfDay.ToString(); // 开始时间
-                string end = userScore.EmPtEnd.TimeOfDay.ToString(); // 结束时间
-                string title = start.Substring(0, start.Length - 3) + "到" + end.Substring(0, end.Length - 3) + "场";
-                int score = Convert.ToInt32(userScore.EmPaperTrueScore ?? 0);
-
-                userScoreList.Add(new { userId, name, date, title, score });
+                code = 1;
+                message = "服务端错误！" + ex.Message;
+                return JsonConvert.SerializeObject(new { code, message });
             }
+        }
 
-            // TODO 返回数据应该包含总条数 暂时靠后做
+        public string Remove(int id)
+        {
+            int code;
+            string message;
+            try
+            {
+                var log = (from l in db.ES_ExamLog
+                           where l.IsDel == false && l.LogId == id
+                           select l).FirstOrDefault();
 
-            return JsonConvert.SerializeObject(userScoreList);
+                if (log == null)
+                {
+                    code = 1;
+                    message = "服务端错误！未找到该记录";
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+
+                log.IsDel = true;
+                db.Entry(log).State = System.Data.Entity.EntityState.Modified;
+
+                if (db.SaveChanges() > 0)
+                {
+                    code = 0;
+                    message = "删除成功";
+                    return JsonConvert.SerializeObject(new { code, message });
+                }
+                code = 1;
+                message = "删除失败";
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务端错误！" + ex.Message;
+                return JsonConvert.SerializeObject(new { code, message });
+            }
         }
     }
 }

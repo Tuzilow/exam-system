@@ -22,7 +22,10 @@
     padding-left: 2rem;
     padding-right: 2rem;
 }
-
+    .exam-card img {
+        display: block;
+        width: 40vw;
+    }
     .exam-card .title {
         text-align: center;
     }

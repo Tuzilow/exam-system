@@ -314,9 +314,6 @@
                     v-loading="isLoading"></user-table>
         <new-user v-if="currentTab === 'new-user'" @@is-insert="refresh"></new-user>
         <score-table class="score-component"
-                     :searchkey="searchKey"
-                     @@select-change="scoreSelectValueChange"
-                     @@input-change="inputTextChange"
                      v-if="currentTab === 'score-table'"></score-table>
         <new-question v-if="currentTab === 'new-question'"></new-question>
         <new-paper v-if="currentTab === 'new-paper'"></new-paper>

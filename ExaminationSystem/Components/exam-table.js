@@ -95,6 +95,11 @@
       });
     }
   },
+  watch: {
+    currentPage: function () {
+      this.getExamParts();
+    }
+  },
   created() {
     this.getExamParts();
   }

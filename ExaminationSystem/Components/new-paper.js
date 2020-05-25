@@ -26,8 +26,8 @@
        <div class="new-paper">
         <div class="main-header">添加试卷</div>
         <div class="main-content">
-          <el-form :model="paper" label-position="top" v-loading="isLoading">
-            <el-form-item label="试卷名称">
+          <el-form :model="paper" label-position="top" v-loading="isLoading"  class="new-paper-form">
+            <el-form-item label="试卷名称" class="new-title">
               <el-input v-model="paper.title"></el-input>
             </el-form-item>
             <div class="select-warp">
@@ -108,6 +108,15 @@
               <el-button type="primary" @click="onSubmit">创建试卷</el-button>
             </el-form-item>
           </el-form>
+          <el-card class="tips-card">
+            <div slot="header" class="clearfix">
+              <span>提示</span>
+            </div>
+            <ul>
+               <li>如果选择的标签中题目数量不足，将随机从题库中抽取题目</li>
+               <li>分数必须为100分才能生成试卷</li>
+            </ul>
+          </el-card>
         </div>
       </div>
     `,

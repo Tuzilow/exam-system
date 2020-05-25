@@ -27,7 +27,6 @@
             <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="account" label="账号"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="isJoin" label="是否进入考试" align="center"></el-table-column>
             <el-table-column label="场次" prop="partId" align="center">
               <template slot-scope="scope">
                 <el-select :value="scope.row.partId" placeholder="请选择" @change="changePart($event, scope.row)">

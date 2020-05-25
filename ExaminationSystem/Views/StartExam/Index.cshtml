@@ -410,6 +410,13 @@
         }, 1000);
       }
     },
+    watch: {
+      timer: function (val) {
+        if (val == '0小时0分钟0秒') {
+          this.onSubmit();
+        }
+      }
+    },
     created() {
       console.log('created');
       this.checkUser();

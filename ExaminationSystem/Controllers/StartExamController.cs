@@ -36,7 +36,8 @@ namespace ExaminationSystem.Controllers
                             {
                                 u.UserName,
                                 pt.EmPtStart,
-                                pt.EmPtEnd
+                                pt.EmPtEnd,
+                                pt.EmPtId
                             }).FirstOrDefault();
 
                 if (user != null)
@@ -44,7 +45,7 @@ namespace ExaminationSystem.Controllers
                     DateTime current = DateTime.Now;
 
                     var part = (from p in db.ES_ExamPart
-                                where p.IsDel == false && p.EmPtStart <= current && p.EmPtEnd >= current
+                                where p.IsDel == false && p.EmPtStart <= current && p.EmPtEnd >= current && p.EmPtId == user.EmPtId
                                 select new
                                 {
                                     p.EmPtId,
@@ -147,7 +148,7 @@ namespace ExaminationSystem.Controllers
         public IQueryable<object> GetSingle(int num)
         {
             return (from e in db.ES_Exercise
-                    where e.EsType == "单选题"
+                    where e.EsType == "单选题" && e.IsDel == false
                     join s in db.ES_SelectQuestion on e.EsSubExerciseId equals s.SQId
                     orderby (Guid.NewGuid())
                     select new
@@ -159,6 +160,47 @@ namespace ExaminationSystem.Controllers
                         s.SQAns2,
                         s.SQAns3
                     }).Take(num);
+        }
+
+        /// <summary>
+        /// 根据标签获取
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public List<object> GetSingle(int num, List<ES_Tag> tags)
+        {
+            // 平均分配
+            int count = Convert.ToInt32(Math.Floor((double)(num / tags.Count())));
+
+            List<object> res = new List<object>();
+            foreach (var tag in tags)
+            {
+                var singles = (from e in db.ES_Exercise
+                               where e.EsType == "单选题" && e.IsDel == false
+                               join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                               join t in db.ES_Tag on et.TagId equals t.TagId
+                               join s in db.ES_SelectQuestion on e.EsSubExerciseId equals s.SQId
+                               where t.IsDel == false && et.IsDel == false && t.TagId == tag.TagId
+                               orderby (Guid.NewGuid())
+                               select new
+                               {
+                                   e.EsId,
+                                   s.SQTitle,
+                                   s.SQTrueAns,
+                                   s.SQAns1,
+                                   s.SQAns2,
+                                   s.SQAns3,
+                                   t.TagId
+                               }).Take(count).ToList();
+
+                foreach (var item in singles)
+                {
+                    res.Add(item);
+                }
+            }
+
+            return res;
         }
         public object GetSingleById(int id)
         {
@@ -184,7 +226,7 @@ namespace ExaminationSystem.Controllers
         public IQueryable<object> GetMultiple(int num)
         {
             return (from e in db.ES_Exercise
-                    where e.EsType == "多选题"
+                    where e.EsType == "多选题" && e.IsDel == false
                     join m in db.ES_MultipleQuestion on e.EsSubExerciseId equals m.MQId
                     orderby (Guid.NewGuid())
                     select new
@@ -201,6 +243,50 @@ namespace ExaminationSystem.Controllers
                         m.MQAns7
                     }).Take(num);
         }
+
+        /// <summary>
+        /// 根据tag获取
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public List<object> GetMultiple(int num, List<ES_Tag> tags)
+        {
+            // 平均分配
+            int count = Convert.ToInt32(Math.Floor((double)(num / tags.Count())));
+
+            List<object> res = new List<object>();
+            foreach (var tag in tags)
+            {
+                var muls = (from e in db.ES_Exercise
+                            where e.EsType == "多选题" && e.IsDel == false
+                            join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                            join t in db.ES_Tag on et.TagId equals t.TagId
+                            join m in db.ES_MultipleQuestion on e.EsSubExerciseId equals m.MQId
+                            where t.IsDel == false && et.IsDel == false && t.TagId == tag.TagId
+                            orderby (Guid.NewGuid())
+                            select new
+                            {
+                                e.EsId,
+                                m.MQId,
+                                m.MQTitle,
+                                m.MQAns1,
+                                m.MQAns2,
+                                m.MQAns3,
+                                m.MQAns4,
+                                m.MQAns5,
+                                m.MQAns6,
+                                m.MQAns7
+                            }).Take(count).ToList();
+                foreach (var item in muls)
+                {
+                    res.Add(item);
+                }
+            }
+
+            return res;
+        }
+
         public object GetMultipleById(int id)
         {
             return (from e in db.ES_Exercise
@@ -229,7 +315,7 @@ namespace ExaminationSystem.Controllers
         public IQueryable<object> GetJudgment(int num)
         {
             return (from e in db.ES_Exercise
-                    where e.EsType == "判断题"
+                    where e.EsType == "判断题" && e.IsDel == false
                     join j in db.ES_JudgeQuestion on e.EsSubExerciseId equals j.JQId
                     orderby (Guid.NewGuid())
                     select new
@@ -239,6 +325,44 @@ namespace ExaminationSystem.Controllers
                         j.JQFalseAns,
                         j.JQTrueAns
                     }).Take(num);
+        }
+
+        /// <summary>
+        /// 根据tag获取
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public List<object> GetJudgment(int num, List<ES_Tag> tags)
+        {
+            // 平均分配
+            int count = Convert.ToInt32(Math.Floor((double)(num / tags.Count())));
+
+            List<object> res = new List<object>();
+            foreach (var tag in tags)
+            {
+                var judges = (from e in db.ES_Exercise
+                              where e.EsType == "判断题" && e.IsDel == false
+                              join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                              join t in db.ES_Tag on et.TagId equals t.TagId
+                              join j in db.ES_JudgeQuestion on e.EsSubExerciseId equals j.JQId
+                              where t.IsDel == false && et.IsDel == false && t.TagId == tag.TagId
+                              orderby (Guid.NewGuid())
+                              select new
+                              {
+                                  e.EsId,
+                                  j.JQTitle,
+                                  j.JQFalseAns,
+                                  j.JQTrueAns,
+                                  t.TagId
+                              }).Take(count).ToList();
+                foreach (var item in judges)
+                {
+                    res.Add(item);
+                }
+            }
+
+            return res;
         }
         public object GetJudgmentById(int id)
         {
@@ -263,7 +387,7 @@ namespace ExaminationSystem.Controllers
         public IQueryable<object> GetFill(int num)
         {
             return (from e in db.ES_Exercise
-                    where e.EsType == "填空题"
+                    where e.EsType == "填空题" && e.IsDel == false
                     join f in db.ES_FillQuestion on e.EsSubExerciseId equals f.FQId
                     orderby (Guid.NewGuid())
                     select new
@@ -272,6 +396,42 @@ namespace ExaminationSystem.Controllers
                         f.FQId,
                         f.FQTitle
                     }).Take(num);
+        }
+        /// <summary>
+        /// 根据tag获取
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public List<object> GetFill(int num, List<ES_Tag> tags)
+        {
+            // 平均分配
+            int count = Convert.ToInt32(Math.Floor((double)(num / tags.Count())));
+
+            List<object> res = new List<object>();
+            foreach (var tag in tags)
+            {
+                var fills = (from e in db.ES_Exercise
+                             where e.EsType == "填空题" && e.IsDel == false
+                             join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                             join t in db.ES_Tag on et.TagId equals t.TagId
+                             join f in db.ES_FillQuestion on e.EsSubExerciseId equals f.FQId
+                             where t.IsDel == false && et.IsDel == false && t.TagId == tag.TagId
+                             orderby (Guid.NewGuid())
+                             select new
+                             {
+                                 e.EsId,
+                                 f.FQId,
+                                 f.FQTitle,
+                                 t.TagId
+                             }).Take(count).ToList();
+                foreach (var item in fills)
+                {
+                    res.Add(item);
+                }
+            }
+
+            return res;
         }
         public object GetFillById(int id)
         {
@@ -312,25 +472,93 @@ namespace ExaminationSystem.Controllers
                 return JsonConvert.SerializeObject(new { code, message });
             }
 
-            var tags = GetTags(paper.EmPaperId);
-
-            // 如果没选择标签
-            if (tags.Count == 0)
+            try
             {
+                var tags = GetTags(paper.EmPaperId);
+                List<object> singles;
+                List<object> multiples;
+                List<object> judgments;
+                List<object> fills;
+                List<int> fillAnsNum;
+                // 如果没选择标签
+                if (tags.Count == 0)
+                {
+                    // 单选题
+                    singles = GetSingle(paper.EmPaperSelectNum).ToList();
+
+                    // 多选题
+                    multiples = GetMultiple(paper.EmPaperMultipleNum).ToList();
+
+                    // 获取判断题
+                    judgments = GetJudgment(paper.EmPaperJudgeNum).ToList();
+
+                    // 获取填空题
+                    fills = GetFill(paper.EmPaperFillNum).ToList();
+
+                    // 获取填空答案数量
+                    fillAnsNum = new List<int>();
+
+                    foreach (var fill in fills)
+                    {
+                        int fillId = Convert.ToInt32(fill.GetType().GetProperty("FQId").GetValue(fill));
+
+                        fillAnsNum.Add((from fa in db.ES_FillAnswer
+                                        where fa.FQId == fillId
+                                        select fa).Count());
+                    }
+
+                    CreateLog(new List<List<object>>() { singles, multiples, judgments, fills }, userId, paper.EmPaperId, partId);
+
+                    return JsonConvert.SerializeObject(new { title = paper.EmPaperName, singles, multiples, judgments, fills, fillAnsNum });
+                }
+
                 // 单选题
-                var singles = GetSingle(paper.EmPaperSelectNum).ToList();
+                singles = GetSingle(paper.EmPaperSelectNum, tags);
+                // 如果题目不够，自动补
+                if (singles.Count() < paper.EmPaperSelectNum)
+                {
+                    var notTag = GetSingle(paper.EmPaperSelectNum - singles.Count()).ToList();
+                    foreach (var item in notTag)
+                    {
+                        singles.Add(item);
+                    }
+                }
 
                 // 多选题
-                var multiples = GetMultiple(paper.EmPaperMultipleNum).ToList();
+                multiples = GetMultiple(paper.EmPaperMultipleNum, tags);
+                if (multiples.Count() < paper.EmPaperMultipleNum)
+                {
+                    var notTag = GetMultiple(paper.EmPaperMultipleNum - multiples.Count()).ToList();
+                    foreach (var item in notTag)
+                    {
+                        multiples.Add(item);
+                    }
+                }
 
                 // 获取判断题
-                var judgments = GetJudgment(paper.EmPaperJudgeNum).ToList();
+                judgments = GetJudgment(paper.EmPaperJudgeNum, tags);
+                if (judgments.Count() < paper.EmPaperJudgeNum)
+                {
+                    var notTag = GetJudgment(paper.EmPaperJudgeNum - judgments.Count()).ToList();
+                    foreach (var item in notTag)
+                    {
+                        judgments.Add(item);
+                    }
+                }
 
                 // 获取填空题
-                var fills = GetFill(paper.EmPaperFillNum).ToList();
+                fills = GetFill(paper.EmPaperFillNum, tags);
+                if (fills.Count() < paper.EmPaperFillNum)
+                {
+                    var notTag = GetFill(paper.EmPaperFillNum - fills.Count()).ToList();
+                    foreach (var item in notTag)
+                    {
+                        fills.Add(item);
+                    }
+                }
 
                 // 获取填空答案数量
-                List<int> fillAnsNum = new List<int>();
+                fillAnsNum = new List<int>();
 
                 foreach (var fill in fills)
                 {
@@ -345,12 +573,12 @@ namespace ExaminationSystem.Controllers
 
                 return JsonConvert.SerializeObject(new { title = paper.EmPaperName, singles, multiples, judgments, fills, fillAnsNum });
             }
-
-            // TODO 如果有标签
-
-            code = 1;
-            message = "错误";
-            return JsonConvert.SerializeObject(new { code, message });
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务端错误！" + ex.Message;
+                return JsonConvert.SerializeObject(new { code, message });
+            }
         }
 
         /// <summary>
@@ -388,7 +616,7 @@ namespace ExaminationSystem.Controllers
         }
 
         /// <summary>
-        /// 获取记录未提交的试卷
+        /// 获取记录中未提交的试卷
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -477,6 +705,107 @@ namespace ExaminationSystem.Controllers
         }
 
         /// <summary>
+        /// 获取已经提交的试卷，及答案
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetExamPaperIsSubmit(int id)
+        {
+            int code;
+            string message;
+            // 获取记录中的题目ID
+            var log = (from l in db.ES_ExamLog
+                       where l.UserId == id && l.IsDel == false && l.IsSubmit == true
+                       select l).FirstOrDefault();
+
+            if (log == null)
+            {
+                code = 1;
+                message = "未找到记录，可能您已提交试卷或您已错过考试时间";
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+
+            List<string> exIdList = new List<string>(log.ExercisesId.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries));
+
+
+            List<object> singles = new List<object>();
+            List<object> multiples = new List<object>();
+            List<object> judgments = new List<object>();
+            List<object> fills = new List<object>();
+            List<object> fillAnswers = new List<object>();
+
+            try
+            {
+                // 获取记录中的所有题目
+                exIdList.ForEach(esIdStr =>
+                {
+                    int esId = Convert.ToInt32(esIdStr);
+
+                    var question = (from q in db.ES_Exercise
+                                    where q.EsId == esId
+                                    select q).FirstOrDefault();
+
+                    switch (question.EsType)
+                    {
+                        case "单选题":
+                            var single = GetSingleById(question.EsId);
+                            singles.Add(single);
+                            break;
+                        case "多选题":
+                            var multiple = GetMultipleById(question.EsId);
+                            int MQId = Convert.ToInt32(multiple.GetType().GetProperty("MQId").GetValue(multiple));
+
+                            var mulAns = from ma in db.ES_MultipleAnswer
+                                         where ma.MQId == MQId
+                                         select new { ma.MAContent };
+
+                            multiples.Add(new { multiple, mulAns });
+                            break;
+                        case "判断题":
+                            var judgment = GetJudgmentById(question.EsId);
+                            judgments.Add(judgment);
+                            break;
+                        case "填空题":
+                            var fill = GetFillById(question.EsId);
+                            int fillId = Convert.ToInt32(fill.GetType().GetProperty("FQId").GetValue(fill));
+
+                            var fillAns = from fa in db.ES_FillAnswer
+                                          where fa.FQId == fillId
+                                          select new { fa.FQId, fa.FAContent };
+                            fillAnswers.Add(fillAns);
+                            fills.Add(fill);
+                            break;
+                    }
+                });
+
+                // 获取填空答案数量
+                List<int> fillAnsNum = new List<int>();
+
+                foreach (var fill in fills)
+                {
+                    int fillId = Convert.ToInt32(fill.GetType().GetProperty("FQId").GetValue(fill));
+
+                    fillAnsNum.Add((from fa in db.ES_FillAnswer
+                                    where fa.FQId == fillId
+                                    select fa).Count());
+                }
+
+                string title = (from l in db.ES_ExamLog
+                                join p in db.ES_ExamPaper on l.EmPaperId equals p.EmPaperId
+                                where l.UserId == id && l.IsDel == false && p.IsDel == false
+                                select p.EmPaperName).FirstOrDefault();
+
+                return JsonConvert.SerializeObject(new { title, singles, multiples, judgments, fills, fillAnsNum, fillAnswers, answers = log.Answers });
+            }
+            catch (Exception ex)
+            {
+                code = 1;
+                message = "服务器错误！" + ex.Message;
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+        }
+
+        /// <summary>
         /// 保存试卷
         /// </summary>
         /// <param name="ansStr"></param>
@@ -520,6 +849,12 @@ namespace ExaminationSystem.Controllers
             }
         }
 
+        /// <summary>
+        /// 计算分数、保存记录
+        /// </summary>
+        /// <param name="ansStr"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string FinishExam(string ansStr, int id)
         {
             List<AnswerInfo> ans = JsonConvert.DeserializeObject<List<AnswerInfo>>(ansStr);
@@ -538,9 +873,6 @@ namespace ExaminationSystem.Controllers
                     message = "获取题目失败";
                     return JsonConvert.SerializeObject(new { code, message });
                 }
-
-
-
 
                 var scores = (from p in db.ES_ExamPaper
                               where p.EmPaperId == log.EmPaperId && p.IsDel == false && log.IsDel == false

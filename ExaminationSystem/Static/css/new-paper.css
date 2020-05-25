@@ -1,13 +1,33 @@
-﻿
+﻿.tips-card {
+    height: 20rem;
+    width: 16rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+    .tips-card li {
+        list-style: circle;
+        padding-bottom: 0.5rem;
+    }
+
 .new-paper .error .el-input__inner {
     border-color: #F56C6C;
     color: #F56C6C;
 }
 
 .new-paper .main-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.new-paper .new-paper-form {
     width: 50vw;
     padding-left: 1rem;
 }
+
+    .new-paper .new-paper-form .new-title {
+        margin-right: 1rem;
+    }
 
 .new-paper .el-form-item {
     margin-bottom: 0.4rem;
