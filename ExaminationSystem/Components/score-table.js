@@ -193,7 +193,36 @@
       console.log(row)
     },
     exportScore: function () {
-      console.log('导出成绩单');
+      this.isLoading = true;
+      axios.get('/UserScore/GetUserScore', {
+        params: {
+          pageIndex: this.currentPage,
+          keyword: this.keyword,
+          ptId: this.selectvalue,
+          isPaging: false
+        }
+      }).then(res => {
+        this.isLoading = false;
+        var data = res.data;
+
+        var logs = data.slice(0, data.length - 1);
+
+        var s = logs;
+        var res = [];
+        for (var i in s) {
+          res.push({
+            id: s[i].logId,
+            name: s[i].userName,
+            date: s[i].date,
+            part: s[i].title,
+            title: s[i].examTitle,
+            score: s[i].score,
+            isSubmit: s[i].isSubmit
+          })
+        }
+        this.tableToExcel(res);
+      });
+      
     },
     selectChange: function (val) {
       this.selectvalue = val;
@@ -308,6 +337,27 @@
           }
         }
       }
+    },
+    tableToExcel(jsonData) {
+      //列标题，逗号隔开
+      let str = `ID,姓名,日期,场次,试卷,分数,是否提交\n`;
+      //增加\t为了不让表格显示科学计数法或者其他格式
+      for (let i = 0; i < jsonData.length; i++) {
+        for (let item in jsonData[i]) {
+          str += `${jsonData[i][item] + '\t'},`;
+        }
+        str += '\n';
+      }
+      //encodeURIComponent解决中文乱码， \ufeff是 ""
+      let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+      //通过创建a标签实现
+      let link = document.createElement('a');
+      link.href = uri;
+      //对下载的文件命名
+      link.download = new Date().getTime() + '成绩表.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   },
   watch: {

@@ -17,7 +17,7 @@ namespace ExaminationSystem.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string GetUserScore(int pageIndex = 1, string keyword="", int ptId = 0)
+        public string GetUserScore(int pageIndex = 1, string keyword = "", int ptId = 0, bool isPaging = true)
         {
             int code;
             string message;
@@ -56,8 +56,10 @@ namespace ExaminationSystem.Controllers
                 }
 
                 int totalCount = logs.Count();
-
-                logs = logs.OrderBy(l => l.LogId).Skip((pageIndex - 1) * 10).Take(10);
+                if (isPaging)
+                {
+                    logs = logs.OrderBy(l => l.LogId).Skip((pageIndex - 1) * 10).Take(10);
+                }
 
                 List<object> logList = new List<object>();
 
