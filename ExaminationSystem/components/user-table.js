@@ -73,7 +73,7 @@
               <el-input v-model="editUser.account"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-              <el-input v-model="editUser.password"></el-input>
+              <el-input v-model="editUser.password"  oninput="value=value.replace(/[\u4E00-\u9FA5]/g,'')"></el-input>
             </el-form-item>
             <el-form-item label="姓名" prop="name">
               <el-input v-model="editUser.name"></el-input>

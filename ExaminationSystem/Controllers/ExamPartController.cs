@@ -318,15 +318,19 @@ namespace ExaminationSystem.Controllers
                     db.Entry(user).State = System.Data.Entity.EntityState.Modified;
 
                     var log = (from l in db.ES_ExamLog where l.UserId == user.UserId && l.IsDel == false select l).FirstOrDefault();
-
+                     
                     if (log != null)
                     {
                         var paper = (from p in db.ES_ExamPaper
                                      where p.ES_ExamPart.EmPtId == partId && p.IsDel == false
                                      select p).FirstOrDefault();
 
+                        if (paper != null)
+                        {
+                            log.EmPaperId = paper.EmPaperId;
+                        }
+
                         log.EmPtId = partId;
-                        log.EmPaperId = paper.EmPaperId;
                         db.Entry(log).State = System.Data.Entity.EntityState.Modified;
                     }
 

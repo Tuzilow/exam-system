@@ -387,7 +387,16 @@
               .replace('users', '\\"users\\"')
               .replace('totalCount', '\\"totalCount\\"'))
           );
-          this.users = data.users;
+
+          var roleId = localStorage.getItem('roleId');
+          var users;
+          if (roleId != 3) {
+            console.log(data.users);
+            users = data.users.slice(1, data.length);
+          } else {
+            users = data.users;
+          }
+          this.users = users;
           this.totalNum = data.totalCount;
         });
       },
@@ -437,7 +446,7 @@
     },
     created() {
       this.isLoading = false;
-      this.users = JSON.parse(@Html.Raw(Json.Encode(ViewBag.Users)));
+      this.updateUserList(this.currentPage, this.searchKey);
       this.totalNum = @ViewBag.TotalNum;
       this.totalNumToScore = 1;
       if (new Date(localStorage.getItem('endTime')) < Date.now()) {

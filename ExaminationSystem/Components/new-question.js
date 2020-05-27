@@ -290,6 +290,10 @@
         case 'judgment': submitData = this.getJudgment(); break;
         case 'fill': submitData = this.getFill(); break;
       }
+
+      if (submitData === null) {
+        return;
+      }
       // 获取选中的标签
       let tagsId = this.selTags;
       submitData = { ...submitData, tagsId };
@@ -384,6 +388,7 @@
       let { title, sel1, sel2, sel3, trueSel, score } = this.single;
 
       if (title === '' || trueSel === '' || sel1 === '' || sel2 === '' || sel3 === '') {
+        this.isSubmitLoading = false;
         this.$message({
           type: 'error',
           message: '请将所有内容填写完整后提交'
@@ -398,6 +403,7 @@
       let { title, MQAns1, MQAns2, MQAns3, MQAns4, MQAns5, MQAns6, MQAns7, trueSels, score } = this.multiple;
 
       if (title === '' || MQAns1 === '' || MQAns2 === '' || MQAns3 === '' || MQAns4 === '') {
+        this.isSubmitLoading = false;
         this.$message({
           type: 'error',
           message: '请至少填写题目和四个答案'
@@ -416,6 +422,7 @@
       let { title, trueSel, falseSel, score } = this.judgment;
 
       if (title === '' || trueSel === '' || falseSel === '') {
+        this.isSubmitLoading = false;
         this.$message({
           type: 'error',
           message: '请将所有内容填写完整后提交'
@@ -430,6 +437,7 @@
       let { title, score, answers } = this.fill;
 
       if (title === '' || answers[0] === '') {
+        this.isSubmitLoading = false;
         this.$message({
           type: 'error',
           message: '请将所有内容填写完整后提交'

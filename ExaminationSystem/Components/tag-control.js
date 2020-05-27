@@ -86,6 +86,9 @@
     },
     // 提交编辑
     submitEdit: function () {
+      if (this.tag.name == '') {
+        return this.$message.error('请填写标签名');
+      }
       axios.post('/Tag/EditTag', {
         id: this.tag.id,
         tagName: this.tag.name,
@@ -153,6 +156,9 @@
     },
     // 提交添加
     addTag: function () {
+      if (this.tag.name == '') {
+        return this.$message.error('请填写标签名称');
+      }
       axios.post('/Tag/AddTag', {
         tagName: this.tag.name,
         desc: this.tag.desc
