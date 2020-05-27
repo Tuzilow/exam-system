@@ -109,16 +109,16 @@
                   />
                 </el-form-item>
                 <el-form-item label="正确选项" class="answers true-answer">
-                  <el-input v-model.trim="single.trueSel"></el-input>
+                  <el-input v-model.trim="single.trueSel" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项1" class="answers false-answer">
-                  <el-input v-model.trim="single.sel1"></el-input>
+                  <el-input v-model.trim="single.sel1" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项2" class="answers false-answer">
-                  <el-input v-model.trim="single.sel2"></el-input>
+                  <el-input v-model.trim="single.sel2" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项3" class="answers false-answer">
-                  <el-input v-model.trim="single.sel3"></el-input>
+                  <el-input v-model.trim="single.sel3" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
                   <el-button type="primary" @click="showScore('single')">确 定</el-button>
@@ -141,25 +141,25 @@
                   />
                 </el-form-item>
                 <el-form-item label="选项1" class="answers">
-                  <el-input v-model.trim="multiple.MQAns1"></el-input>
+                  <el-input v-model.trim="multiple.MQAns1" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="选项2" class="answers">
-                  <el-input v-model.trim="multiple.MQAns2"></el-input>
+                  <el-input v-model.trim="multiple.MQAns2" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="选项3" class="answers">
-                  <el-input v-model.trim="multiple.MQAns3"></el-input>
+                  <el-input v-model.trim="multiple.MQAns3" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="选项4" class="answers">
-                  <el-input v-model.trim="multiple.MQAns4"></el-input>
+                  <el-input v-model.trim="multiple.MQAns4" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="选项5" class="answers">
-                  <el-input v-model.trim="multiple.MQAns5"></el-input>
+                  <el-input v-model.trim="multiple.MQAns5" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="选项6" class="answers">
-                  <el-input v-model.trim="multiple.MQAns6"></el-input>
+                  <el-input v-model.trim="multiple.MQAns6" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="选项7" class="answers">
-                  <el-input v-model.trim="multiple.MQAns7"></el-input>
+                  <el-input v-model.trim="multiple.MQAns7" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="正确选项" class="answers">
                   <el-checkbox-group v-model="multiple.trueSels" :min="2">
@@ -193,10 +193,10 @@
                   />
                 </el-form-item>
                 <el-form-item label="正确选项" class="answers true-answer">
-                  <el-input v-model.trim="judgment.trueSel"></el-input>
+                  <el-input v-model.trim="judgment.trueSel" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="错误选项" class="answers false-answer">
-                  <el-input v-model.trim="judgment.falseSel"></el-input>
+                  <el-input v-model.trim="judgment.falseSel" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
                   <el-button type="primary" @click="showScore('judgment')">确 定</el-button>
@@ -220,7 +220,7 @@
                   />
                 </el-form-item>
                 <el-form-item label="答案" class="answers" v-for="(item, index) in fill.answers" :key="index">
-                  <el-input v-model.trim="fill.answers[index]"></el-input>
+                  <el-input v-model.trim="fill.answers[index]" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
                   <el-button type="primary" @click="showScore('fill')">确 定</el-button>
@@ -368,9 +368,15 @@
     getTags: function () {
       this.isLoading = true;
       axios.get('/Tag/GetTags').then(res => {
-        this.tags = res.data;
-        this.totalNum = res.data.length || 0;
         this.isLoading = false;
+        var data = res.data;
+        tags = data.slice(1, data.length);
+
+        if (localStorage.getItem('id') != 1) {
+          this.tags = tags;
+        } else {
+          this.tags = data;
+        }
       });
     },
     // 获取要提交的单选数据
@@ -439,6 +445,10 @@
     },
     // 添加单选题
     addSingle: function (data) {
+      if (data.title.length > 512) {
+        this.isSubmitLoading = false;
+        return this.$message.error('题目字数不能超过512个字符');
+      }
       axios.post('/Question/AddSingle', { ...data }).then(res => {
         this.isSubmitLoading = false;
         const { data } = res;
@@ -464,6 +474,10 @@
     },
     // 添加多选题
     addMultiple: function (data) {
+      if (data.title.length > 512) {
+        this.isSubmitLoading = false;
+        return this.$message.error('题目字数不能超过512个字符');
+      }
       axios.post('/Question/AddMultiple', { ...data }).then(res => {
         this.isSubmitLoading = false;
         const { data } = res;
@@ -493,6 +507,10 @@
     },
     // 添加判断题
     addJudgment: function (data) {
+      if (data.title.length > 512) {
+        this.isSubmitLoading = false;
+        return this.$message.error('题目字数不能超过512个字符');
+      }
       axios.post('/Question/AddJudgment', { ...data }).then(res => {
         this.isSubmitLoading = false;
         const { data } = res;
@@ -515,6 +533,10 @@
       });
     },
     addFill: function (data) {
+      if (data.title.length > 512) {
+        this.isSubmitLoading = false;
+        return this.$message.error('题目字数不能超过512个字符');
+      }
       axios.post('/Question/AddFill', { ...data }).then(res => {
         this.isSubmitLoading = false;
         const { data } = res;

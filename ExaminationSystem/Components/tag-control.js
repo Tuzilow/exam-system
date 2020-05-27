@@ -56,10 +56,10 @@
           <el-dialog :title="dialogTitle" :visible="isShowInfo" @close="isShowInfo = false">
             <el-form :model="tag">
               <el-form-item label="标签名">
-                <el-input v-model="tag.name"></el-input>
+                <el-input v-model="tag.name" maxlength="8" show-word-limit></el-input>
               </el-form-item>
               <el-form-item label="描述">
-                <el-input v-model="tag.desc" type="textarea" :rows="2"></el-input>
+                <el-input v-model="tag.desc" type="textarea" :rows="2" maxlength="64" show-word-limit></el-input>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

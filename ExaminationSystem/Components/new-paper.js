@@ -28,7 +28,7 @@
         <div class="main-content">
           <el-form :model="paper" label-position="top" v-loading="isLoading"  class="new-paper-form">
             <el-form-item label="试卷名称" class="new-title">
-              <el-input v-model="paper.title"></el-input>
+              <el-input v-model="paper.title" maxlength="512" show-word-limit></el-input>
             </el-form-item>
             <div class="select-warp">
               <el-form-item label="使用该试卷的场次">
