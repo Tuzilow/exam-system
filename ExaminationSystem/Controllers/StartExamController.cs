@@ -905,13 +905,14 @@ namespace ExaminationSystem.Controllers
 
                     // 获取该题考生的答案
                     AnswerInfo nowAns = null;
-                    ans.ForEach(ansItem =>
+                    foreach (var ansItem in ans)
                     {
                         if (ansItem.EsId == esId)
                         {
                             nowAns = ansItem;
+                            break;
                         }
-                    });
+                    }
 
                     // 获取该题
                     var question = (from q in db.ES_Exercise
@@ -921,10 +922,7 @@ namespace ExaminationSystem.Controllers
                     switch (question.EsType)
                     {
                         case "单选题":
-                            var single = GetSingleById(question.EsId);
-                            string trueSel = single.GetType().GetProperty("SQTrueAns").GetValue(single).ToString();
-
-                            if (trueSel == nowAns.Ans[0])
+                            if (nowAns.Ans[0] == "SQTrueAns")
                             {
                                 singleScore += scores.EmPaperSelectScore;
                             }
@@ -933,40 +931,37 @@ namespace ExaminationSystem.Controllers
                             var multiple = GetMultipleById(question.EsId);
                             int MQId = Convert.ToInt32(multiple.GetType().GetProperty("MQId").GetValue(multiple));
 
-                            var mulAns = from ma in db.ES_MultipleAnswer
-                                         where ma.MQId == MQId
-                                         select ma;
+                            var mulAns = (from ma in db.ES_MultipleAnswer
+                                          where ma.MQId == MQId
+                                          select ma).ToList();
 
                             if (mulAns.Count() >= nowAns.Ans.Count())
                             {
-                                int trueNum = 0;
+                                int mulTrueNum = 0;
                                 foreach (var item in mulAns)
                                 {
                                     for (int i = 0; i < nowAns.Ans.Count(); i++)
                                     {
                                         if (item.MAContent == nowAns.Ans[i])
                                         {
-                                            trueNum++;
-                                            continue;
+                                            mulTrueNum++;
+                                            break;
                                         }
                                     }
                                 }
 
-                                if (trueNum == mulAns.Count())
+                                if (mulTrueNum == mulAns.Count())
                                 {
                                     multipleScore += scores.EmPaperMultipleScore;
                                 }
-                                else if (trueNum != 0)// 如果没有全对
+                                else if (mulTrueNum != 0)// 如果没有全对
                                 {
                                     multipleScore += scores.EmPaperMultipleScore / 2;
                                 }
                             }
                             break;
                         case "判断题":
-                            var judgment = GetJudgmentById(question.EsId);
-                            string jQTrueSel = judgment.GetType().GetProperty("JQTrueAns").GetValue(judgment).ToString();
-
-                            if (jQTrueSel == nowAns.Ans[0])
+                            if (nowAns.Ans[0] == "JQTrueAns")
                             {
                                 judgmentScore += scores.EmPaperJudgeScore;
                             }
@@ -975,34 +970,31 @@ namespace ExaminationSystem.Controllers
                             var fill = GetFillById(question.EsId);
                             int fillId = Convert.ToInt32(fill.GetType().GetProperty("FQId").GetValue(fill));
 
-                            var fillAns = from fa in db.ES_FillAnswer
-                                          where fa.FQId == fillId
-                                          select fa;
+                            var fillAns = (from fa in db.ES_FillAnswer
+                                           where fa.FQId == fillId
+                                           select fa).ToList();
+                            // 判断题顺序不能错，且答案数量不会出错
 
-                            if (fillAns.Count() >= nowAns.Ans.Count())
+                            int trueNum = 0;
+
+                            for (int i = 0; i < nowAns.Ans.Count(); i++)
                             {
-                                int trueNum = 0;
-                                foreach (var item in fillAns)
+                                if (fillAns[i].FAContent == nowAns.Ans[i])
                                 {
-                                    for (int i = 0; i < nowAns.Ans.Count(); i++)
-                                    {
-                                        if (item.FAContent == nowAns.Ans[i])
-                                        {
-                                            trueNum++;
-                                            continue;
-                                        }
-                                    }
-                                }
-
-                                if (trueNum == fillAns.Count())
-                                {
-                                    judgmentScore += scores.EmPaperJudgeScore;
-                                }
-                                else if (trueNum != 0)// 如果没有全对
-                                {
-                                    judgmentScore += scores.EmPaperMultipleScore / fillAns.Count();
+                                    trueNum++;
                                 }
                             }
+
+
+                            if (trueNum == fillAns.Count())
+                            {
+                                judgmentScore += scores.EmPaperJudgeScore;
+                            }
+                            else if (trueNum != 0)// 如果没有全对
+                            {
+                                judgmentScore += scores.EmPaperMultipleScore / fillAns.Count();
+                            }
+
                             break;
                     }
                 });
