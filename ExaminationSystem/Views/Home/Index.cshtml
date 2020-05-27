@@ -114,8 +114,8 @@
         <span>安阳市人民警察训练学校在线考试系统</span>
       </h2>
       <el-menu background-color="#081842" text-color="#fffffa" active-text-color="#fff000" class="header-nav" text mode="horizontal">
-        <el-menu-item index="1"><el-link :underline="false" href="/Home/Message">成绩查询</el-link></el-menu-item>
-        <el-menu-item index="2"><el-link :underline="false" href="/StartExam/Index">进入考试</el-link></el-menu-item>
+        <el-menu-item index="1"><el-link :underline="false" href="/Home/Message" v-if="roleId !== '3'">成绩查询</el-link></el-menu-item>
+        <el-menu-item index="2"><el-link :underline="false" href="/StartExam/Index" v-if="roleId !== '3'">进入考试</el-link></el-menu-item>
         <el-menu-item index="3" v-if="roleId !== '1'"><el-link :underline="false" href="/BackEnd/Index">后台管理</el-link></el-menu-item>
         <el-menu-item index="4">
           <el-button type="success" class="sm-btn" @@click="toLogin" v-if="loginUser === null || loginUser === ''">登陆</el-button>
