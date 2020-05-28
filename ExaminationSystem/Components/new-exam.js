@@ -17,6 +17,10 @@
   template: `
        <div class="new-exam">
         <div class="main-header">添加场次</div>
+        <el-alert
+          title="添加场次后请及时为该场次添加考试试卷！！！"
+          type="error">
+        </el-alert>
         <div class="main-content"  v-loading="isLoading">
           <el-form :model="exam"  label-position="left" class="form">
             <el-form-item label="日期" prop="date">
