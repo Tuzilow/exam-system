@@ -119,6 +119,12 @@
 
     finishEdit: function () {
       const { id, account, password, name, roleId } = this.editUser;
+
+      if (account == '' || password == '' || name == '') {
+        this.$message.error('请将信息输入完整');
+        return false;
+      }
+
       axios.post('/BackEnd/EditUser', { id, account, name, password, roleId }).then(res => {
         const { data } = res;
         if (data.code == 1) {

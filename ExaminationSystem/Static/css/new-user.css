@@ -21,3 +21,22 @@
         background-color: #081842;
         border-color: #081842;
     }
+
+.upload-warp .new-btn, .upload-warp {
+    height: 2.4rem;
+}
+
+.upload-warp .new-btn, .upload-warp .upload-demo {
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+.el-upload__tip {
+    height: 1rem;
+    line-height: 1rem;
+}
+
+.upload-demo .el-upload-list .el-upload-list--text {
+    height: 1rem;
+}

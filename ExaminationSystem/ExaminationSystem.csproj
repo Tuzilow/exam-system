@@ -138,6 +138,7 @@
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\StartExamController.cs" />
     <Compile Include="Controllers\TagController.cs" />
+    <Compile Include="Controllers\TextController.cs" />
     <Compile Include="Controllers\UserScoreController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -295,6 +296,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Static\UserText\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\ElementUI\fonts\element-icons.woff" />

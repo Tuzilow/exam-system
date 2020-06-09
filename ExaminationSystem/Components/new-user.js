@@ -7,7 +7,10 @@
         account: '',
         password: '',
         name: '',
-        roleId: '1'
+        roleId: '1',
+
+        fileList: []
+
       },
       rules: {
         account: [
@@ -46,8 +49,18 @@
                 <el-option label="考生" value="1"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item>
+            <el-form-item class="upload-warp">
               <el-button class="new-btn" type="primary" @click="onSubmit">添加</el-button>
+              <el-upload
+                class="upload-demo"
+                action="/Text/Upload"
+                list-type="text"
+                multiple
+                :on-success="fileUploadSuccess"
+                :before-upload="beforeUpload">
+                <el-button size="small" type="info">通过文件批量添加</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传后缀为.txt的文件</div>
+              </el-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -57,7 +70,7 @@
     onSubmit() {
       const { account, name, password, roleId } = this.newUser;
 
-      if (account === '' || name === '' || password === '' ) {
+      if (account === '' || name === '' || password === '') {
         return this.$alert('请检查数据是否输入完整', '提示', {
           confirmButtonText: '确定',
           type: 'warning'
@@ -84,6 +97,22 @@
           type: 'success'
         });
       });
+    },
+    beforeUpload(file) {
+      const isText = file.type === 'text/plain';
+      if (!isText) {
+        this.$message.error('上传的文件只能是 txt 格式!');
+        return false;
+      }
+    },
+    fileUploadSuccess(res) {
+      if (res.code === 1) {
+        return this.$message.error(res.message);
+      }
+      return this.$message({
+        message: res.message,
+        type: 'success'
+      })
     }
   },
 });

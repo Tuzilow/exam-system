@@ -141,7 +141,7 @@
                         trigger="hover">
               <div v-for="exam in getExamsByOneDay(data.day)">{{exam}}</div>
               <div class="exam-wrap" slot="reference">
-                <div v-for="item in haveExam" v-if="item.date === data.day" class="have-exam">
+                <div v-for="item in haveExam" v-if="item.date === data.day && checkDate(item.date, item.title) == true" class="have-exam">
                   {{item.title}}
                 </div>
               </div>
@@ -173,6 +173,47 @@
           }
         }
         return allExams;
+      },
+      // 验证考试是否过期
+      checkDate(day, date) {
+        if (new Date(day) < new Date(new Date().toLocaleDateString())) {
+          return false;
+        }
+        var startIdx = date.indexOf('到');
+        var endIdx = date.indexOf('场');
+        var temp = date.substring(startIdx + 1, endIdx);
+
+        var top3 = temp.substring(0, 3);
+        if (top3 == '上午 ') {
+          var f = temp.indexOf(':');
+          var h = temp.substring(3, f);
+          var nH = parseInt(h);
+
+          date = nH + temp.substring(f);
+        }
+
+        if (top3 == '下午 ') {
+          var f = temp.indexOf(':');
+          var h = temp.substring(3, f);
+          var nH = parseInt(h) + 12;
+
+          date = nH + temp.substring(f);
+        }
+        var colon = date.indexOf(':');
+        var thisHour = date.substring(0, colon);
+        var thisMin = date.substring(colon + 1);
+
+        var nowHour = new Date().getHours().toString();
+        var nowMin = new Date().getMinutes().toString();
+
+        if (thisHour > nowHour) {
+          return true;
+        } else if (thisHour == nowHour) {
+          if (thisMin >= nowMin) {
+            return true;
+          }
+        }
+        return false;
       },
       toLogin() {
         window.location.href = '/Login/Index';
