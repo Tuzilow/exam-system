@@ -208,7 +208,5 @@ namespace ExaminationSystem.Controllers
 
             return JsonConvert.SerializeObject(new { code, message });
         }
-
-        //TODO 批量添加新用户
     }
 }

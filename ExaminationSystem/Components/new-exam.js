@@ -11,7 +11,9 @@
       },
       users: [],
       selectUsers: [],
-      isLoading: true
+      isLoading: true,
+      errorUserMsg: [],
+      showErrUser: false
     }
   },
   template: `
@@ -75,6 +77,21 @@
             </el-form-item>
           </el-form>
         </div>
+        <el-dialog title="考试时间冲突学生" :visible.sync="showErrUser" width="70%">
+          <el-table :data="errorUserMsg">
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="left" inline class="demo-table-expand">
+                  <el-form-item :label="'场次' + (index + 1)" v-for="item,index in props.row.haveParts" :key="index">
+                    <span> 开始时间：{{item.start}} --- 结束时间：{{item.end}}</span>
+                  </el-form-item>
+                </el-form>
+              </template>
+            </el-table-column>
+            <el-table-column property="key" label="ID"></el-table-column>
+            <el-table-column property="label" label="姓名"></el-table-column>
+          </el-table>
+        </el-dialog>
       </div>
     `,
   methods: {
@@ -94,10 +111,50 @@
       let start = new Date(this.exam.start);
       let end = new Date(this.exam.end);
       let userIds = this.selectUsers;
+      let selected = [];
 
+      for (var i = 0; i < this.selectUsers.length; i++) {
+        for (var j = 0; j < this.users.length; j++) {
+          if (this.users[j].key == this.selectUsers[i]) {
+            selected.push(this.users[j]);
+            break;
+          }
+        }
+      }
 
       let startTime = new Date(new Date(date).toLocaleDateString() + ' ' + start.getHours() + ':' + start.getMinutes() + ':' + start.getSeconds()).getTime();
       let endTime = new Date(new Date(date).toLocaleDateString() + ' ' + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds()).getTime();
+
+      let errUsers = [];
+      for (var i = 0; i < selected.length; i++) {
+        var tempUser = selected[i]
+        for (var j = 0; j < tempUser.haveParts.length; j++) {
+          var errStart = new Date(tempUser.haveParts[j].start).getTime();
+          var errEnd = new Date(tempUser.haveParts[j].end).getTime();
+          console.log(`errStart:${errStart}  errEnd:${errEnd}\nstartTime:${startTime}  endTime:${endTime}`)
+          if (errStart <= startTime && errEnd >= endTime) {
+            errUsers.push(tempUser);
+            break;
+          }
+          if (errEnd >= startTime && errEnd <= endTime) {
+            errUsers.push(tempUser);
+            break;
+          }
+          if (errStart >= startTime && errStart <= endTime) {
+            errUsers.push(tempUser);
+            break;
+          }
+          if (errStart >= startTime && errEnd <= endTime) {
+            errUsers.push(tempUser);
+            break;
+          }
+        }
+      }
+      if (errUsers.length > 0) {
+        this.showErrUser = true;
+        this.errorUserMsg = errUsers;
+        return false;
+      }
 
       this.isLoading = true;
       axios.post('/ExamPart/CreateNewPart', {

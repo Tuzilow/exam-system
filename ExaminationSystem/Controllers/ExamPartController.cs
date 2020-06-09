@@ -102,11 +102,17 @@ namespace ExaminationSystem.Controllers
         public string GetUser()
         {
             // 查找UserId不存在于ES_User_ExamPart表中的User数据
-            var users = db.ES_User.Where(
-                u => u.IsDel == false &&
-                u.RoleId == 1 &&
-                !db.ES_User_ExamPart.Where(ue => ue.IsDel == false).Select(ue => ue.UserId).Contains(u.UserId)
-                );
+            var users = db.ES_User.Where(u => u.IsDel == false && u.UserId != 1 && u.RoleId == 1);
+            var parts = from up in db.ES_User_ExamPart
+                        join p in db.ES_ExamPart on up.EmPtId equals p.EmPtId
+                        where p.IsDel == false && up.IsDel == false
+                        select new
+                        {
+                            up.UserId,
+                            p.EmPtId,
+                            p.EmPtStart,
+                            p.EmPtEnd
+                        };
 
             List<object> userList = new List<object>();
 
@@ -116,7 +122,20 @@ namespace ExaminationSystem.Controllers
                 string label = user.UserName;
                 bool disabled = false;
 
-                userList.Add(new { key, label, disabled });
+                List<object> haveParts = new List<object>();
+
+                var part = parts.Where(p => p.UserId == user.UserId);
+                if (part != null)
+                {
+                    foreach (var item in part)
+                    {
+                        string start = item.EmPtStart.ToString("yyyy/MM/dd HH:mm:ss");
+                        string end = item.EmPtEnd.ToString("yyyy/MM/dd HH:mm:ss");
+                        haveParts.Add(new { start, end });
+                    }
+                }
+
+                userList.Add(new { key, label, disabled, haveParts });
             }
 
             return JsonConvert.SerializeObject(userList);
@@ -256,7 +275,6 @@ namespace ExaminationSystem.Controllers
         /// <returns></returns>
         public object GetUsers(int pageIndex, string keyword = "", int pageSize = 10)
         {
-            // TODO 考生可以多次考试
             var users = from u in db.ES_User
                         join ue in db.ES_User_ExamPart on u.UserId equals ue.UserId
                         where u.IsDel == false && u.RoleId == 1 && ue.IsDel == false
@@ -319,7 +337,7 @@ namespace ExaminationSystem.Controllers
                     db.Entry(user).State = System.Data.Entity.EntityState.Modified;
 
                     var log = (from l in db.ES_ExamLog where l.UserId == user.UserId && l.IsDel == false select l).FirstOrDefault();
-                     
+
                     if (log != null)
                     {
                         var paper = (from p in db.ES_ExamPaper

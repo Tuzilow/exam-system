@@ -44,32 +44,34 @@ namespace ExaminationSystem.Controllers
                 {
                     DateTime current = DateTime.Now;
 
-                    var part = (from p in db.ES_ExamPart
+                    var parts = from p in db.ES_ExamPart
                                 where p.IsDel == false && p.EmPtStart <= current && p.EmPtEnd >= current && p.EmPtId == user.EmPtId
                                 select new
                                 {
                                     p.EmPtId,
                                     p.EmPtStart,
                                     p.EmPtEnd
-                                }).FirstOrDefault();
+                                };
 
-                    if (part == null)
+                    if (parts == null)
                     {
                         code = 1;
                         message = "当前没有正在进行的考试";
                         return JsonConvert.SerializeObject(new { code, message });
                     }
-
-                    if (user.EmPtStart == part.EmPtStart && user.EmPtEnd == part.EmPtEnd)
+                    foreach (var part in parts)
                     {
-                        DateTime start = user.EmPtStart;
-                        DateTime end = user.EmPtEnd;
-                        string name = user.UserName;
-                        int partId = part.EmPtId;
+                        if (user.EmPtStart == part.EmPtStart && user.EmPtEnd == part.EmPtEnd)
+                        {
+                            DateTime start = user.EmPtStart;
+                            DateTime end = user.EmPtEnd;
+                            string name = user.UserName;
+                            int partId = part.EmPtId;
 
-                        code = 0;
+                            code = 0;
 
-                        return JsonConvert.SerializeObject(new { code, name, start, end, partId });
+                            return JsonConvert.SerializeObject(new { code, name, start, end, partId });
+                        }
                     }
 
                     code = 1;
