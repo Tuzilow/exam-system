@@ -38,7 +38,7 @@
               :value="item.type">
             </el-option>
           </el-select>
-          <el-select v-model="selTag" filterable placeholder="请选择标签" class="select-tag">
+          <el-select v-model="selTag" filterable placeholder="请选择标签" class="select-tag" clearable @clear="getQuestions(currentType)">
             <el-option
               v-for="item in tags"
               :key="item.id"
@@ -412,7 +412,6 @@
       axios.get('/Tag/GetTags').then(res => {
         this.isLoading = false;
         var data = res.data;
-        data = [{ id: 0, name: '不选择任何标签', desc: '不选择任何标签' }, ...data];
         tags = data.slice(1, data.length);
 
         if (localStorage.getItem('id') != 1) {
