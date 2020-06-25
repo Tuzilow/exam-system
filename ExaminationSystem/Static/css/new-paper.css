@@ -10,6 +10,13 @@
         padding-bottom: 0.5rem;
     }
 
+.warning-msg {
+    width: 10rem;
+    display: block;
+    color: #F56C6C;
+    margin-left: 1rem;
+}
+
 .new-paper .error .el-input__inner {
     border-color: #F56C6C;
     color: #F56C6C;

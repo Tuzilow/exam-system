@@ -32,6 +32,17 @@ namespace ExaminationSystem.Controllers
             int code;
             string message;
 
+            ES_ExamPaper existPaper = (from pp in db.ES_ExamPaper
+                                       where pp.EmPtId == partId
+                                       select pp).FirstOrDefault();
+
+            if (existPaper != null)
+            {
+                code = 1;
+                message = "该场次已分配试卷！";
+                return JsonConvert.SerializeObject(new { code, message });
+            }
+
             ES_ExamPaper paper = new ES_ExamPaper()
             {
                 EmPaperName = title,

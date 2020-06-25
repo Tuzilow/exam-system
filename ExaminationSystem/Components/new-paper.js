@@ -19,7 +19,9 @@
       maxScore: 0,
       isLoading: false,
       tagPercent: [
-      ]
+      ],
+      warningMsg: '',
+      isWarning: false
     };
   },
   template: `
@@ -59,6 +61,7 @@
                 :disabled="true"
                 :class="maxScore !== 100 ? 'error' : ''">
               </el-input>
+              <small class="warning-msg" v-if="isWarning">{{ warningMsg }}</small>
             </el-form-item>
             <div class="tag-percent-content">
               <el-divider content-position="left" v-if="tagPercent.length != 0">所选标签中的题占总题数的比例</el-divider>
@@ -281,15 +284,13 @@
   updated() {
     var currentScore = this.paper.fill.total + this.paper.judgment.total + this.paper.multiple.total + this.paper.single.total;
     if (currentScore > 100) {
-      this.$notify.error({
-        title: '错误',
-        message: '分数已经超出100！'
-      });
+      this.warningMsg = '分数已经超出100！';
+      this.isWarning = true;
     } else if (currentScore < 100) {
-      this.$notify.error({
-        title: '错误',
-        message: '分数不足100！'
-      });
+      this.warningMsg = '分数不足100！';
+      this.isWarning = true;
+    } else {
+      this.isWarning = false;
     }
   }
 });
