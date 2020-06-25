@@ -4,6 +4,9 @@
     white-space: nowrap;
 }
 
+.question-table .title-detail img {
+    height: 1rem;
+}
 
 .alert-warp li {
     display: flex;

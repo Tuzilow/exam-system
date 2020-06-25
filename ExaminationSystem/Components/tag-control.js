@@ -38,7 +38,6 @@
               </div>
             </div>
             <el-table :data="tags.slice((currentPage-1)*pageSize,currentPage*pageSize)" v-loading="isLoading">
-              <el-table-column prop="id" label="ID"></el-table-column>
               <el-table-column prop="name" label="标签名"></el-table-column>
               <el-table-column prop="desc" label="描述"></el-table-column>
               <el-table-column label="操作" align="center" prop="id">

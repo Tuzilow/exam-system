@@ -37,6 +37,7 @@ namespace ExaminationSystem.Models
         public int EmPaperJudgeScore { get; set; }
         public int EmPaperMultipleScore { get; set; }
         public Nullable<int> EmPtId { get; set; }
+        public string EmTagPercent { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_ExamPaper_Exercise> ES_ExamPaper_Exercise { get; set; }

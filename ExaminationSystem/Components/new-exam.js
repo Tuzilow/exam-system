@@ -39,7 +39,7 @@
                 v-model="exam.start"
                 placeholder="开始时间"
                 :picker-options="{
-                  selectableRange: '08:00:00 - 19:00:00'
+                  selectableRange: '00:00:00 - 23:59:59'
                 }"
                 @change="changeTime"
               >

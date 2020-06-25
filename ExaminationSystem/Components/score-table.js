@@ -44,7 +44,6 @@
           </div>
         </div>
         <el-table :data="userScore" v-loading="isLoading">
-          <el-table-column prop="logId" label="ID"></el-table-column>
           <el-table-column prop="userName" label="姓名"></el-table-column>
           <el-table-column prop="date" label="考试日期"></el-table-column>
           <el-table-column prop="title" label="场次"></el-table-column>
@@ -115,11 +114,8 @@
                 <li class="judgment-item" v-for="item,index in judgments" :key="item.EsId">
                   <span class="title-index">{{index + 1}}.</span>
                   <div v-html="item.JQTitle" class="title-content"></div>
-                  <el-radio-group v-model="item.ans[0]" disabled>
-                    <el-radio label="JQFalseAns">{{item['JQFalseAns']}}</el-radio>
-                    <el-radio label="JQTrueAns">{{item['JQTrueAns']}}</el-radio>
-                  </el-radio-group>
-                  <div class="answers">正确答案：{{item.JQTrueAns}}</div>
+                  <div class="">学生答案：{{(item.ans[0] == true ? '对' : '错')}}</div>
+                  <div class="answers">正确答案：{{(item.JQIsTrue == true ? '对' : '错')}}</div>
                 </li>
               </ul>
             </div>
@@ -189,7 +185,7 @@
       }
       this.isShowPaper = true;
 
-      this.getPaper(row.userId)
+      this.getPaper(row.logId)
       console.log(row)
     },
     exportScore: function () {
@@ -248,10 +244,10 @@
       });
     },
     // 获取试卷详情
-    getPaper(userId) {
+    getPaper(logId) {
       this.isPaperLoading = true;
       axios.post("/StartExam/GetExamPaperIsSubmit", {
-        id: userId,
+        id: logId,
         isSubmit: true
       }).then(res => {
         this.isPaperLoading = false;
@@ -315,25 +311,29 @@
       var judgmentLength = this.judgments.length;
       var fillLength = this.fills.length;
 
-      for (var i = 0; i < ansObj.length; i++) {
+      for (var i = 0; i < ansObj.length; ) {
         for (var j = 0; j < singleLength; j++) {
           if (this.singles[j].EsId === ansObj[i].EsId) {
             this.singles[j].ans = ansObj[i].ans;
+            i++;
           }
         }
         for (var j = 0; j < multipleLength; j++) {
           if (this.multiples[j].multiple.EsId === ansObj[i].EsId) {
             this.multiples[j].multiple.ans = ansObj[i].ans;
+            i++;
           }
         }
         for (var j = 0; j < judgmentLength; j++) {
           if (this.judgments[j].EsId === ansObj[i].EsId) {
             this.judgments[j].ans = ansObj[i].ans;
+            i++;
           }
         }
         for (var j = 0; j < fillLength; j++) {
           if (this.fills[j].EsId === ansObj[i].EsId) {
             this.fills[j].ans = ansObj[i].ans;
+            i++;
           }
         }
       }

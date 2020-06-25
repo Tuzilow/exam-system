@@ -38,6 +38,7 @@
           <Property Name="EmPaperJudgeScore" Type="int" Nullable="false" />
           <Property Name="EmPaperMultipleScore" Type="int" Nullable="false" />
           <Property Name="EmPtId" Type="int" />
+          <Property Name="EmTagPercent" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ES_ExamPaper_Exercise">
           <Key>
@@ -100,9 +101,8 @@
           </Key>
           <Property Name="JQId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="JQTitle" Type="nvarchar" MaxLength="512" />
-          <Property Name="JQTrueAns" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="JQFalseAns" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="JQScore" Type="int" Nullable="false" />
+          <Property Name="JQIsTrue" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_MultipleAnswer">
           <Key>
@@ -638,6 +638,7 @@
           <Property Name="EmPaperMultipleScore" Type="Int32" Nullable="false" />
           <Property Name="EmPtId" Type="Int32" />
           <NavigationProperty Name="ES_ExamPart" Relationship="ExaminationSystemDbModel.FK__ES_ExamPa__EmPtI__607251E5" FromRole="ES_ExamPaper" ToRole="ES_ExamPart" />
+          <Property Name="EmTagPercent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ES_ExamPaper_Exercise">
           <Key>
@@ -700,9 +701,8 @@
           </Key>
           <Property Name="JQId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="JQTitle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="JQTrueAns" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="JQFalseAns" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="JQScore" Type="Int32" Nullable="false" />
+          <Property Name="JQIsTrue" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_MultipleAnswer">
           <Key>
@@ -1251,6 +1251,7 @@
           <EntitySetMapping Name="ES_ExamPaper">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamPaper">
               <MappingFragment StoreEntitySet="ES_ExamPaper">
+                <ScalarProperty Name="EmTagPercent" ColumnName="EmTagPercent" />
                 <ScalarProperty Name="EmPtId" ColumnName="EmPtId" />
                 <ScalarProperty Name="EmPaperMultipleScore" ColumnName="EmPaperMultipleScore" />
                 <ScalarProperty Name="EmPaperJudgeScore" ColumnName="EmPaperJudgeScore" />
@@ -1321,10 +1322,9 @@
           <EntitySetMapping Name="ES_JudgeQuestion">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_JudgeQuestion">
               <MappingFragment StoreEntitySet="ES_JudgeQuestion">
+                <ScalarProperty Name="JQIsTrue" ColumnName="JQIsTrue" />
                 <ScalarProperty Name="JQId" ColumnName="JQId" />
                 <ScalarProperty Name="JQTitle" ColumnName="JQTitle" />
-                <ScalarProperty Name="JQTrueAns" ColumnName="JQTrueAns" />
-                <ScalarProperty Name="JQFalseAns" ColumnName="JQFalseAns" />
                 <ScalarProperty Name="JQScore" ColumnName="JQScore" />
               </MappingFragment>
             </EntityTypeMapping>

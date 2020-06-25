@@ -27,7 +27,7 @@ namespace ExaminationSystem.Controllers
         /// <param name="tags"></param>
         /// <param name="partId"></param>
         /// <returns></returns>
-        public string AddPaper(string title, int singleNum, int singleScore, int multipleNum, int multipleScore, int judgmentNum, int judgmentScore, int fillNum, int fillScore, int[] tags, int partId)
+        public string AddPaper(string title, int singleNum, int singleScore, int multipleNum, int multipleScore, int judgmentNum, int judgmentScore, int fillNum, int fillScore, int[] tags, int partId, string tagPercent)
         {
             int code;
             string message;
@@ -43,7 +43,8 @@ namespace ExaminationSystem.Controllers
                 EmPaperJudgeScore = judgmentScore,
                 EmPaperFillNum = fillNum,
                 EmPaperFillScore = fillScore,
-                EmPtId = partId
+                EmPtId = partId,
+                EmTagPercent = tagPercent
             };
             try
             {

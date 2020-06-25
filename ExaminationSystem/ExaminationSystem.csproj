@@ -222,6 +222,7 @@
     <Compile Include="Models\ES_User_ExamPart.cs">
       <DependentUpon>ESModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TagPercentInfo.cs" />
     <Compile Include="Models\User_ExamPart_ExamPaper_v.cs">
       <DependentUpon>ESModel.tt</DependentUpon>
     </Compile>

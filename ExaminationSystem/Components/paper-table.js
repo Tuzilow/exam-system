@@ -26,7 +26,6 @@
         </div>
         <div v-loading="isLoading">
           <el-table :data="papers">
-            <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="title" label="试卷名"></el-table-column>
             <el-table-column prop="date" label="日期"></el-table-column>
             <el-table-column prop="partTitle" label="场次"></el-table-column>

@@ -16,8 +16,7 @@ namespace ExaminationSystem.Models
     {
         public int JQId { get; set; }
         public string JQTitle { get; set; }
-        public string JQTrueAns { get; set; }
-        public string JQFalseAns { get; set; }
         public int JQScore { get; set; }
+        public bool JQIsTrue { get; set; }
     }
 }

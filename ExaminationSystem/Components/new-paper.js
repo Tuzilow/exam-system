@@ -8,18 +8,18 @@
         parts: [
           { id: 1, title: '' }
         ],
-        tags: [
-          { id: 1, title: '' }
-        ],
         single: { num: 10, score: 3, total: 30 },
         multiple: { num: 10, score: 2, total: 20 },
         judgment: { num: 10, score: 2, total: 20 },
         fill: { num: 10, score: 3, total: 30 },
       },
+      tags: [],
       selTags: [],
       selPart: null,
       maxScore: 0,
-      isLoading: false
+      isLoading: false,
+      tagPercent: [
+      ]
     };
   },
   template: `
@@ -44,7 +44,7 @@
               <el-form-item label="选择出题标签(非必选)">
                 <el-select v-model="selTags" placeholder="请选择标签" :multiple="true">
                   <el-option
-                    v-for="tag in paper.tags"
+                    v-for="tag in tags"
                     :key="tag.id"
                     :label="tag.name"
                     :value="tag.id">
@@ -57,9 +57,16 @@
                 placeholder="总分"
                 v-model="maxScore"
                 :disabled="true"
-                :class="maxScore > 100 ? 'error' : ''">
+                :class="maxScore !== 100 ? 'error' : ''">
               </el-input>
             </el-form-item>
+            <div class="tag-percent-content">
+              <el-divider content-position="left" v-if="tagPercent.length != 0">所选标签中的题占总题数的比例</el-divider>
+                <el-form-item :label="item.name" v-for="item,index in tagPercent" class="tag-percent-warp" :precision="1">
+                  <el-input-number v-model="item.percent" :min="1" :max="100" label="百分比" class="percent-num"></el-input-number>&nbsp;%
+                </el-form-item>
+              <el-divider></el-divider>
+            </div>
             <el-form-item label="选择题">
               <span>
                 数量
@@ -67,7 +74,7 @@
               </span>
               <span>
                 每题分数
-                <el-input-number v-model="paper.single.score" @change="singleScoreChange" :min="1" :max="10" label="分数"></el-input-number>
+                <el-input-number v-model="paper.single.score" @change="singleScoreChange" :min="1" :max="50" label="分数"></el-input-number>
               </span>
               <span class="total-score">该类总分：{{ paper.single.total }}</span>
             </el-form-item>
@@ -78,7 +85,7 @@
               </span>
               <span>
                 每题分数
-                <el-input-number v-model="paper.multiple.score" @change="multipleScoreChange" :min="1" :max="10" label="分数"></el-input-number>
+                <el-input-number v-model="paper.multiple.score" @change="multipleScoreChange" :min="1" :max="50" label="分数"></el-input-number>
               </span>
               <span class="total-score">该类总分：{{ paper.multiple.total }}</span>
             </el-form-item>
@@ -89,7 +96,7 @@
               </span>
               <span>
                 每题分数
-                <el-input-number v-model="paper.judgment.score" @change="judgmentScoreChange" :min="1" :max="10" label="分数"></el-input-number>
+                <el-input-number v-model="paper.judgment.score" @change="judgmentScoreChange" :min="1" :max="50" label="分数"></el-input-number>
               </span>
               <span class="total-score">该类总分：{{ paper.judgment.total }}</span>
             </el-form-item>
@@ -100,7 +107,7 @@
               </span>
               <span>
                 每题分数
-                <el-input-number v-model="paper.fill.score" @change="fillScoreChange" :min="1" :max="10" label="分数"></el-input-number>
+                <el-input-number v-model="paper.fill.score" @change="fillScoreChange" :min="1" :max="50" label="分数"></el-input-number>
               </span>
               <span class="total-score">该类总分：{{ paper.fill.total }}</span>
             </el-form-item>
@@ -114,7 +121,7 @@
             </div>
             <ul>
                <li>如果选择的标签中题目数量不足，将随机从题库中抽取题目</li>
-               <li>分数必须为100分才能生成试卷</li>
+               <li>请自行计算好出题比例、出题数目和分数</li>
             </ul>
           </el-card>
         </div>
@@ -134,6 +141,7 @@
       var fillScore = this.paper.fill.score;
       var tags = this.selTags;
       var partId = this.selPart;
+      var tagPercent = JSON.stringify(this.tagPercent);
       var totalScore = this.maxScore;
 
       // 数据校验
@@ -142,9 +150,6 @@
       }
       if (partId === null) {
         return this.$message.error("请选择场次");
-      }
-      if (totalScore !== 100) {
-        return this.$message.error("总分必须为100分");
       }
       this.isLoading = true;
       axios.post('/Paper/AddPaper', {
@@ -158,7 +163,8 @@
         fillNum,
         fillScore,
         tags,
-        partId
+        partId,
+        tagPercent
       }).then(res => {
         const { data } = res;
         if (data.code === 1) {
@@ -225,9 +231,9 @@
         tags = data.slice(1, data.length);
 
         if (localStorage.getItem('id') != 1) {
-          this.paper.tags = tags;
+          this.tags = tags;
         } else {
-          this.paper.tags = data;
+          this.tags = data;
         }
       });
     },
@@ -246,6 +252,24 @@
       });
     }
   },
+  watch: {
+    selTags: function (val, oldVal) {
+      var tempTagPercent = [];
+      var tagLen = val.length;
+      for (var i in val) {
+        for (var j in this.tags) {
+          if (this.tags[j].id == val[i]) {
+            var targetPercent = Math.floor(100 / tagLen);
+            if (targetPercent * tagLen != 100 && i == tagLen - 1) {
+              targetPercent = 100 - targetPercent * tagLen + targetPercent;
+            }
+            tempTagPercent.push({ id: val[i], name: this.tags[j].name, percent: targetPercent })
+          }
+        }
+      }
+      this.tagPercent = tempTagPercent;
+    }
+  },
   created() {
     this.maxScore = this.paper.fill.total + this.paper.judgment.total + this.paper.multiple.total + this.paper.single.total;
     this.getTags();
@@ -255,10 +279,16 @@
     this.maxScore = this.paper.fill.total + this.paper.judgment.total + this.paper.multiple.total + this.paper.single.total;
   },
   updated() {
-    if (this.paper.fill.total + this.paper.judgment.total + this.paper.multiple.total + this.paper.single.total > 100) {
+    var currentScore = this.paper.fill.total + this.paper.judgment.total + this.paper.multiple.total + this.paper.single.total;
+    if (currentScore > 100) {
       this.$notify.error({
         title: '错误',
         message: '分数已经超出100！'
+      });
+    } else if (currentScore < 100) {
+      this.$notify.error({
+        title: '错误',
+        message: '分数不足100！'
       });
     }
   }

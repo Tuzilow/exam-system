@@ -1,4 +1,5 @@
 ﻿Vue.component('new-question', {
+  // TODO 选标签放到页面上
   props: {
   },
   data() {
@@ -28,8 +29,7 @@
       // 判断题
       judgment: {
         title: '',
-        trueSel: '', // 正确答案
-        falseSel: '', // 错误答案
+        isTrue: true,
         score: 2
       },
       // 填空题
@@ -81,7 +81,17 @@
   },
   template: `
        <div class="new-question">
-        <div class="main-header">添加题目</div>
+        <div class="main-header">
+          <span>添加题目</span>
+          <el-select v-model="selTags" filterable multiple placeholder="请选择当前题目的标签" class="select-tag">
+            <el-option
+              v-for="item in tags"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </div>
         <div class="main-content"  v-loading="isUploading">
            <el-tabs type="border-card" @tab-click="changeTab">
             <el-tab-pane label="单选题">
@@ -121,7 +131,7 @@
                   <el-input v-model.trim="single.sel3" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="showScore('single')">确 定</el-button>
+                  <el-button type="primary" @click="onSubmit">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -173,7 +183,7 @@
                   </el-checkbox-group>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="showScore('multiple')">确 定</el-button>
+                  <el-button type="primary" @click="onSubmit">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -192,14 +202,12 @@
                     @change="onJudgmentChange($event)"
                   />
                 </el-form-item>
-                <el-form-item label="正确选项" class="answers true-answer">
-                  <el-input v-model.trim="judgment.trueSel" maxlength="64" show-word-limit></el-input>
-                </el-form-item>
-                <el-form-item label="错误选项" class="answers false-answer">
-                  <el-input v-model.trim="judgment.falseSel" maxlength="64" show-word-limit></el-input>
+                <el-form-item label="答案" class="answers true-answer">
+                  <el-radio v-model="judgment.isTrue" :label="true">对</el-radio>
+                  <el-radio v-model="judgment.isTrue" :label="false">错</el-radio>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="showScore('judgment')">确 定</el-button>
+                  <el-button type="primary" @click="onSubmit">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -210,7 +218,6 @@
                     title="请手动在题目中留下填写答案的位置，同时请按照正确答案的顺序设置答案。新增的答案框不能删除，请谨慎添加！！！"
                     type="warning">
                   </el-alert>
-                  <el-button type="success" @click="addFillAnswer" size="mini" style="width:100%;">添加答案</el-button>
                   <quill-editor
                     class="title-editor fill-editor"
                     ref="fillEditor"
@@ -223,7 +230,8 @@
                   <el-input v-model.trim="fill.answers[index]" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="showScore('fill')">确 定</el-button>
+                  <el-button type="primary" @click="onSubmit">确 定</el-button>
+                  <el-button type="info" @click="addFillAnswer">添加答案</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -239,7 +247,6 @@
             type="error">
           </el-alert>
           <div class="submit-dialog">
-            <el-input-number v-model="currentScore" @change="scoreChange" :min="1" :max="10" class="score-change"></el-input-number>
             <el-select v-model="selTags" filterable multiple placeholder="请选择标签" class="select-tag">
               <el-option
                 v-for="item in tags"
@@ -360,12 +367,11 @@
     },
     // 改变当前Editor
     changeTab: function (val) {
-      this.selTags = [];
       switch (val.index) {
-        case '0': this.currentEditor = 'singleEditor'; break;
-        case '1': this.currentEditor = 'multipleEditor'; break;
-        case '2': this.currentEditor = 'judgmentEditor'; break;
-        case '3': this.currentEditor = 'fillEditor'; break;
+        case '0': this.currentEditor = 'singleEditor'; this.currentType = 'single'; break;
+        case '1': this.currentEditor = 'multipleEditor'; this.currentType = 'multiple';  break;
+        case '2': this.currentEditor = 'judgmentEditor'; this.currentType = 'judgment';  break;
+        case '3': this.currentEditor = 'fillEditor'; this.currentType = 'fill';  break;
       }
     },
     // 获得全部标签
@@ -419,9 +425,9 @@
     },
     // 获取判断
     getJudgment: function () {
-      let { title, trueSel, falseSel, score } = this.judgment;
+      let { title, isTrue, score } = this.judgment;
 
-      if (title === '' || trueSel === '' || falseSel === '') {
+      if (title === '') {
         this.isSubmitLoading = false;
         this.$message({
           type: 'error',
@@ -430,7 +436,7 @@
         return null;
       }
 
-      return { title, trueSel, falseSel, score };
+      return { title, isTrue, score };
     },
     // 获取填空
     getFill: function () {
@@ -528,8 +534,7 @@
 
         this.judgment = {
           title: '',
-          trueSel: '',
-          falseSel: '',
+          isTrue: true,
           score: 2
         }
         this.selTags = [];

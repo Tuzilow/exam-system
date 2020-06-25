@@ -24,7 +24,6 @@
             <el-button type="primary" @click="doSearch">搜索</el-button>
           </div>
           <el-table :data="users" v-loading="isLoading">
-            <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="account" label="账号"></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column label="场次" prop="partId" align="center">

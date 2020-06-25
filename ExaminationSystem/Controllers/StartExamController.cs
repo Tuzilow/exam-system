@@ -28,49 +28,53 @@ namespace ExaminationSystem.Controllers
 
             try
             {
-                var user = (from upt in db.ES_User_ExamPart
-                            join u in db.ES_User on upt.UserId equals u.UserId
-                            join pt in db.ES_ExamPart on upt.EmPtId equals pt.EmPtId
-                            where u.UserId == id && u.IsDel == false && pt.IsDel == false && upt.IsDel == false
-                            select new
-                            {
-                                u.UserName,
-                                pt.EmPtStart,
-                                pt.EmPtEnd,
-                                pt.EmPtId
-                            }).FirstOrDefault();
+                var user = from upt in db.ES_User_ExamPart
+                           join u in db.ES_User on upt.UserId equals u.UserId
+                           join pt in db.ES_ExamPart on upt.EmPtId equals pt.EmPtId
+                           where u.UserId == id && u.IsDel == false && pt.IsDel == false && upt.IsDel == false
+                           select new
+                           {
+                               u.UserName,
+                               pt.EmPtStart,
+                               pt.EmPtEnd,
+                               pt.EmPtId
+                           };
 
                 if (user != null)
                 {
-                    DateTime current = DateTime.Now;
-
-                    var parts = from p in db.ES_ExamPart
-                                where p.IsDel == false && p.EmPtStart <= current && p.EmPtEnd >= current && p.EmPtId == user.EmPtId
-                                select new
-                                {
-                                    p.EmPtId,
-                                    p.EmPtStart,
-                                    p.EmPtEnd
-                                };
-
-                    if (parts == null)
+                    foreach (var userPart in user)
                     {
-                        code = 1;
-                        message = "当前没有正在进行的考试";
-                        return JsonConvert.SerializeObject(new { code, message });
-                    }
-                    foreach (var part in parts)
-                    {
-                        if (user.EmPtStart == part.EmPtStart && user.EmPtEnd == part.EmPtEnd)
+
+                        DateTime current = DateTime.Now;
+
+                        var parts = from p in db.ES_ExamPart
+                                    where p.IsDel == false && p.EmPtStart <= current && p.EmPtEnd >= current && p.EmPtId == userPart.EmPtId
+                                    select new
+                                    {
+                                        p.EmPtId,
+                                        p.EmPtStart,
+                                        p.EmPtEnd
+                                    };
+
+                        if (parts == null)
                         {
-                            DateTime start = user.EmPtStart;
-                            DateTime end = user.EmPtEnd;
-                            string name = user.UserName;
-                            int partId = part.EmPtId;
+                            code = 1;
+                            message = "当前没有正在进行的考试";
+                            return JsonConvert.SerializeObject(new { code, message });
+                        }
+                        foreach (var part in parts)
+                        {
+                            if (userPart.EmPtStart == part.EmPtStart && userPart.EmPtEnd == part.EmPtEnd)
+                            {
+                                DateTime start = userPart.EmPtStart;
+                                DateTime end = userPart.EmPtEnd;
+                                string name = userPart.UserName;
+                                int partId = part.EmPtId;
 
-                            code = 0;
+                                code = 0;
 
-                            return JsonConvert.SerializeObject(new { code, name, start, end, partId });
+                                return JsonConvert.SerializeObject(new { code, name, start, end, partId });
+                            }
                         }
                     }
 
@@ -96,10 +100,10 @@ namespace ExaminationSystem.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool IsStart(int id)
+        public bool IsStart(int id, int partId)
         {
             var log = (from l in db.ES_ExamLog
-                       where l.UserId == id && l.IsDel == false
+                       where l.UserId == id && l.IsDel == false && l.EmPtId == partId
                        select l).FirstOrDefault();
 
             return log == null ? false : log.IsStart;
@@ -170,20 +174,21 @@ namespace ExaminationSystem.Controllers
         /// <param name="num"></param>
         /// <param name="tags"></param>
         /// <returns></returns>
-        public List<object> GetSingle(int num, List<ES_Tag> tags)
+        public List<object> GetSingle(int num, List<TagPercentInfo> tagPercents)
         {
-            // 平均分配
-            int count = Convert.ToInt32(Math.Floor((double)(num / tags.Count())));
-
             List<object> res = new List<object>();
-            foreach (var tag in tags)
+            int fill = 0;// 当次标签题数不够时，让下一标签来补
+            foreach (var tagPercent in tagPercents)
             {
+                // 百分比 * 单选题数目
+                int count = Convert.ToInt32(Math.Floor(num * 0.01 * tagPercent.Percent));
+
                 var singles = (from e in db.ES_Exercise
                                where e.EsType == "单选题" && e.IsDel == false
                                join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
                                join t in db.ES_Tag on et.TagId equals t.TagId
                                join s in db.ES_SelectQuestion on e.EsSubExerciseId equals s.SQId
-                               where t.IsDel == false && et.IsDel == false && t.TagId == tag.TagId
+                               where t.IsDel == false && et.IsDel == false && t.TagId == tagPercent.Id
                                orderby (Guid.NewGuid())
                                select new
                                {
@@ -194,7 +199,9 @@ namespace ExaminationSystem.Controllers
                                    s.SQAns2,
                                    s.SQAns3,
                                    t.TagId
-                               }).Take(count).ToList();
+                               }).Take(count + fill).ToList();
+
+                fill = count - singles.Count();
 
                 foreach (var item in singles)
                 {
@@ -252,20 +259,21 @@ namespace ExaminationSystem.Controllers
         /// <param name="num"></param>
         /// <param name="tags"></param>
         /// <returns></returns>
-        public List<object> GetMultiple(int num, List<ES_Tag> tags)
+        public List<object> GetMultiple(int num, List<TagPercentInfo> tagPercents)
         {
-            // 平均分配
-            int count = Convert.ToInt32(Math.Floor((double)(num / tags.Count())));
-
             List<object> res = new List<object>();
-            foreach (var tag in tags)
+            int fill = 0;// 当次标签题数不够时，让下一标签来补
+            foreach (var tagPercent in tagPercents)
             {
+                // 百分比 * 题数目
+                int count = Convert.ToInt32(Math.Floor(num * 0.01 * tagPercent.Percent));
+
                 var muls = (from e in db.ES_Exercise
                             where e.EsType == "多选题" && e.IsDel == false
                             join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
                             join t in db.ES_Tag on et.TagId equals t.TagId
                             join m in db.ES_MultipleQuestion on e.EsSubExerciseId equals m.MQId
-                            where t.IsDel == false && et.IsDel == false && t.TagId == tag.TagId
+                            where t.IsDel == false && et.IsDel == false && t.TagId == tagPercent.Id
                             orderby (Guid.NewGuid())
                             select new
                             {
@@ -279,7 +287,10 @@ namespace ExaminationSystem.Controllers
                                 m.MQAns5,
                                 m.MQAns6,
                                 m.MQAns7
-                            }).Take(count).ToList();
+                            }).Take(count + fill).ToList();
+
+                fill = count - muls.Count();
+
                 foreach (var item in muls)
                 {
                     res.Add(item);
@@ -324,8 +335,7 @@ namespace ExaminationSystem.Controllers
                     {
                         e.EsId,
                         j.JQTitle,
-                        j.JQFalseAns,
-                        j.JQTrueAns
+                        j.JQIsTrue
                     }).Take(num);
         }
 
@@ -335,29 +345,32 @@ namespace ExaminationSystem.Controllers
         /// <param name="num"></param>
         /// <param name="tags"></param>
         /// <returns></returns>
-        public List<object> GetJudgment(int num, List<ES_Tag> tags)
+        public List<object> GetJudgment(int num, List<TagPercentInfo> tagPercents)
         {
-            // 平均分配
-            int count = Convert.ToInt32(Math.Floor((double)(num / tags.Count())));
-
             List<object> res = new List<object>();
-            foreach (var tag in tags)
+            int fill = 0;// 当次标签题数不够时，让下一标签来补
+            foreach (var tagPercent in tagPercents)
             {
+                // 百分比 * 题数目
+                int count = Convert.ToInt32(Math.Floor(num * 0.01 * tagPercent.Percent));
+
                 var judges = (from e in db.ES_Exercise
                               where e.EsType == "判断题" && e.IsDel == false
                               join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
                               join t in db.ES_Tag on et.TagId equals t.TagId
                               join j in db.ES_JudgeQuestion on e.EsSubExerciseId equals j.JQId
-                              where t.IsDel == false && et.IsDel == false && t.TagId == tag.TagId
+                              where t.IsDel == false && et.IsDel == false && t.TagId == tagPercent.Id
                               orderby (Guid.NewGuid())
                               select new
                               {
                                   e.EsId,
                                   j.JQTitle,
-                                  j.JQFalseAns,
-                                  j.JQTrueAns,
+                                  j.JQIsTrue,
                                   t.TagId
-                              }).Take(count).ToList();
+                              }).Take(count + fill).ToList();
+
+                fill = count - judges.Count();
+
                 foreach (var item in judges)
                 {
                     res.Add(item);
@@ -376,8 +389,7 @@ namespace ExaminationSystem.Controllers
                     {
                         e.EsId,
                         j.JQTitle,
-                        j.JQFalseAns,
-                        j.JQTrueAns
+                        j.JQIsTrue
                     }).FirstOrDefault();
         }
 
@@ -405,20 +417,21 @@ namespace ExaminationSystem.Controllers
         /// <param name="num"></param>
         /// <param name="tags"></param>
         /// <returns></returns>
-        public List<object> GetFill(int num, List<ES_Tag> tags)
+        public List<object> GetFill(int num, List<TagPercentInfo> tagPercents)
         {
-            // 平均分配
-            int count = Convert.ToInt32(Math.Floor((double)(num / tags.Count())));
-
             List<object> res = new List<object>();
-            foreach (var tag in tags)
+            int fill = 0;// 当次标签题数不够时，让下一标签来补
+            foreach (var tagPercent in tagPercents)
             {
+                // 百分比 * 题数目
+                int count = Convert.ToInt32(Math.Floor(num * 0.01 * tagPercent.Percent));
+
                 var fills = (from e in db.ES_Exercise
                              where e.EsType == "填空题" && e.IsDel == false
                              join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
                              join t in db.ES_Tag on et.TagId equals t.TagId
                              join f in db.ES_FillQuestion on e.EsSubExerciseId equals f.FQId
-                             where t.IsDel == false && et.IsDel == false && t.TagId == tag.TagId
+                             where t.IsDel == false && et.IsDel == false && t.TagId == tagPercent.Id
                              orderby (Guid.NewGuid())
                              select new
                              {
@@ -426,7 +439,10 @@ namespace ExaminationSystem.Controllers
                                  f.FQId,
                                  f.FQTitle,
                                  t.TagId
-                             }).Take(count).ToList();
+                             }).Take(count + fill).ToList();
+
+                fill = count - fills.Count();
+
                 foreach (var item in fills)
                 {
                     res.Add(item);
@@ -457,15 +473,18 @@ namespace ExaminationSystem.Controllers
         public string CreateExamPaper(int partId, int userId)
         {
             // 如果已经有记录，则直接获取记录中的试卷
-            if (IsStart(userId))
+            if (IsStart(userId, partId))
             {
-                return GetExamPaper(userId);
+                return GetExamPaper(userId, partId);
             }
 
             int code;
             string message;
 
             var paper = GetPaper(partId);
+
+            // 获取每个标签所占比例
+            List<TagPercentInfo> tagPercents = JsonConvert.DeserializeObject<List<TagPercentInfo>>(paper.EmTagPercent);
 
             if (paper == null)
             {
@@ -515,7 +534,7 @@ namespace ExaminationSystem.Controllers
                 }
 
                 // 单选题
-                singles = GetSingle(paper.EmPaperSelectNum, tags);
+                singles = GetSingle(paper.EmPaperSelectNum, tagPercents);
                 // 如果题目不够，自动补
                 if (singles.Count() < paper.EmPaperSelectNum)
                 {
@@ -527,7 +546,7 @@ namespace ExaminationSystem.Controllers
                 }
 
                 // 多选题
-                multiples = GetMultiple(paper.EmPaperMultipleNum, tags);
+                multiples = GetMultiple(paper.EmPaperMultipleNum, tagPercents);
                 if (multiples.Count() < paper.EmPaperMultipleNum)
                 {
                     var notTag = GetMultiple(paper.EmPaperMultipleNum - multiples.Count()).ToList();
@@ -538,7 +557,7 @@ namespace ExaminationSystem.Controllers
                 }
 
                 // 获取判断题
-                judgments = GetJudgment(paper.EmPaperJudgeNum, tags);
+                judgments = GetJudgment(paper.EmPaperJudgeNum, tagPercents);
                 if (judgments.Count() < paper.EmPaperJudgeNum)
                 {
                     var notTag = GetJudgment(paper.EmPaperJudgeNum - judgments.Count()).ToList();
@@ -549,7 +568,7 @@ namespace ExaminationSystem.Controllers
                 }
 
                 // 获取填空题
-                fills = GetFill(paper.EmPaperFillNum, tags);
+                fills = GetFill(paper.EmPaperFillNum, tagPercents);
                 if (fills.Count() < paper.EmPaperFillNum)
                 {
                     var notTag = GetFill(paper.EmPaperFillNum - fills.Count()).ToList();
@@ -622,13 +641,13 @@ namespace ExaminationSystem.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string GetExamPaper(int id)
+        public string GetExamPaper(int id, int partId)
         {
             int code;
             string message;
             // 获取记录中的题目ID
             var log = (from l in db.ES_ExamLog
-                       where l.UserId == id && l.IsDel == false && l.IsSubmit == false
+                       where l.UserId == id && l.EmPtId == partId && l.IsDel == false && l.IsSubmit == false 
                        select l).FirstOrDefault();
 
             if (log == null)
@@ -693,10 +712,10 @@ namespace ExaminationSystem.Controllers
 
                 string title = (from l in db.ES_ExamLog
                                 join p in db.ES_ExamPaper on l.EmPaperId equals p.EmPaperId
-                                where l.UserId == id && l.IsDel == false && p.IsDel == false
+                                where l.UserId == id && l.EmPtId == partId && l.IsDel == false && p.IsDel == false
                                 select p.EmPaperName).FirstOrDefault();
 
-                return JsonConvert.SerializeObject(new { title, singles, multiples, judgments, fills, fillAnsNum, answers = log.Answers });
+                return JsonConvert.SerializeObject(new { logId = log.LogId, title, singles, multiples, judgments, fills, fillAnsNum, answers = log.Answers });
             }
             catch (Exception ex)
             {
@@ -717,7 +736,7 @@ namespace ExaminationSystem.Controllers
             string message;
             // 获取记录中的题目ID
             var log = (from l in db.ES_ExamLog
-                       where l.UserId == id && l.IsDel == false && l.IsSubmit == true
+                       where l.LogId == id && l.IsDel == false && l.IsSubmit == true
                        select l).FirstOrDefault();
 
             if (log == null)
@@ -820,7 +839,7 @@ namespace ExaminationSystem.Controllers
             try
             {
                 var log = (from l in db.ES_ExamLog
-                           where l.UserId == id && l.IsStart == true && l.IsSubmit == false
+                           where l.LogId == id && l.IsStart == true && l.IsSubmit == false
                            select l).FirstOrDefault();
 
                 if (log == null)
@@ -866,7 +885,7 @@ namespace ExaminationSystem.Controllers
             try
             {
                 var log = (from l in db.ES_ExamLog
-                           where l.UserId == id && l.IsStart == true && l.IsSubmit == false && l.IsDel == false
+                           where l.LogId == id && l.IsStart == true && l.IsSubmit == false && l.IsDel == false
                            select l).FirstOrDefault();
 
                 if (log == null)
@@ -963,7 +982,7 @@ namespace ExaminationSystem.Controllers
                             }
                             break;
                         case "判断题":
-                            if (nowAns.Ans[0] == "JQTrueAns")
+                            if (nowAns.Ans[0] == "true")
                             {
                                 judgmentScore += scores.EmPaperJudgeScore;
                             }
@@ -990,11 +1009,11 @@ namespace ExaminationSystem.Controllers
 
                             if (trueNum == fillAns.Count())
                             {
-                                judgmentScore += scores.EmPaperJudgeScore;
+                                fillScore += scores.EmPaperFillScore;
                             }
                             else if (trueNum != 0)// 如果没有全对
                             {
-                                judgmentScore += scores.EmPaperMultipleScore / fillAns.Count();
+                                fillScore += scores.EmPaperFillScore / fillAns.Count();
                             }
 
                             break;

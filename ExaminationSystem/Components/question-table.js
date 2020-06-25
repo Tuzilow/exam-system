@@ -20,13 +20,16 @@
       fills: [],
       totalNum: 1,
       currentPage: 1,
-      isLoading: false
+      isLoading: false,
+      tags: [],
+      selTag: null, // 选中标签
     }
   },
   template: `
        <div>
         <div class="main-header">题目列表</div>
         <div class="search-wrap">
+          按条件过滤题目
           <el-select v-model="currentType" placeholder="请选择题目类型" class="score-select">
             <el-option
               v-for="item in questionType"
@@ -35,16 +38,26 @@
               :value="item.type">
             </el-option>
           </el-select>
+          <el-select v-model="selTag" filterable placeholder="请选择标签" class="select-tag">
+            <el-option
+              v-for="item in tags"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </div>
         <div v-loading="isLoading" class="question-table">
           <el-table :data="singles" v-if="currentType === '单选题'">
-            <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="title" label="题目" width="300"></el-table-column>
+            <el-table-column prop="title" label="题目" width="300">
+              <template slot-scope="scope" v-if="currentType === '单选题'">
+                <p v-html="scope.row.title" class="title-detail"></p>
+              </template>
+            </el-table-column>
             <el-table-column prop="trueSel" label="正确答案"></el-table-column>
             <el-table-column prop="sel1" label="错误答案"></el-table-column>
             <el-table-column prop="sel2" label="错误答案"></el-table-column>
             <el-table-column prop="sel3" label="错误答案"></el-table-column>
-            <el-table-column prop="score" label="分数"></el-table-column>
             <el-table-column label="操作" prop="id" align="center">
               <template slot-scope="scope" v-if="currentType === '单选题'">
                 <el-link type="success" @click="show(scope.row)">查看</el-link>
@@ -53,8 +66,11 @@
             </el-table-column>
           </el-table>
           <el-table :data="multiples" v-if="currentType === '多选题'">
-            <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="title" label="题目" width="300"></el-table-column>
+            <el-table-column prop="title" label="题目" width="300">
+              <template slot-scope="scope" v-if="currentType === '多选题'">
+                <p v-html="scope.row.title" class="title-detail"></p>
+              </template>
+            </el-table-column>
             <el-table-column prop="MQAns1" label="选项1"></el-table-column>
             <el-table-column prop="MQAns2" label="选项2"></el-table-column>
             <el-table-column prop="MQAns3" label="选项3"></el-table-column>
@@ -63,7 +79,6 @@
             <el-table-column prop="MQAns6" label="选项6"></el-table-column>
             <el-table-column prop="MQAns7" label="选项7"></el-table-column>
             <el-table-column prop="trueSels" label="正确选项"></el-table-column>
-            <el-table-column prop="score" label="分数"></el-table-column>
             <el-table-column label="操作" prop="id" align="center">
               <template slot-scope="scope" v-if="currentType === '多选题'">
                 <el-link type="success" @click="show(scope.row)">查看</el-link>
@@ -72,11 +87,17 @@
             </el-table-column>
           </el-table>
           <el-table :data="judgments" v-if="currentType === '判断题'">
-            <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="title" label="题目" width="300"></el-table-column>
-            <el-table-column prop="trueSel" label="正确答案"></el-table-column>
-            <el-table-column prop="falseSel" label="错误答案"></el-table-column>
-            <el-table-column prop="score" label="分数"></el-table-column>
+            <el-table-column prop="title" label="题目" width="300">
+              <template slot-scope="scope" v-if="currentType === '判断题'">
+                <p v-html="scope.row.title" class="title-detail"></p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="isTrue" label="答案">
+              <template slot-scope="scope" v-if="currentType === '判断题'">
+                <span v-if="scope.row.isTrue === true">对</span>
+                <span v-if="scope.row.isTrue === false">错</span>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" prop="id" align="center">
               <template slot-scope="scope" v-if="currentType === '判断题'">
                 <el-link type="success" @click="show(scope.row)">查看</el-link>
@@ -85,10 +106,12 @@
             </el-table-column>
           </el-table>
           <el-table :data="fills" v-if="currentType === '填空题'">
-            <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="title" label="题目" width="300"></el-table-column>
+            <el-table-column prop="title" label="题目" width="300">
+              <template slot-scope="scope" v-if="currentType === '填空题'">
+                <p v-html="scope.row.title" class="title-detail"></p>
+              </template>
+            </el-table-column>
             <el-table-column prop="answers" label="答案"></el-table-column>
-            <el-table-column prop="score" label="分数"></el-table-column>
             <el-table-column label="操作" prop="id" align="center">
               <template slot-scope="scope" v-if="currentType === '填空题'">
                 <el-link type="success" @click="show(scope.row)">查看</el-link>
@@ -108,9 +131,12 @@
     show: function (row) {
       let htmlStr = '<ul class="alert-warp">';
       for (var index in row) {
+        if (this.showTitle(index) == '分数') {
+          continue;
+        }
         htmlStr += '<li><span class="title">' +
           this.showTitle(index)
-          + '</span><span class="content">' + (row[index] == null ? '无' : row[index]) + '</span></li>';
+          + '</span><span class="content">' + (row[index] == null ? '无' : (row[index] == true ? '对' : (row[index] == false ? '错' : row[index]))) + '</span></li>';
       }
       htmlStr += '</ul>'
 
@@ -142,6 +168,7 @@
         case 'MQAns7': res = '选项7'; break;
         case 'trueSels': res = '正确选项'; break;
         case 'answers': res = '答案'; break;
+        case 'isTrue': res = '答案'; break;
       }
       return res;
     },
@@ -203,11 +230,62 @@
         this.singles = singles;
       });
     },
+    getSingleByTagId: function (tagId) {
+      this.isLoading = true;
+      axios.get('/Question/GetSingleByTagId', {
+        params: {
+          tagId,
+          pageIndex: this.currentPage
+        }
+      }).then(res => {
+        this.isLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+        var count = data.slice(data.length - 1);
+        var singles = data.slice(0, data.length - 1);
+
+        this.totalNum = count[0];
+        this.singles = singles;
+      });
+    },
     // 获取多选题
     getMultiple: function () {
       this.isLoading = true;
       axios.get('/Question/GetMultiple', {
         params: {
+          pageIndex: this.currentPage
+        }
+      }).then(res => {
+        this.isLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+        let count = data.slice(data.length - 1);
+        let multiples = data.slice(0, data.length - 1);
+        // 将答案编号转为答案内容
+        for (var mul in multiples) {
+          var oldTrueSels = multiples[mul].trueSels;
+
+          var nowTrueSels = [];
+          for (var i = 0; i < oldTrueSels.length; i++) {
+            nowTrueSels.push(multiples[mul][oldTrueSels[i]]);
+          }
+
+          multiples[mul].trueSels = nowTrueSels.join(',');
+        }
+
+        this.totalNum = count[0];
+        this.multiples = multiples;
+      });
+    },
+    getMultipleByTagId: function (tagId) {
+      this.isLoading = true;
+      axios.get('/Question/GetMultipleByTagId', {
+        params: {
+          tagId,
           pageIndex: this.currentPage
         }
       }).then(res => {
@@ -254,6 +332,26 @@
         this.judgments = judgments;
       });
     },
+    getJudgmentByTagId: function (tagId) {
+      this.isLoading = true;
+      axios.get('/Question/GetJudgmentByTagId', {
+        params: {
+          tagId,
+          pageIndex: this.currentPage
+        }
+      }).then(res => {
+        this.isLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+        let count = data.slice(data.length - 1);
+        let judgments = data.slice(0, data.length - 1);
+
+        this.totalNum = count[0];
+        this.judgments = judgments;
+      });
+    },
     // 获取填空题
     getFill: function () {
       this.isLoading = true;
@@ -280,15 +378,72 @@
         this.totalNum = count[0];
         this.fills = fills;
       });
+    },
+    getFillByTagId: function (tagId) {
+      this.isLoading = true;
+      axios.get('/Question/GetFillByTagId', {
+        params: {
+          tagId,
+          pageIndex: this.currentPage
+        }
+      }).then(res => {
+        this.isLoading = false;
+        const { data } = res;
+        if (data.code === 1) {
+          return this.$message.error(data.message);
+        }
+        let count = data.slice(data.length - 1);
+        let fills = data.slice(0, data.length - 1);
+
+        // 将答案编号转为答案内容
+        for (var fillIndex in fills) {
+          var oldAns = fills[fillIndex].answers;
+
+          fills[fillIndex].answers = oldAns.join(',');
+        }
+
+        this.totalNum = count[0];
+        this.fills = fills;
+      });
+    },
+    // 获得全部标签
+    getTags: function () {
+      this.isLoading = true;
+      axios.get('/Tag/GetTags').then(res => {
+        this.isLoading = false;
+        var data = res.data;
+        data = [{ id: 0, name: '不选择任何标签', desc: '不选择任何标签' }, ...data];
+        tags = data.slice(1, data.length);
+
+        if (localStorage.getItem('id') != 1) {
+          this.tags = tags;
+        } else {
+          this.tags = data;
+        }
+      });
     }
   },
   watch: {
     currentType: function (val, oldVal) {
       this.currentPage = 1;
       this.getQuestions(val);
+    },
+    selTag: function (val, oldVal) {
+      this.currentPage = 1;
+      if (val !== 0) {
+        switch (this.currentType) {
+          case '单选题': this.getSingleByTagId(val); break;
+          case '多选题': this.getMultipleByTagId(val); break;
+          case '判断题': this.getJudgmentByTagId(val); break;
+          case '填空题': this.getFillByTagId(val); break;
+        }
+      } else {
+        this.getQuestions(this.currentType);
+      }
     }
   },
   created() {
     this.getSingle(); // TODO 限制答案显示长度
+    this.getTags();
   }
 });

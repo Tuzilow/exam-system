@@ -1,8 +1,26 @@
 ﻿.new-user .main-content {
     padding-top: 1rem;
     padding-left: 2rem;
-    width: 24rem;
+    width: 45rem;
+    display: flex;
+    justify-content: space-between;
 }
+
+    .new-user .main-content .reg-card {
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+        .new-user .main-content .reg-card ul li {
+            list-style: circle;
+        }
+
+        .new-user .main-content .reg-card .reg-content,
+        .new-user .main-content .reg-card .example {
+            margin-left: -1rem;
+            color: #606266;
+        }
 
     .new-user .main-content .el-form-item__content {
         display: inline-block;
@@ -26,10 +44,10 @@
     height: 2.4rem;
 }
 
-.upload-warp .new-btn, .upload-warp .upload-demo {
-    display: inline-block;
-    vertical-align: top;
-}
+    .upload-warp .new-btn, .upload-warp .upload-demo {
+        display: inline-block;
+        vertical-align: top;
+    }
 
 
 .el-upload__tip {

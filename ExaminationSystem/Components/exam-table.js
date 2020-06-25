@@ -22,7 +22,6 @@
             </div>
           </div>
           <el-table :data="exams" v-loading="isLoading">
-            <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="date" label="日期"></el-table-column>
             <el-table-column prop="start" label="开始时间"></el-table-column>
             <el-table-column prop="end" label="结束时间"></el-table-column>

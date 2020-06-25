@@ -32,7 +32,7 @@
         <div class="single-wrap">
           <p class="single-title">一、选择题</p>
           <ul>
-            <li class="single-item" v-for="item,index in singles" :key="item.EsId">
+            <li class="single-item" v-for="item,index in singles" :key="item.EsId + index">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.SQTitle" class="title-content"></div>
               <el-radio-group v-model="item.ans[0]">
@@ -47,7 +47,7 @@
         <div class="multiple-wrap">
           <p class="multiple-title">二、多选题</p>
           <ul>
-            <li class="multiple-item" v-for="item,index in multiples" :key="item.EsId">
+            <li class="multiple-item" v-for="item,index in multiples" :key="item.EsId + index">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.MQTitle" class="title-content"></div>
               <el-checkbox-group v-model="item.ans">
@@ -65,12 +65,12 @@
         <div class="judgment-wrap">
           <p class="judgment-title">三、判断题</p>
           <ul>
-            <li class="judgment-item" v-for="item,index in judgments" :key="item.EsId">
+            <li class="judgment-item" v-for="item,index in judgments" :key="item.EsId + index">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.JQTitle" class="title-content"></div>
               <el-radio-group v-model="item.ans[0]">
-                <el-radio :label="judgmentSort[index][0]">{{item[judgmentSort[index][0]]}}</el-radio>
-                <el-radio :label="judgmentSort[index][1]">{{item[judgmentSort[index][1]]}}</el-radio>
+                <el-radio :label="true">对</el-radio>
+                <el-radio :label="false">错</el-radio>
               </el-radio-group>
             </li>
           </ul>
@@ -78,7 +78,7 @@
         <div class="fill-wrap">
           <p class="fill-title">四、填空题</p>
           <ul>
-            <li class="fill-item" v-for="item,index in fills" :key="item.EsId">
+            <li class="fill-item" v-for="item,index in fills" :key="item.EsId + index">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.FQTitle" class="title-content"></div>
               <div class="fill-answer">
@@ -118,16 +118,17 @@
       singles: [],
       singleSort: [],
       multipleSort: [],
-      judgmentSort: [],
       answers: null,
-      timer: null
+      timer: null,
+      logId: 0
     },
     methods: {
       // 提交并获取分数
       onSubmit() {
         this.isLoading = true;
-        var id = localStorage.getItem('id');
+        var id = this.logId;
         var ansStr = JSON.stringify(this.getAnswer());
+        console.log(ansStr);
         axios.post('/StartExam/FinishExam', { ansStr, id }).then(res => {
           this.isLoading = false;
           var data = res.data;
@@ -171,7 +172,7 @@
           var current = new Date();
           var start = new Date(data.start);
           var end = new Date(data.end);
-          console.log(data);
+
           if (current >= start && current <= end) {
             this.start = start;
             this.end = end;
@@ -180,6 +181,7 @@
 
             this.userName = data.name;
             this.partId = data.partId;
+            console.log(data)
 
             this.getPaper();
           } else if (current < start) {
@@ -240,7 +242,7 @@
               this.goBack();
             });
           }
-
+          this.logId = data.logId;
           this.title = data.title;
 
           // 添加单选题答案存放数组
@@ -284,7 +286,6 @@
 
           this.setSingleSort(this.singles.length);
           this.setMultipleSort(this.multiples.length);
-          this.setJudgmentSort(this.judgments.length);
         });
       },
       // 随机排序
@@ -308,12 +309,6 @@
       setMultipleSort(length) {
         for (var i = 0; i < length; i++) {
           this.multipleSort.push(this.shuffle(['MQAns1', 'MQAns2', 'MQAns3', 'MQAns4', 'MQAns5', 'MQAns6', 'MQAns7']));
-        }
-      },
-      // 打乱判断题选项
-      setJudgmentSort(length) {
-        for (var i = 0; i < length; i++) {
-          this.judgmentSort.push(this.shuffle(['JQFalseAns', 'JQTrueAns']));
         }
       },
       // 获取答案
@@ -340,7 +335,7 @@
       // 保存答案
       save() {
         this.isLoading = true;
-        var id = localStorage.getItem('id');
+        var id = this.logId;
         var ansStr = JSON.stringify(this.getAnswer());
         axios.post('/StartExam/SaveLog', { ansStr, id }).then(res => {
           this.isLoading = false;
@@ -409,18 +404,18 @@
           }
         }, 1000);
       },
-      stop() {
+      //stop() {
 
-        var allowNum = 3; // 允许三次切屏，超过则提交
-        window.onblur = () => {
-          if (allowNum < 1) {
-            this.onSubmit();
-          }
-          allowNum--;
-          alert("您已切屏,超过三次自动提交试卷")
-        }
+      //  var allowNum = 3; // 允许三次切屏，超过则提交
+      //  window.onblur = () => {
+      //    if (allowNum < 1) {
+      //      this.onSubmit();
+      //    }
+      //    allowNum--;
+      //    alert("您已切屏,超过三次自动提交试卷")
+      //  }
 
-      }
+      //}
     },
     watch: {
       timer: function (val) {

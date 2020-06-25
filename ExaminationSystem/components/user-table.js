@@ -48,7 +48,6 @@
           <el-button type="primary" @click="search">搜索</el-button>
         </div>
         <el-table :data="users">
-          <el-table-column prop="id" label="ID"></el-table-column>
           <el-table-column prop="account" label="账号"></el-table-column>
           <el-table-column prop="password" label="密码"></el-table-column>
           <el-table-column prop="name" label="姓名"></el-table-column>
