@@ -49,9 +49,9 @@
               <el-slider
                 class="content"
                 v-model="exam.time"
-                :min="60"
-                :max="150"
-                :step="10"
+                :min="1"
+                :max="180"
+                :step="1"
                 @change="changeTime"
               >
               </el-slider>

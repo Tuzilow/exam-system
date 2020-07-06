@@ -189,34 +189,19 @@
       console.log(row)
     },
     exportScore: function () {
-      this.isLoading = true;
-      axios.get('/UserScore/GetUserScore', {
+      axios.get('/UserScore/Export', {
         params: {
           pageIndex: this.currentPage,
           keyword: this.keyword,
           ptId: this.selectvalue,
           isPaging: false
-        }
+        },
+        responseType:'arraybuffer'
       }).then(res => {
-        this.isLoading = false;
-        var data = res.data;
-
-        var logs = data.slice(0, data.length - 1);
-
-        var s = logs;
-        var res = [];
-        for (var i in s) {
-          res.push({
-            id: s[i].logId,
-            name: s[i].userName,
-            date: s[i].date,
-            part: s[i].title,
-            title: s[i].examTitle,
-            score: s[i].score,
-            isSubmit: s[i].isSubmit
-          })
-        }
-        this.tableToExcel(res);
+        var blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
+        var objUrl = URL.createObjectURL(blob);
+        location.href = objUrl;
+        URL.revokeObjectURL(objUrl);
       });
       
     },
