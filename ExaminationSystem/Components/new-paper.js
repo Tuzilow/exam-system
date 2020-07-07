@@ -22,7 +22,7 @@
       ],
       warningMsg: '',
       isWarning: false,
-      loginRoleId:0
+      loginRoleId: 0
     };
   },
   template: `
@@ -45,7 +45,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="选择出题标签(非必选)">
-                <el-select v-model="selTags" placeholder="请选择标签" :multiple="true">
+                <el-select v-model="selTags" placeholder="请选择标签" filterable :multiple="true">
                   <el-option
                     v-for="tag in tags"
                     :key="tag.id"
@@ -68,9 +68,12 @@
             </el-form-item>
             <div class="tag-percent-content">
               <el-divider content-position="left" v-if="tagPercent.length != 0">所选标签中的题占总题数的比例</el-divider>
-                <el-form-item :label="item.name" v-for="item,index in tagPercent" class="tag-percent-warp" :precision="1">
-                  <el-input-number v-model="item.percent" :min="1" :max="100" label="百分比" class="percent-num"></el-input-number>&nbsp;%
-                </el-form-item>
+                <div v-for="item,index in tagPercent" class="must-warp">
+                  <el-form-item :label="item.name" class="tag-percent-warp" :precision="1">
+                    <el-input-number v-model="item.percent" :min="0" :max="100" label="百分比" class="percent-num" :disabled="setMust(item)"></el-input-number>&nbsp;%
+                  </el-form-item>
+                    <el-checkbox v-model="item.isMust" class="must-tag">设为必考标签</el-checkbox>
+                </div>
               <el-divider></el-divider>
             </div>
             <el-form-item label="选择题">
@@ -128,6 +131,7 @@
             <ul>
                <li>如果选择的标签中题目数量不足，将随机从题库中抽取题目</li>
                <li>请自行计算好出题比例、出题数目和分数</li>
+               <li>设定必考题之后，各标签题目占比将排除必考题计算，即必考题标签之外的其他标签的比例和应该为100%</li>
             </ul>
           </el-card>
         </div>
@@ -258,6 +262,14 @@
       if (this.loginRoleId === 3) {
         return true;
       } else if (!tag.isPrivate) {
+        return true;
+      }
+      return false;
+    },
+    setMust: function (tag) {
+      if (tag.isMust) {
+        tag.percent = 0;
+
         return true;
       }
       return false;

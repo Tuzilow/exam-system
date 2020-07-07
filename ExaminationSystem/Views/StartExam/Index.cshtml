@@ -32,7 +32,7 @@
         <div class="single-wrap">
           <p class="single-title">一、选择题</p>
           <ul>
-            <li class="single-item" v-for="item,index in singles" :key="item.EsId + index">
+            <li class="single-item" v-for="item,index in singles" :key="'1' + index">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.SQTitle" class="title-content"></div>
               <el-radio-group v-model="item.ans[0]">
@@ -47,7 +47,7 @@
         <div class="multiple-wrap">
           <p class="multiple-title">二、多选题</p>
           <ul>
-            <li class="multiple-item" v-for="item,index in multiples" :key="item.EsId + index">
+            <li class="multiple-item" v-for="item,index in multiples" :key="'2' + index">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.MQTitle" class="title-content"></div>
               <el-checkbox-group v-model="item.ans">
@@ -65,7 +65,7 @@
         <div class="judgment-wrap">
           <p class="judgment-title">三、判断题</p>
           <ul>
-            <li class="judgment-item" v-for="item,index in judgments" :key="item.EsId + index">
+            <li class="judgment-item" v-for="item,index in judgments" :key="'3' + index">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.JQTitle" class="title-content"></div>
               <el-radio-group v-model="item.ans[0]">
@@ -78,7 +78,7 @@
         <div class="fill-wrap">
           <p class="fill-title">四、填空题</p>
           <ul>
-            <li class="fill-item" v-for="item,index in fills" :key="item.EsId + index">
+            <li class="fill-item" v-for="item,index in fills" :key="'4' + index">
               <span class="title-index">{{index + 1}}.</span>
               <div v-html="item.FQTitle" class="title-content"></div>
               <div class="fill-answer">
@@ -183,6 +183,7 @@
             this.partId = data.partId;
             console.log(data)
 
+            this.getPaper();
             this.getPaper();
           } else if (current < start) {
             return this.$confirm('当前考试未开始', '提示', {

@@ -180,8 +180,8 @@ namespace ExaminationSystem.Controllers
             int fill = 0;// 当次标签题数不够时，让下一标签来补
             foreach (var tagPercent in tagPercents)
             {
-                // 百分比 * 单选题数目
                 int count = Convert.ToInt32(Math.Floor(num * 0.01 * tagPercent.Percent));
+                // 百分比 * 单选题数目
 
                 var singles = (from e in db.ES_Exercise
                                where e.EsType == "单选题" && e.IsDel == false
@@ -225,6 +225,41 @@ namespace ExaminationSystem.Controllers
                         s.SQAns2,
                         s.SQAns3
                     }).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 获取必选题
+        /// </summary>
+        /// <param name="tagId"></param>
+        /// <returns></returns>
+        public List<object> GetMustSingle(int tagId)
+        {
+            List<object> res = new List<object>();
+
+            var singles = (from e in db.ES_Exercise
+                           where e.EsType == "单选题" && e.IsDel == false
+                           join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                           join t in db.ES_Tag on et.TagId equals t.TagId
+                           join s in db.ES_SelectQuestion on e.EsSubExerciseId equals s.SQId
+                           where t.IsDel == false && et.IsDel == false && t.TagId == tagId
+                           orderby (Guid.NewGuid())
+                           select new
+                           {
+                               e.EsId,
+                               s.SQTitle,
+                               s.SQTrueAns,
+                               s.SQAns1,
+                               s.SQAns2,
+                               s.SQAns3,
+                               t.TagId
+                           }).ToList();
+
+            foreach (var item in singles)
+            {
+                res.Add(item);
+            }
+
+            return res;
         }
 
         /// <summary>
@@ -321,6 +356,48 @@ namespace ExaminationSystem.Controllers
         }
 
         /// <summary>
+        /// 获取必选多选题
+        /// </summary>
+        /// <param name="tagId"></param>
+        /// <returns></returns>
+        public List<object> GetMustMultiple(int tagId)
+        {
+            List<object> res = new List<object>();
+
+            var muls = (from e in db.ES_Exercise
+                        where e.EsType == "多选题" && e.IsDel == false
+                        join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                        join t in db.ES_Tag on et.TagId equals t.TagId
+                        join m in db.ES_MultipleQuestion on e.EsSubExerciseId equals m.MQId
+                        where t.IsDel == false && et.IsDel == false && t.TagId == tagId
+                        orderby (Guid.NewGuid())
+                        select new
+                        {
+                            e.EsId,
+                            m.MQId,
+                            m.MQTitle,
+                            m.MQAns1,
+                            m.MQAns2,
+                            m.MQAns3,
+                            m.MQAns4,
+                            m.MQAns5,
+                            m.MQAns6,
+                            m.MQAns7
+                        }).ToList();
+
+
+            foreach (var item in muls)
+            {
+                res.Add(item);
+            }
+
+
+            return res;
+        }
+
+
+
+        /// <summary>
         /// 获取判断题
         /// </summary>
         /// <param name="num"></param>
@@ -392,6 +469,39 @@ namespace ExaminationSystem.Controllers
                         j.JQIsTrue
                     }).FirstOrDefault();
         }
+
+        /// <summary>
+        /// 获取必选判断
+        /// </summary>
+        /// <param name="tagId"></param>
+        /// <returns></returns>
+        public List<object> GetMustJudgment(int tagId)
+        {
+            List<object> res = new List<object>();
+
+            var judges = (from e in db.ES_Exercise
+                          where e.EsType == "判断题" && e.IsDel == false
+                          join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                          join t in db.ES_Tag on et.TagId equals t.TagId
+                          join j in db.ES_JudgeQuestion on e.EsSubExerciseId equals j.JQId
+                          where t.IsDel == false && et.IsDel == false && t.TagId == tagId
+                          orderby (Guid.NewGuid())
+                          select new
+                          {
+                              e.EsId,
+                              j.JQTitle,
+                              j.JQIsTrue,
+                              t.TagId
+                          }).ToList();
+
+            foreach (var item in judges)
+            {
+                res.Add(item);
+            }
+
+            return res;
+        }
+
 
         /// <summary>
         /// 获取填空题
@@ -466,6 +576,74 @@ namespace ExaminationSystem.Controllers
         }
 
         /// <summary>
+        /// 获取必选填空
+        /// </summary>
+        /// <param name="tagId"></param>
+        /// <returns></returns>
+        public List<object> GetMustFill(int tagId)
+        {
+            List<object> res = new List<object>();
+
+            var fills = (from e in db.ES_Exercise
+                         where e.EsType == "填空题" && e.IsDel == false
+                         join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                         join t in db.ES_Tag on et.TagId equals t.TagId
+                         join f in db.ES_FillQuestion on e.EsSubExerciseId equals f.FQId
+                         where t.IsDel == false && et.IsDel == false && t.TagId == tagId
+                         orderby (Guid.NewGuid())
+                         select new
+                         {
+                             e.EsId,
+                             f.FQId,
+                             f.FQTitle,
+                             t.TagId
+                         }).ToList();
+
+
+            foreach (var item in fills)
+            {
+                res.Add(item);
+            }
+
+            return res;
+        }
+
+
+        /// <summary>
+        /// 获取必选题数目
+        /// </summary>
+        /// <param name="tagId"></param>
+        /// <returns></returns>
+        public List<int> GetMustQuestionNum(int tagId)
+        {
+            int singleNum = (from e in db.ES_Exercise
+                             where e.EsType == "单选题" && e.IsDel == false
+                             join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                             join t in db.ES_Tag on et.TagId equals t.TagId
+                             where t.IsDel == false && et.IsDel == false && t.TagId == tagId
+                             select e).Count();
+            int mulNum = (from e in db.ES_Exercise
+                          where e.EsType == "多选题" && e.IsDel == false
+                          join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                          join t in db.ES_Tag on et.TagId equals t.TagId
+                          where t.IsDel == false && et.IsDel == false && t.TagId == tagId
+                          select e).Count();
+            int judgeNum = (from e in db.ES_Exercise
+                            where e.EsType == "判断题" && e.IsDel == false
+                            join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                            join t in db.ES_Tag on et.TagId equals t.TagId
+                            where t.IsDel == false && et.IsDel == false && t.TagId == tagId
+                            select e).Count();
+            int fillNum = (from e in db.ES_Exercise
+                           where e.EsType == "填空题" && e.IsDel == false
+                           join et in db.ES_Tag_Exercise on e.EsId equals et.EsId
+                           join t in db.ES_Tag on et.TagId equals t.TagId
+                           where t.IsDel == false && et.IsDel == false && t.TagId == tagId
+                           select e).Count();
+            return new List<int>() { singleNum, mulNum, judgeNum, fillNum };
+        }
+
+        /// <summary>
         /// 创建详细考试试卷
         /// </summary>
         /// <param name="partId"></param>
@@ -496,11 +674,12 @@ namespace ExaminationSystem.Controllers
             try
             {
                 var tags = GetTags(paper.EmPaperId);
-                List<object> singles;
-                List<object> multiples;
-                List<object> judgments;
-                List<object> fills;
-                List<int> fillAnsNum;
+
+                List<object> singles = new List<object>();
+                List<object> multiples = new List<object>();
+                List<object> judgments = new List<object>();
+                List<object> fills = new List<object>();
+                List<int> fillAnsNum = new List<int>();
                 // 如果没选择标签
                 if (tags.Count == 0)
                 {
@@ -533,8 +712,24 @@ namespace ExaminationSystem.Controllers
                     return JsonConvert.SerializeObject(new { title = paper.EmPaperName, singles, multiples, judgments, fills, fillAnsNum });
                 }
 
+
+                foreach (var tag in tagPercents)
+                {
+                    if (tag.IsMust)
+                    {
+                        singles = GetMustSingle(tag.Id);
+                        multiples = GetMustMultiple(tag.Id);
+                        judgments = GetMustJudgment(tag.Id);
+                        fills = GetMustFill(tag.Id);
+                    }
+                }
+
                 // 单选题
-                singles = GetSingle(paper.EmPaperSelectNum, tagPercents);
+                var normalSingle = GetSingle(paper.EmPaperSelectNum - singles.Count(), tagPercents);
+                foreach (var item in normalSingle)
+                {
+                    singles.Add(item);
+                }
                 // 如果题目不够，自动补
                 if (singles.Count() < paper.EmPaperSelectNum)
                 {
@@ -546,7 +741,11 @@ namespace ExaminationSystem.Controllers
                 }
 
                 // 多选题
-                multiples = GetMultiple(paper.EmPaperMultipleNum, tagPercents);
+                var normalMultiples = GetMultiple(paper.EmPaperMultipleNum - multiples.Count(), tagPercents);
+                foreach (var item in normalMultiples)
+                {
+                    multiples.Add(item);
+                }
                 if (multiples.Count() < paper.EmPaperMultipleNum)
                 {
                     var notTag = GetMultiple(paper.EmPaperMultipleNum - multiples.Count()).ToList();
@@ -557,7 +756,11 @@ namespace ExaminationSystem.Controllers
                 }
 
                 // 获取判断题
-                judgments = GetJudgment(paper.EmPaperJudgeNum, tagPercents);
+                var normalJudgments = GetJudgment(paper.EmPaperJudgeNum - judgments.Count(), tagPercents);
+                foreach (var item in normalJudgments)
+                {
+                    judgments.Add(item);
+                }
                 if (judgments.Count() < paper.EmPaperJudgeNum)
                 {
                     var notTag = GetJudgment(paper.EmPaperJudgeNum - judgments.Count()).ToList();
@@ -568,7 +771,11 @@ namespace ExaminationSystem.Controllers
                 }
 
                 // 获取填空题
-                fills = GetFill(paper.EmPaperFillNum, tagPercents);
+                var normalFills = GetFill(paper.EmPaperFillNum - fills.Count(), tagPercents);
+                foreach (var item in normalFills)
+                {
+                    fills.Add(item);
+                }
                 if (fills.Count() < paper.EmPaperFillNum)
                 {
                     var notTag = GetFill(paper.EmPaperFillNum - fills.Count()).ToList();
@@ -647,7 +854,7 @@ namespace ExaminationSystem.Controllers
             string message;
             // 获取记录中的题目ID
             var log = (from l in db.ES_ExamLog
-                       where l.UserId == id && l.EmPtId == partId && l.IsDel == false && l.IsSubmit == false 
+                       where l.UserId == id && l.EmPtId == partId && l.IsDel == false && l.IsSubmit == false
                        select l).FirstOrDefault();
 
             if (log == null)

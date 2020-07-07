@@ -96,7 +96,7 @@
           </el-select>
         </div>
         <div class="main-content"  v-loading="isUploading">
-           <el-tabs type="border-card" @tab-click="changeTab">
+           <el-tabs type="border-card" @tab-click="changeTab" >
             <el-tab-pane label="单选题">
               <el-form :model="single" class="single">
                 <el-form-item class="title-editor-wrap">
@@ -134,7 +134,7 @@
                   <el-input v-model.trim="single.sel3" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="onSubmit">确 定</el-button>
+                  <el-button type="primary" @click="onSubmit" :disabled="isSubmitLoading" v-loading="isSubmitLoading">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -186,7 +186,7 @@
                   </el-checkbox-group>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="onSubmit">确 定</el-button>
+                  <el-button type="primary" @click="onSubmit" :disabled="isSubmitLoading" v-loading="isSubmitLoading">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -210,7 +210,7 @@
                   <el-radio v-model="judgment.isTrue" :label="false">错</el-radio>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="onSubmit">确 定</el-button>
+                  <el-button type="primary" @click="onSubmit" :disabled="isSubmitLoading" v-loading="isSubmitLoading">确 定</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -233,7 +233,7 @@
                   <el-input v-model.trim="fill.answers[index]" maxlength="64" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item class="submit-btn">
-                  <el-button type="primary" @click="onSubmit">确 定</el-button>
+                  <el-button type="primary" @click="onSubmit" :disabled="isSubmitLoading" v-loading="isSubmitLoading">确 定</el-button>
                   <el-button type="info" @click="addFillAnswer">添加答案</el-button>
                 </el-form-item>
               </el-form>
@@ -477,7 +477,6 @@
           trueSel: '',
           score: 2
         };
-        this.selTags = [];
         this.isShowDialog = false;
         return this.$message({
           message: data.message,
@@ -510,7 +509,6 @@
           trueSels: ['选项1', '选项2'],
           score: 2
         };
-        this.selTags = [];
         this.isShowDialog = false;
         return this.$message({
           message: data.message,
@@ -536,7 +534,6 @@
           isTrue: true,
           score: 2
         }
-        this.selTags = [];
         this.isShowDialog = false;
         return this.$message({
           message: data.message,
@@ -561,7 +558,6 @@
           answers: [''],
           score: 2
         }
-        this.selTags = [];
         this.isShowDialog = false;
         return this.$message({
           message: data.message,
