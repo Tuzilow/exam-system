@@ -25,6 +25,7 @@ namespace ExaminationSystem.Models
         public string TagName { get; set; }
         public string TagDescribe { get; set; }
         public bool IsDel { get; set; }
+        public bool IsPrivate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ES_Paper_Tag> ES_Paper_Tag { get; set; }

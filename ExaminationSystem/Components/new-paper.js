@@ -21,7 +21,8 @@
       tagPercent: [
       ],
       warningMsg: '',
-      isWarning: false
+      isWarning: false,
+      loginRoleId:0
     };
   },
   template: `
@@ -49,7 +50,9 @@
                     v-for="tag in tags"
                     :key="tag.id"
                     :label="tag.name"
-                    :value="tag.id">
+                    :value="tag.id"
+                    v-if="isShowTag(tag)"
+                  >
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -231,13 +234,7 @@
     getTags: function () {
       axios.get('/Tag/GetTags').then(res => {
         var data = res.data;
-        tags = data.slice(1, data.length);
-
-        if (localStorage.getItem('id') != 1) {
-          this.tags = tags;
-        } else {
-          this.tags = data;
-        }
+        this.tags = data;
       });
     },
     // 获取场次
@@ -253,6 +250,17 @@
 
         this.paper.parts = exams;
       });
+    },
+    getRoleId: function () {
+      this.loginRoleId = parseInt(localStorage.getItem('roleId'));
+    },
+    isShowTag: function (tag) {
+      if (this.loginRoleId === 3) {
+        return true;
+      } else if (!tag.isPrivate) {
+        return true;
+      }
+      return false;
     }
   },
   watch: {
@@ -277,6 +285,7 @@
     this.maxScore = this.paper.fill.total + this.paper.judgment.total + this.paper.multiple.total + this.paper.single.total;
     this.getTags();
     this.getExamPart();
+    this.getRoleId();
   },
   beforeUpdate() {
     this.maxScore = this.paper.fill.total + this.paper.judgment.total + this.paper.multiple.total + this.paper.single.total;

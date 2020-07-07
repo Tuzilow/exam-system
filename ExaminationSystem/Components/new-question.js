@@ -76,7 +76,8 @@
         { id: 4, name: 'c' },
       ],
       selTags: [], // 选中标签
-      isSubmitLoading: false
+      isSubmitLoading: false,
+      loginRoleId: 0
     };
   },
   template: `
@@ -88,7 +89,9 @@
               v-for="item in tags"
               :key="item.id"
               :label="item.name"
-              :value="item.id">
+              :value="item.id"
+              v-if="isShowTag(item)"
+            >
             </el-option>
           </el-select>
         </div>
@@ -380,13 +383,9 @@
       axios.get('/Tag/GetTags').then(res => {
         this.isLoading = false;
         var data = res.data;
-        tags = data.slice(1, data.length);
-
-        if (localStorage.getItem('id') != 1) {
-          this.tags = tags;
-        } else {
-          this.tags = data;
-        }
+    
+        this.tags = data;
+        
       });
     },
     // 获取要提交的单选数据
@@ -569,9 +568,22 @@
           type: 'success'
         });
       });
+    },
+    getRoleId: function () {
+      this.loginRoleId = parseInt(localStorage.getItem('roleId'));
+    },
+    isShowTag: function (tag) {
+      if (this.loginRoleId === 3) {
+        return true;
+      } else if (!tag.isPrivate) {
+        return true;
+      }
+      return false;
     }
   },
   created() {
     this.getTags();
+
+    this.getRoleId();
   }
 });

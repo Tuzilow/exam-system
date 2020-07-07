@@ -33,8 +33,9 @@ namespace ExaminationSystem.Controllers
                     int id = tag.TagId;
                     string name = tag.TagName;
                     string desc = tag.TagDescribe;
+                    bool isPrivate = tag.IsPrivate;
 
-                    tagList.Add(new { id, name, desc });
+                    tagList.Add(new { id, name, desc, isPrivate });
                 }
 
                 // 序列化为JSON 传递到View
@@ -55,7 +56,7 @@ namespace ExaminationSystem.Controllers
         /// <param name="desc"></param>
         /// <returns></returns>
         [HttpPost]
-        public string AddTag(string tagName, string desc)
+        public string AddTag(string tagName, string desc, bool isPrivate)
         {
             int code;
             string message;
@@ -63,7 +64,8 @@ namespace ExaminationSystem.Controllers
             ES_Tag tag = new ES_Tag()
             {
                 TagName = tagName,
-                TagDescribe = desc
+                TagDescribe = desc,
+                IsPrivate = isPrivate
             };
             try
             {
@@ -96,7 +98,7 @@ namespace ExaminationSystem.Controllers
         /// <param name="desc"></param>
         /// <returns></returns>
         [HttpPost]
-        public string EditTag(int id, string tagName, string desc)
+        public string EditTag(int id, string tagName, string desc, bool isPrivate)
         {
             int code;
             string message;
@@ -110,6 +112,8 @@ namespace ExaminationSystem.Controllers
                 {
                     tag.TagName = tagName;
                     tag.TagDescribe = desc;
+                    tag.IsPrivate = isPrivate;
+
                     db.Entry(tag).State = System.Data.Entity.EntityState.Modified;
 
                     if (db.SaveChanges() > 0)

@@ -186,6 +186,7 @@
           <Property Name="TagName" Type="nvarchar" MaxLength="8" Nullable="false" />
           <Property Name="TagDescribe" Type="nvarchar" MaxLength="64" />
           <Property Name="IsDel" Type="bit" Nullable="false" />
+          <Property Name="IsPrivate" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_Tag_Exercise">
           <Key>
@@ -797,6 +798,7 @@
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ES_Paper_Tag" Relationship="Self.FK__ES_Paper___TagId__5DCAEF64" FromRole="ES_Tag" ToRole="ES_Paper_Tag" />
           <NavigationProperty Name="ES_Tag_Exercise" Relationship="Self.FK__ES_Tag_Ex__TagId__693CA210" FromRole="ES_Tag" ToRole="ES_Tag_Exercise" />
+          <Property Name="IsPrivate" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ES_Tag_Exercise">
           <Key>
@@ -1413,6 +1415,7 @@
           <EntitySetMapping Name="ES_Tag">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_Tag">
               <MappingFragment StoreEntitySet="ES_Tag">
+                <ScalarProperty Name="IsPrivate" ColumnName="IsPrivate" />
                 <ScalarProperty Name="TagId" ColumnName="TagId" />
                 <ScalarProperty Name="TagName" ColumnName="TagName" />
                 <ScalarProperty Name="TagDescribe" ColumnName="TagDescribe" />

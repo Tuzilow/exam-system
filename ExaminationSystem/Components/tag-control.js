@@ -13,10 +13,12 @@
       tag: {
         id: 0,
         name: '',
-        desc: ''
+        desc: '',
+        isPrivate: false,
       },
       pageSize: 10,
-      currentPage: 1
+      currentPage: 1,
+      loginRoleId: 0
     }
   },
   template: `
@@ -40,6 +42,12 @@
             <el-table :data="tags.slice((currentPage-1)*pageSize,currentPage*pageSize)" v-loading="isLoading">
               <el-table-column prop="name" label="标签名"></el-table-column>
               <el-table-column prop="desc" label="描述"></el-table-column>
+              <el-table-column prop="isPrivate" label="是否为内部标签" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.isPrivate === true">是</span>
+                  <span v-if="scope.row.isPrivate === false">否</span>
+                </template>
+              </el-table-column>
               <el-table-column label="操作" align="center" prop="id">
                 <template slot-scope="scope">
                   <el-link type="warning" @click="editTag(scope.row)">编辑</el-link>
@@ -60,6 +68,9 @@
               <el-form-item label="描述">
                 <el-input v-model="tag.desc" type="textarea" :rows="2" maxlength="64" show-word-limit></el-input>
               </el-form-item>
+              <el-form-item>
+                <el-checkbox v-model="tag.isPrivate">设为内部标签</el-checkbox>
+              </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="isShowInfo = false">取 消</el-button>
@@ -75,11 +86,20 @@
     },
     // 打开编辑界面
     editTag: function (row) {
+      if (!this.isShowTag(row)) {
+        return this.$alert('您暂无编辑该标签的权限', '错误', {
+          confirmButtonText: '确定',
+          type: 'error',
+          showClose: false
+        });
+      }
+
       this.dialogTitle = '编辑标签信息';
 
       this.tag.id = row.id;
       this.tag.name = row.name;
       this.tag.desc = row.desc;
+      this.tag.isPrivate = row.isPrivate;
 
       this.isShowInfo = true;
     },
@@ -91,7 +111,8 @@
       axios.post('/Tag/EditTag', {
         id: this.tag.id,
         tagName: this.tag.name,
-        desc: this.tag.desc
+        desc: this.tag.desc,
+        isPrivate: this.tag.isPrivate
       }).then(res => {
         const { data } = res;
         if (data.code == 1) {
@@ -100,6 +121,7 @@
 
         this.tag.name = '';
         this.tag.desc = '';
+        this.tag.isPrivate = false;
 
         this.getTags();
         this.isShowInfo = false;
@@ -111,7 +133,14 @@
       });
     },
     remove: function (tag) {
-      console.log(tag)
+      if (!this.isShowTag(tag)) {
+        return this.$alert('您暂无删除该标签的权限', '错误', {
+          confirmButtonText: '确定',
+          type: 'error',
+          showClose: false
+        });
+      }
+
       this.$confirm('确认删除此记录?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -151,6 +180,7 @@
       this.isShowInfo = true;
       this.tag.name = '';
       this.tag.desc = '';
+      this.tag.isPrivate = false;
       this.dialogTitle = '添加新标签';
     },
     // 提交添加
@@ -160,7 +190,8 @@
       }
       axios.post('/Tag/AddTag', {
         tagName: this.tag.name,
-        desc: this.tag.desc
+        desc: this.tag.desc,
+        isPrivate: this.tag.isPrivate
       }).then(res => {
         const { data } = res;
         if (data.code == 1) {
@@ -169,6 +200,7 @@
 
         this.tag.name = '';
         this.tag.desc = '';
+        this.tag.isPrivate = false;
 
         this.getTags();
         this.isShowInfo = false;
@@ -177,9 +209,21 @@
           type: 'success'
         });
       });
+    },
+    getRole: function () {
+      this.loginRoleId = parseInt(localStorage.getItem('roleId'));
+    },
+    isShowTag: function (tag) {
+      if (this.loginRoleId === 3) {
+        return true;
+      } else if (!tag.isPrivate) {
+        return true;
+      }
+      return false;
     }
   },
   created() {
     this.getTags();
+    this.getRole();
   }
 });
