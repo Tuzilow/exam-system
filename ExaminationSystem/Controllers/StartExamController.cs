@@ -797,9 +797,9 @@ namespace ExaminationSystem.Controllers
                                     select fa).Count());
                 }
 
-                CreateLog(new List<List<object>>() { singles, multiples, judgments, fills }, userId, paper.EmPaperId, partId);
+                int logId = CreateLog(new List<List<object>>() { singles, multiples, judgments, fills }, userId, paper.EmPaperId, partId);
 
-                return JsonConvert.SerializeObject(new { title = paper.EmPaperName, singles, multiples, judgments, fills, fillAnsNum });
+                return JsonConvert.SerializeObject(new { logId, title = paper.EmPaperName, singles, multiples, judgments, fills, fillAnsNum });
             }
             catch (Exception ex)
             {
@@ -817,7 +817,7 @@ namespace ExaminationSystem.Controllers
         /// <param name="paperId"></param>
         /// <param name="partId"></param>
         /// <returns></returns>
-        public bool CreateLog(List<List<object>> allQuestions, int userId, int paperId, int partId)
+        public int CreateLog(List<List<object>> allQuestions, int userId, int paperId, int partId)
         {
             List<int> ids = new List<int>();
             foreach (var subQuestions in allQuestions)
@@ -840,7 +840,14 @@ namespace ExaminationSystem.Controllers
             };
             db.ES_ExamLog.Add(log);
 
-            return db.SaveChanges() > 0;
+            if (db.SaveChanges() > 0)
+            {
+                return log.LogId;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         /// <summary>
@@ -1039,6 +1046,7 @@ namespace ExaminationSystem.Controllers
         /// <param name="ansStr"></param>
         /// <param name="id"></param>
         /// <returns></returns>
+        [HttpPost]
         public string SaveLog(string ansStr, int id)
         {
             int code;
