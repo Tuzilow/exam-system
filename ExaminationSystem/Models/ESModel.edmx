@@ -19,6 +19,7 @@
           <Property Name="Answers" Type="nvarchar(max)" />
           <Property Name="IsDel" Type="bit" Nullable="false" />
           <Property Name="ExamScore" Type="float" Nullable="false" />
+          <Property Name="StartTime" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="ES_ExamPaper">
           <Key>
@@ -1195,6 +1196,7 @@
           <NavigationProperty Name="ES_User" Relationship="ExaminationSystemDbModel.FK__ES_ExamLo__UserI__4F47C5E3" FromRole="ES_ExamLog" ToRole="ES_User" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <Property Name="ExamScore" Type="Double" Nullable="false" />
+          <Property Name="StartTime" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK__ES_ExamLo__EmPap__503BEA1C">
           <End Type="ExaminationSystemDbModel.ES_ExamPaper" Role="ES_ExamPaper" Multiplicity="0..1" />
@@ -1500,6 +1502,7 @@
           <EntitySetMapping Name="ES_ExamLog">
             <EntityTypeMapping TypeName="ExaminationSystemDbModel.ES_ExamLog">
               <MappingFragment StoreEntitySet="ES_ExamLog">
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="ExamScore" ColumnName="ExamScore" />
                 <ScalarProperty Name="IsDel" ColumnName="IsDel" />
                 <ScalarProperty Name="Answers" ColumnName="Answers" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ExaminationSystem.Models;
+using ExaminationSystem.Utils;
 using Newtonsoft.Json;
 
 namespace ExaminationSystem.Controllers
@@ -797,9 +798,9 @@ namespace ExaminationSystem.Controllers
                                     select fa).Count());
                 }
 
-                int logId = CreateLog(new List<List<object>>() { singles, multiples, judgments, fills }, userId, paper.EmPaperId, partId);
+                ES_ExamLog log = CreateLog(new List<List<object>>() { singles, multiples, judgments, fills }, userId, paper.EmPaperId, partId);
 
-                return JsonConvert.SerializeObject(new { logId, title = paper.EmPaperName, singles, multiples, judgments, fills, fillAnsNum });
+                return JsonConvert.SerializeObject(new { logId = log.LogId, title = paper.EmPaperName, singles, multiples, judgments, fills, fillAnsNum, startTime = log.StartTime });
             }
             catch (Exception ex)
             {
@@ -817,7 +818,7 @@ namespace ExaminationSystem.Controllers
         /// <param name="paperId"></param>
         /// <param name="partId"></param>
         /// <returns></returns>
-        public int CreateLog(List<List<object>> allQuestions, int userId, int paperId, int partId)
+        public ES_ExamLog CreateLog(List<List<object>> allQuestions, int userId, int paperId, int partId)
         {
             List<int> ids = new List<int>();
             foreach (var subQuestions in allQuestions)
@@ -836,17 +837,18 @@ namespace ExaminationSystem.Controllers
                 EmPaperId = paperId,
                 EmPtId = partId,
                 ExercisesId = idStr,
-                IsStart = true
+                IsStart = true,
+                StartTime = TimeHelper.ToJsTime(DateTime.Now)
             };
             db.ES_ExamLog.Add(log);
 
             if (db.SaveChanges() > 0)
             {
-                return log.LogId;
+                return log;
             }
             else
             {
-                return -1;
+                return null;
             }
         }
 
@@ -929,7 +931,7 @@ namespace ExaminationSystem.Controllers
                                 where l.UserId == id && l.EmPtId == partId && l.IsDel == false && p.IsDel == false
                                 select p.EmPaperName).FirstOrDefault();
 
-                return JsonConvert.SerializeObject(new { logId = log.LogId, title, singles, multiples, judgments, fills, fillAnsNum, answers = log.Answers });
+                return JsonConvert.SerializeObject(new { logId = log.LogId, title, singles, multiples, judgments, fills, fillAnsNum, answers = log.Answers, startTime = log.StartTime });
             }
             catch (Exception ex)
             {

@@ -20,6 +20,19 @@ namespace ExaminationSystem.Utils
             return dt;
         }
 
+
+        /// <summary>
+        /// C#转js时间戳
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static string ToJsTime(DateTime time)
+        {
+            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1)); // 当地时区
+            long timeStamp = (long)(time - startTime).TotalMilliseconds; // 相差毫秒数
+            return timeStamp.ToString();
+        }
+
         /// <summary>
         /// 获取时间戳
         /// </summary>

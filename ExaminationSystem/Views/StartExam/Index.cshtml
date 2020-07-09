@@ -120,7 +120,8 @@
       multipleSort: [],
       answers: null,
       timer: null,
-      logId: 0
+      logId: 0,
+      startTime: new Date()
     },
     methods: {
       // 提交并获取分数
@@ -241,6 +242,8 @@
           }
           this.logId = data.logId;
           this.title = data.title;
+
+          this.startTime = data.startTime;
 
           // 添加单选题答案存放数组
           for (var i = 0; i < data.singles.length; i++) {
@@ -382,8 +385,8 @@
       },
       // 获得剩余时间
       getDiffTime() {
-        // console.log(this.end - this.start);
-        var diff = new Date(this.end).getTime() - new Date().getTime();
+        var lastTime = parseInt(this.startTime) + new Date(this.end).getTime() - new Date(this.start).getTime();
+        var diff = lastTime - new Date().getTime();
         var temp1 = diff % (24 * 3600 * 1000);
         var h = Math.floor(temp1 / (3600 * 1000));
         var temp2 = temp1 % (3600 * 1000)
@@ -406,6 +409,7 @@
     },
     watch: {
       timer: function (val) {
+        console.log(val)
         if (val == '0小时0分钟0秒') {
           this.onSubmit();
         }
