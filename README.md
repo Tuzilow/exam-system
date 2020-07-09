@@ -2,16 +2,18 @@
 
 本项目是一个简单的在线考试系统，主要有考生考试模块和后台管理模块
 
-## 使用技术/库
+![](https://cdn.jsdelivr.net/gh/Tuzilow/blog-image/img/examsystemendhome.png)
+
+![](https://cdn.jsdelivr.net/gh/Tuzilow/blog-image/img/examsystemhome.png)
+
+## 技术栈
 
 - ASP.NET MVC
 - [Vue](https://cn.vuejs.org/)
 - SQL Server
 - [Element-UI](https://element.eleme.cn/#/zh-CN)
 
-我也不知道我为啥要把MVC和Vue结合在一起，可能是我脑抽了
-
-## 功能
+## 主要功能
 
 正常的在线考试系统功能，但是因为需求只需要客观题，因此没有手动批改功能。
 
